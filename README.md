@@ -1,4 +1,4 @@
-# TheTaleOfMaya
+# The Tale Of Maya
 
 L'archive suivante contient :
 - Un fichier src contenant les codes sources java

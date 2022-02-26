@@ -3,6 +3,7 @@
  */
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public class Boid {
@@ -10,7 +11,7 @@ public class Boid {
     Vector2D velocity;                              // the boid's velocity vector
     Vector2D acceleration;                          // the boid's acceleration vector
     
-    static int size = 8;                            // every boid's screen drawing size in pixels
+    static int size = 3;                            // every boid's screen drawing size in pixels
     
     static double maxVelocity = 8;                  // every boid's maximum velocity
     static double maxAcceleration = 0.7;            // every boid's maximum acceleration
@@ -54,11 +55,27 @@ public class Boid {
      * @param g  a Graphics object to draw on the screen
      */
     public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillOval((int)(position.x-size/2),(int)(position.y-size/2),size,size);
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform initial = g2d.getTransform();
+    
+        double headingAngle = Math.atan2(velocity.y, velocity.x);  // direction in which the boid is currently heading
+        
+        g2d.translate((int)(position.x-size/2),(int)(position.y-size/2));
+        g2d.rotate(headingAngle);
+        
+        // Drawing the boid here
+        g2d.setColor(color);
+        g2d.fillPolygon(new int[]{-4,4,-4}, new int[]{-3,0,3}, 3);
+        
+        g2d.setTransform(initial);
+        
         if(drawPerceptionRadius) {
-            g.setColor(Color.green);
-            g.drawOval((int)(position.x-perceptionRadius/2),(int)(position.y-perceptionRadius/2),(int)perceptionRadius,(int)perceptionRadius);
+            g2d.setColor(Color.green);
+            g2d.drawOval(
+                    (int)(position.x-perceptionRadius/2),
+                    (int)(position.y-perceptionRadius/2),
+                    (int)perceptionRadius,
+                    (int)perceptionRadius);
         }
     }
     

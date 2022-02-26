@@ -1,3 +1,7 @@
+/**
+ * This class is the panel in which all the boids handled and drawn on the screen
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,26 +10,35 @@ import java.util.LinkedList;
 
 public class GamePanel extends JPanel implements ActionListener {
     
-    LinkedList<Boid> boids;
-    Timer timer;
+    LinkedList<Boid> boids;         // List of all the boids
+    Timer timer;                    // timer of the game loop
+    int numberOfBoids = 400;        // initial numbers of boids to create
     
-    public GamePanel() {
+    /**
+     * Creates a panel in which all the boids are drawn and populates it with random boids
+     * @param width  width of the area in which to create the initial boids
+     * @param height  height of the area in which to create the initial boids
+     */
+    public GamePanel(int width, int height) {
         
         boids = new LinkedList<>();
-        int numberOfBoids = 20;
         
         // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
         for (int i = 0; i < numberOfBoids; i++) {
-            Vector2D randomVelocity = new Vector2D(Math.random()*2-1, Math.random()*2-1);
-            Vector2D randomAcceleration = new Vector2D(Math.random()*2-1, Math.random()*2-1);
-            boids.add(new Boid(300,300,randomVelocity, randomAcceleration));
+            boids.add(Boid.random(width, height));
         }
         
-        
-        timer = new Timer(33, this);
+        // Game loop timer
+        int fps = 30;
+        timer = new Timer(1000/fps, this);
         timer.start();
     }
     
+    /**
+     * Draws the boids on the screen
+     * @param g  a Graphics object to draw on the screen
+     */
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         
@@ -39,11 +52,40 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
     
+    /**
+     * Invoked when an action occurs.
+     * Main use is running the game loop at each timer event
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         for(Boid b : boids) {
+            b.flock(boids);
             b.update();
+            b.loopEdges(getWidth(),getHeight());
         }
         repaint();
+    }
+    
+    /**
+     * Adds n boids to the flock
+     * @param n  number of boids to add to the flock
+     */
+    public void addBoids(int n) {
+        for(int i = 0; i < n; i++) {
+            boids.add(Boid.random(getWidth(), getHeight()));
+        }
+    }
+    
+    /**
+     * Removes n boids from the flock
+     * @param n  number of boids to remove from the flock
+     */
+    public void removeBoids(int n) {
+        if(boids.size() >= n) {
+            for(int i = 0; i < n; i++) {
+                boids.removeLast();
+            }
+        }
     }
 }

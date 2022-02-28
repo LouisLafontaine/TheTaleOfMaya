@@ -10,9 +10,17 @@ import java.util.LinkedList;
 
 public class GamePanel extends JPanel implements ActionListener {
     
-    LinkedList<Boid> boids;         // List of all the boids
+    LinkedList<Boid> boids;         // list of all the boids
     Timer timer;                    // timer of the game loop
     int numberOfBoids = 400;        // initial numbers of boids to create
+    int desiredFps = 60;            // the desired number of fps to run the simulation
+    long previousTime = 0;          // system time at previous frame in ms
+    long currentTime = 0;           // system time at current frame in ms
+    long elapsedTime = 0;           // elapsed time between the two last frame in ms
+    int frameCounter = 0;           // counts the number of frames elapsed, reset when > fpsAvg
+    int frameAverage = 10;          // number of frames to average the fps on
+    int avgTimeSum = 0;             // stores the sum of the elapsed times between frames to calculate the average fps
+    int fpsAvg;                     // the current average fps
     
     /**
      * Creates a panel in which all the boids are drawn and populates it with random boids
@@ -29,8 +37,7 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         
         // Game loop timer
-        int fps = 30;
-        timer = new Timer(1000/fps, this);
+        timer = new Timer(1000/desiredFps, this);
         timer.start();
     }
     
@@ -49,6 +56,17 @@ public class GamePanel extends JPanel implements ActionListener {
         // Boids
         for(Boid b : boids) {
             b.draw(g);
+        }
+        
+        currentTime = System.currentTimeMillis();
+        elapsedTime = currentTime - previousTime;
+        previousTime = currentTime;
+        avgTimeSum += elapsedTime;
+        frameCounter++;
+        if(frameCounter >= frameAverage) {
+            avgTimeSum /= frameCounter;
+            fpsAvg = 1000 / avgTimeSum;
+            frameCounter = 0;
         }
     }
     

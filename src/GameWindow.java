@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
+
 public class GameWindow extends JFrame implements ActionListener, ChangeListener {
     
     GamePanel gamePanel;                    // panel in which all the boids are drawn
@@ -20,6 +22,7 @@ public class GameWindow extends JFrame implements ActionListener, ChangeListener
     JLabel cohesionStrengthLabel;           // label displaying boids's current cohesion strength
     JLabel alignmentStrengthLabel;          // label displaying boids's current alignement strength
     JLabel separationStrengthLabel;         // label displaying boids's current separation strength
+    JLabel fpsLabel;                        // label displaying the current fps of the boid simulation
     
     JSlider perceptionRadiusSlider;         // slider to modify boids's current perception radius
     JSlider maxVelocitySlider;              // slider to modify boids's current max velocity
@@ -34,15 +37,25 @@ public class GameWindow extends JFrame implements ActionListener, ChangeListener
     
     int sliderScale = 100;                  // increases sliders resolution
     int sliderRange = 3;                    // sets the max value of the slider as slider range * starting value
-    int gamePanelDesiredWidth = 800;              // gamePanel's desired width, sets the area in which the first boids are spawned
-    int gamePanelDesiredHeight = 600;             // gamePanel's desired height, sets the area in which the first boids are spawned
+    int gamePanelDesiredWidth = 800;        // gamePanel's desired width, sets the area in which the first boids are spawned
+    int gamePanelDesiredHeight = 600;       // gamePanel's desired height, sets the area in which the first boids are spawned
+    
+    Timer timer;
     
     
     public GameWindow() {
         super("The Tale Of Maya - a boid adventure");
         
+        // Window settings ---------------------------------------------------------------------------------------------
+        setLocation(200, 200);
+        setSize(1000, 600);
+        setAlwaysOnTop(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
         // Game panel --------------------------------------------------------------------------------------------------
         gamePanel = new GamePanel(gamePanelDesiredWidth, gamePanelDesiredHeight);
+        timer = new Timer(33, this);
+        addActionListener(this);
         
         // Control panel -----------------------------------------------------------------------------------------------
         JPanel controlPanel = new JPanel();
@@ -55,6 +68,7 @@ public class GameWindow extends JFrame implements ActionListener, ChangeListener
         cohesionStrengthLabel = new JLabel("cohesion strength : " + Boid.cohesionStrength);
         alignmentStrengthLabel = new JLabel("alignment strength : " + Boid.alignmentStrength);
         separationStrengthLabel = new JLabel("separation strength : " + Boid.separationStrength);
+        fpsLabel = new JLabel(String.valueOf(gamePanel.fpsAvg));
         
         int s = sliderRange*sliderScale;
         perceptionRadiusSlider = new JSlider(JSlider.HORIZONTAL, 0, (int) (s*Boid.perceptionRadius), (int)(sliderScale*Boid.perceptionRadius));
@@ -105,6 +119,8 @@ public class GameWindow extends JFrame implements ActionListener, ChangeListener
         
         controlPanel.add(maxAccelerationLabel);
         controlPanel.add(maxAccelerationSlider);
+    
+        controlPanel.add(fpsLabel);
         
         // Main panel --------------------------------------------------------------------------------------------------
         JPanel mainPanel = new JPanel();
@@ -118,11 +134,8 @@ public class GameWindow extends JFrame implements ActionListener, ChangeListener
         
         add(mainPanel);
         
-        // Window settings ---------------------------------------------------------------------------------------------
-        setLocation(200, 200);
-        setSize(1000, 600);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        timer.start();
     }
     
     /**
@@ -148,6 +161,8 @@ public class GameWindow extends JFrame implements ActionListener, ChangeListener
                 drawPerceptionRadiusButton.setText("draw perception radius : off");
                 Boid.drawPerceptionRadius = false;
             }
+        } else {
+            fpsLabel.setText("fps : " + gamePanel.fpsAvg);
         }
     }
     

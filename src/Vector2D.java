@@ -87,6 +87,13 @@ public class Vector2D {
         y *= m;
     }
     
+    public static Vector2D mult(Vector2D v, double m) {
+        Vector2D r = new Vector2D();
+        r.x = v.x * m;
+        r.y = v.y * m;
+        return r;
+    }
+    
     /**
      * Divides each component of the vector by the scalar parameter d
      */

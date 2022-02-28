@@ -13,12 +13,12 @@ public class Boid {
     
     static int size = 3;                            // every boid's screen drawing size in pixels
     
-    static double maxVelocity = 8;                  // every boid's maximum velocity
-    static double maxAcceleration = 0.7;            // every boid's maximum acceleration
-    static double perceptionRadius = 25;            // every boid's perception radius
+    static double maxVelocity = 4;                  // every boid's maximum velocity
+    static double maxAcceleration = 0.2;            // every boid's maximum acceleration
+    static double perceptionRadius = 20;            // every boid's perception radius
     static double cohesionStrength = 1;             // every boid's strength of the cohesion rule
     static double alignmentStrength = 1;            // every boid's strength of the alignment rule
-    static double separationStrength = 60;          // every boid's strength of the separation rule
+    static double separationStrength = 70;          // every boid's strength of the separation rule
     
     static boolean drawPerceptionRadius = false;    // perception radius, true if drawn
     

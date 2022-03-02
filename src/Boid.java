@@ -60,7 +60,7 @@ public class Boid {
     
         double headingAngle = Math.atan2(velocity.y, velocity.x);  // direction in which the boid is currently heading
         
-        g2d.translate((int)(position.x-size/2),(int)(position.y-size/2));
+        g2d.translate((int)(position.x),(int)(position.y));
         g2d.rotate(headingAngle);
         
         // Drawing the boid here

@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements ActionListener {
     
     LinkedList<Boid> boids;         // list of all the boids
     Timer timer;                    // timer of the game loop
-    int numberOfBoids = 400;        // initial numbers of boids to create
+    int initialNumberOfBoids = 400; // initial numbers of boids to create
     int desiredFps = 60;            // the desired number of fps to run the simulation
     long previousTime = 0;          // system time at previous frame in ms
     long currentTime = 0;           // system time at current frame in ms
@@ -49,10 +49,11 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     public void init() {
         if(!init) {
+            Boid.setDefaultParameters();
             boids = new LinkedList<>();
     
             // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
-            for (int i = 0; i < numberOfBoids; i++) {
+            for (int i = 0; i < initialNumberOfBoids; i++) {
                 boids.add(Boid.random(getWidth(), getHeight()));
             }
     
@@ -64,6 +65,14 @@ public class GamePanel extends JPanel implements ActionListener {
     
             init = true;
         }
+    }
+    
+    /**
+     * Resets the instance and sets init to false
+     */
+    protected void reset() {
+        instance = null;
+        init = false;
     }
     
     /**

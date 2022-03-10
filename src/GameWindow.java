@@ -9,7 +9,7 @@ import java.awt.event.WindowListener;
 
 public class GameWindow extends JFrame implements WindowListener {
     
-    private static GameWindow instance;
+    public static GameWindow instance;
     
     GamePanel gamePanel;                    // panel in which all the boids are drawn
     GameControlPanel controlPanel;          // panel with sliders and button to change the parameter of boids
@@ -78,6 +78,16 @@ public class GameWindow extends JFrame implements WindowListener {
     }
     
     /**
+     * Resets the instance and sets init to false
+     */
+    private void reset() {
+        instance = null;
+        init = false;
+        gamePanel.reset();
+        controlPanel.reset();
+    }
+    
+    /**
      * Invoked the first time a window is made visible.
      *
      * @param e the event to be processed
@@ -105,7 +115,7 @@ public class GameWindow extends JFrame implements WindowListener {
      */
     @Override
     public void windowClosed(WindowEvent e) {
-        GameControlPanel.get().timer.stop();
+        reset();
         MenuWindow.get().setVisible(true);
     }
     

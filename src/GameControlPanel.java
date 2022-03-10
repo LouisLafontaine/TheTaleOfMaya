@@ -65,7 +65,7 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
         if(!init) {
             setBackground(Color.white);
     
-            numberOfBoidsLabel = new JLabel("number of boids : " + GamePanel.get().numberOfBoids);
+            numberOfBoidsLabel = new JLabel("number of boids : " + GamePanel.get().initialNumberOfBoids);
             perceptionRadiusLabel = new JLabel("perception radius : " + Boid.perceptionRadius);
             maxVelocityLabel = new JLabel("max velocity : " + Boid.maxVelocity);
             maxAccelerationLabel = new JLabel("max acceleration : " + Boid.maxAcceleration);
@@ -131,6 +131,14 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
     
             init = true;
         }
+    }
+    
+    /**
+     * Resets the instance and sets init to false
+     */
+    protected void reset() {
+        instance = null;
+        init = false;
     }
     
     /**

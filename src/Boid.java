@@ -7,18 +7,27 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public class Boid {
-    Vector2D position;                              // the boid's position
-    Vector2D velocity;                              // the boid's velocity vector
-    Vector2D acceleration;                          // the boid's acceleration vector
+    Vector2D position;                                  // the boid's position
+    Vector2D velocity;                                  // the boid's velocity vector
+    Vector2D acceleration;                              // the boid's acceleration vector
     
-    static double maxVelocity = 4;                  // every boid's maximum velocity
-    static double maxAcceleration = 0.2;            // every boid's maximum acceleration
-    static double perceptionRadius = 20;            // every boid's perception radius
-    static double cohesionStrength = 1;             // every boid's strength of the cohesion rule
-    static double alignmentStrength = 1;            // every boid's strength of the alignment rule
-    static double separationStrength = 70;          // every boid's strength of the separation rule
+    static double maxVelocity = 4;                      // maximum velocity of all boids
+    static double maxAcceleration = 0.2;                // maximum acceleration of all boids
+    static double perceptionRadius = 20;                // perception radius of all boids
+    static double cohesionStrength = 1;                 // strength of the cohesion rule of all boids
+    static double alignmentStrength = 1;                // strength of the alignment rule of all boids
+    static double separationStrength = 70;              // strength of the separation rule of all boids
     
-    static boolean drawPerceptionRadius = false;    // perception radius, true if drawn
+    static boolean drawPerceptionRadius = false;        // true if the perception radius of all boids is drawn
+    
+    static final double MAX_VELOCITY = 4;               // default maximum velocity of all boids
+    static final double MAX_ACCELERATION = 0.2;         // default maximum acceleration of all boids
+    static final double PERCEPTION_RADIUS = 20;         // default perception radius of all boids
+    static final double COHESION_STRENGTH = 1;          // default strength of the cohesion rule of all boids
+    static final double ALIGNMENT_STRENGTH = 1;         // default strength of the alignment rule of all boids
+    static final double SEPARATION_STRENGTH = 70;       // default strength of the separation rule of all boids
+    
+    static final boolean DRAW_PERCEPTION_RADIUS = false;    // perception radius, true if drawn
     
     Color color;                                    // the boid's color
     
@@ -33,6 +42,15 @@ public class Boid {
         this.velocity = new Vector2D(velocity);
         this.acceleration = new Vector2D(acceleration);
         color = new Color((int)(Math.random()*100 +155),(int)(Math.random()*100 +155),(int)(Math.random()*100 +155));
+    }
+    
+    protected static void setDefaultParameters() {
+        maxVelocity = MAX_VELOCITY;
+        maxAcceleration = MAX_ACCELERATION;
+        perceptionRadius = PERCEPTION_RADIUS;
+        cohesionStrength = COHESION_STRENGTH;
+        alignmentStrength = ALIGNMENT_STRENGTH;
+        separationStrength = SEPARATION_STRENGTH;
     }
     
     /**

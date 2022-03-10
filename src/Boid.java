@@ -7,29 +7,28 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public class Boid {
-    Vector2D position;                                  // the boid's position
-    Vector2D velocity;                                  // the boid's velocity vector
-    Vector2D acceleration;                              // the boid's acceleration vector
+    Vector2D position;                                      // the boid's position
+    Vector2D velocity;                                      // the boid's velocity vector
+    Vector2D acceleration;                                  // the boid's acceleration vector
     
-    static double maxVelocity = 4;                      // maximum velocity of all boids
-    static double maxAcceleration = 0.2;                // maximum acceleration of all boids
-    static double perceptionRadius = 20;                // perception radius of all boids
-    static double cohesionStrength = 1;                 // strength of the cohesion rule of all boids
-    static double alignmentStrength = 1;                // strength of the alignment rule of all boids
-    static double separationStrength = 70;              // strength of the separation rule of all boids
+    static double maxVelocity;                              // maximum velocity of all boids
+    static double maxAcceleration;                          // maximum acceleration of all boids
+    static double perceptionRadius;                         // perception radius of all boids
+    static double cohesionStrength;                         // strength of the cohesion rule of all boids
+    static double alignmentStrength;                        // strength of the alignment rule of all boids
+    static double separationStrength;                       // strength of the separation rule of all boids
     
-    static boolean drawPerceptionRadius = false;        // true if the perception radius of all boids is drawn
+    static boolean drawPerceptionRadius = false;            // true if the perception radius of all boids is drawn
     
-    static final double MAX_VELOCITY = 4;               // default maximum velocity of all boids
-    static final double MAX_ACCELERATION = 0.2;         // default maximum acceleration of all boids
-    static final double PERCEPTION_RADIUS = 20;         // default perception radius of all boids
-    static final double COHESION_STRENGTH = 1;          // default strength of the cohesion rule of all boids
-    static final double ALIGNMENT_STRENGTH = 1;         // default strength of the alignment rule of all boids
-    static final double SEPARATION_STRENGTH = 70;       // default strength of the separation rule of all boids
-    
+    static final double MAX_VELOCITY = 4;                   // default maximum velocity of all boids
+    static final double MAX_ACCELERATION = 0.2;             // default maximum acceleration of all boids
+    static final double PERCEPTION_RADIUS = 20;             // default perception radius of all boids
+    static final double COHESION_STRENGTH = 1;              // default strength of the cohesion rule of all boids
+    static final double ALIGNMENT_STRENGTH = 1;             // default strength of the alignment rule of all boids
+    static final double SEPARATION_STRENGTH = 1;           // default strength of the separation rule of all boids
     static final boolean DRAW_PERCEPTION_RADIUS = false;    // perception radius, true if drawn
     
-    Color color;                                    // the boid's color
+    Color color;                                            // the boid's color
     
     /**
      * Creates a boid with a random color
@@ -51,6 +50,7 @@ public class Boid {
         cohesionStrength = COHESION_STRENGTH;
         alignmentStrength = ALIGNMENT_STRENGTH;
         separationStrength = SEPARATION_STRENGTH;
+        drawPerceptionRadius = DRAW_PERCEPTION_RADIUS;
     }
     
     /**
@@ -134,7 +134,7 @@ public class Boid {
         
         cohesion.mult(cohesionStrength);
         alignment.mult(alignmentStrength);
-        separation.mult(separationStrength);
+        separation.mult(separationStrength*70);
     
         acceleration.set(0,0); // so that acceleration does not accumulate over time
         acceleration.add(cohesion);

@@ -1,5 +1,3 @@
-import java.awt.*;
-
 /**
  * This is the main class
  */

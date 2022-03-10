@@ -10,6 +10,8 @@ import java.util.LinkedList;
 
 public class GamePanel extends JPanel implements ActionListener {
     
+    public static GamePanel instance;
+    
     LinkedList<Boid> boids;         // list of all the boids
     Timer timer;                    // timer of the game loop
     int numberOfBoids = 400;        // initial numbers of boids to create
@@ -21,24 +23,47 @@ public class GamePanel extends JPanel implements ActionListener {
     int frameAverage = 10;          // number of frames to average the fps on
     int avgTimeSum = 0;             // stores the sum of the elapsed times between frames to calculate the average fps
     int fpsAvg;                     // the current average fps
+    boolean init = false;                   // true if the instance has been initialized, false otherwise
     
     /**
-     * Creates a panel in which all the boids are drawn and populates it with random boids
-     * @param width  width of the area in which to create the initial boids
-     * @param height  height of the area in which to create the initial boids
+     * Creates a GamePanel
      */
-    public GamePanel(int width, int height) {
-        
-        boids = new LinkedList<>();
-        
-        // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
-        for (int i = 0; i < numberOfBoids; i++) {
-            boids.add(Boid.random(width, height));
+    private GamePanel() {
+    
+    }
+    
+    /**
+     * This method ensures that only one instance of the GamePanel class can be created
+     *
+     * @return the instance of the GamePanel class
+     */
+    public static GamePanel get() {
+        if(instance == null) {
+            instance = new GamePanel();
         }
-        
-        // Game loop timer
-        timer = new Timer(1000/desiredFps, this);
-        timer.start();
+        return instance;
+    }
+    
+    /**
+     * Initializes the instance of the GamePanel class
+     */
+    public void init() {
+        if(!init) {
+            boids = new LinkedList<>();
+    
+            // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
+            for (int i = 0; i < numberOfBoids; i++) {
+                boids.add(Boid.random(getWidth(), getHeight()));
+            }
+    
+            // Game loop timer
+            timer = new Timer(1000/desiredFps, this);
+            timer.start();
+    
+            repaint();
+    
+            init = true;
+        }
     }
     
     /**
@@ -48,16 +73,15 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
         // Background
         g.setColor(Color.black);
         g.fillRect(0, 0,getWidth(), getHeight());
-        
+
         // Boids
         for(Boid b : boids) {
             b.draw(g);
         }
-        
+
         currentTime = System.currentTimeMillis();
         elapsedTime = currentTime - previousTime;
         previousTime = currentTime;

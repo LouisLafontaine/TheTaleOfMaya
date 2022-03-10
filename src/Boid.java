@@ -11,8 +11,6 @@ public class Boid {
     Vector2D velocity;                              // the boid's velocity vector
     Vector2D acceleration;                          // the boid's acceleration vector
     
-    static int size = 3;                            // every boid's screen drawing size in pixels
-    
     static double maxVelocity = 4;                  // every boid's maximum velocity
     static double maxAcceleration = 0.2;            // every boid's maximum acceleration
     static double perceptionRadius = 20;            // every boid's perception radius

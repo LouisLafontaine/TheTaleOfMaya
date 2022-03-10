@@ -70,7 +70,7 @@ public class Boid {
      * Draws the boid on the screen and its perception radius if perceptionRadius is true
      * @param g  a Graphics object to draw on the screen
      */
-    public void draw(Graphics g) {
+    protected void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform initial = g2d.getTransform();
     
@@ -98,7 +98,7 @@ public class Boid {
     /**
      * Updates the position and velocity of the boid
      */
-    public void update() {
+    protected void update() {
         velocity.limit(maxVelocity);
         position.add(velocity);
         velocity.add(acceleration);
@@ -108,7 +108,7 @@ public class Boid {
      * Flocks the boid by applying 3 rules : cohesion, alignment, separation
      * @param boids  list of all the boids
      */
-    public void flock(LinkedList<Boid> boids) {
+    protected void flock(LinkedList<Boid> boids) {
         int perceivedNeighbors = 0;
         Vector2D cohesion = new Vector2D();
         Vector2D alignment = new Vector2D();
@@ -150,7 +150,7 @@ public class Boid {
      * @param width  width of the screen space
      * @param height  height of the screen space
      */
-    public void loopEdges(int width, int height){
+    protected void loopEdges(int width, int height){
         if(!(width == 0 && height == 0)) {  // necessary because at the first timer event JPanel getWidth / getHeight returns 0,0...
             if(position.x < 0) position.x = width + position.x % width;
             else if(position.x > width) position.x %= width;

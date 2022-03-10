@@ -126,7 +126,7 @@ public class GamePanel extends JPanel implements ActionListener {
      * Adds n boids to the flock
      * @param n  number of boids to add to the flock
      */
-    public void addBoids(int n) {
+    protected void addBoids(int n) {
         for(int i = 0; i < n; i++) {
             boids.add(Boid.random(getWidth(), getHeight()));
         }
@@ -136,7 +136,7 @@ public class GamePanel extends JPanel implements ActionListener {
      * Removes n boids from the flock
      * @param n  number of boids to remove from the flock
      */
-    public void removeBoids(int n) {
+    protected void removeBoids(int n) {
         if(boids.size() >= n) {
             for(int i = 0; i < n; i++) {
                 boids.removeLast();

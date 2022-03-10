@@ -80,7 +80,7 @@ public class GameWindow extends JFrame implements WindowListener {
     /**
      * Resets the instance and sets init to false
      */
-    private void reset() {
+    protected void reset() {
         if(init) {
             instance = null;
             init = false;

@@ -20,13 +20,13 @@ public class Boid {
     
     static boolean drawPerceptionRadius = false;            // true if the perception radius of all boids is drawn
     
-    static final double MAX_VELOCITY = 4;                   // default maximum velocity of all boids
-    static final double MAX_ACCELERATION = 0.2;             // default maximum acceleration of all boids
-    static final double PERCEPTION_RADIUS = 20;             // default perception radius of all boids
-    static final double COHESION_STRENGTH = 1;              // default strength of the cohesion rule of all boids
-    static final double ALIGNMENT_STRENGTH = 1;             // default strength of the alignment rule of all boids
-    static final double SEPARATION_STRENGTH = 1;           // default strength of the separation rule of all boids
-    static final boolean DRAW_PERCEPTION_RADIUS = false;    // perception radius, true if drawn
+    private static final double MAX_VELOCITY = 4;                   // default maximum velocity of all boids
+    private static final double MAX_ACCELERATION = 0.2;             // default maximum acceleration of all boids
+    private static final double PERCEPTION_RADIUS = 20;             // default perception radius of all boids
+    private static final double COHESION_STRENGTH = 1;              // default strength of the cohesion rule of all boids
+    private static final double ALIGNMENT_STRENGTH = 1;             // default strength of the alignment rule of all boids
+    private static final double SEPARATION_STRENGTH = 1;           // default strength of the separation rule of all boids
+    private static final boolean DRAW_PERCEPTION_RADIUS = false;    // perception radius, true if drawn
     
     Color color;                                            // the boid's color
     

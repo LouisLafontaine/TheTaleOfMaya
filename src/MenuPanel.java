@@ -11,7 +11,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     
     public static MenuPanel instance;       // instance of the MenuPanel class
     private JButton launchGameButton;       // button to launch the game
-    boolean init = false;                   // true if the instance has been initialized, false otherwise
+    private boolean init = false;                   // true if the instance has been initialized, false otherwise
     
     /**
      * Creates a MenuPanel

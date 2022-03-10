@@ -7,7 +7,7 @@ import javax.swing.*;
 public class MenuWindow extends JFrame {
     
     public static MenuWindow instance;  // instance of the MenuWindow class
-    boolean init = false;               // true if the instance has been initialized, false otherwise
+    private boolean init = false;               // true if the instance has been initialized, false otherwise
     
     /**
      * Creates a MenuWindow

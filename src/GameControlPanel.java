@@ -12,32 +12,31 @@ import java.awt.event.ActionListener;
 public class GameControlPanel extends JPanel implements ActionListener, ChangeListener {
     
     public static GameControlPanel instance;
-    Timer timer;
+    private Timer timer;
     
-    JLabel numberOfBoidsLabel;              // label displaying the number of boids displayed on screen
-    JLabel perceptionRadiusLabel;           // label displaying current perception radius of all boids
-    JLabel maxVelocityLabel;                // label displaying max velocity of all boids
-    JLabel maxAccelerationLabel;            // label displaying max acceleration of all boids
-    JLabel cohesionStrengthLabel;           // label displaying cohesion strength of all boids
-    JLabel alignmentStrengthLabel;          // label displaying alignement strength of all boids
-    JLabel separationStrengthLabel;         // label displaying separation strength of all boids
-    JLabel fpsLabel;                        // label displaying the current fps of the boid simulation of all boids
+    private JLabel numberOfBoidsLabel;              // label displaying the number of boids displayed on screen
+    private JLabel perceptionRadiusLabel;           // label displaying current perception radius of all boids
+    private JLabel maxVelocityLabel;                // label displaying max velocity of all boids
+    private JLabel maxAccelerationLabel;            // label displaying max acceleration of all boids
+    private JLabel cohesionStrengthLabel;           // label displaying cohesion strength of all boids
+    private JLabel alignmentStrengthLabel;          // label displaying alignement strength of all boids
+    private JLabel separationStrengthLabel;         // label displaying separation strength of all boids
+    private JLabel fpsLabel;                        // label displaying the current fps of the boid simulation of all boids
     
-    JSlider perceptionRadiusSlider;         // slider to modify current perception radius of all boids
-    JSlider maxVelocitySlider;              // slider to modify current max velocity of all boids
-    JSlider maxAccelerationSlider;          // slider to modify current max acceleration of all boids
-    JSlider cohesionStrengthSlider;         // slider to modify current cohesion strength of all boids
-    JSlider alignmentStrengthSlider;        // slider to modify alignment strength of all boids
-    JSlider separationStrengthSlider;       // slider to modify current separation strength of all boids
+    private JSlider perceptionRadiusSlider;         // slider to modify current perception radius of all boids
+    private JSlider maxVelocitySlider;              // slider to modify current max velocity of all boids
+    private JSlider maxAccelerationSlider;          // slider to modify current max acceleration of all boids
+    private JSlider cohesionStrengthSlider;         // slider to modify current cohesion strength of all boids
+    private JSlider alignmentStrengthSlider;        // slider to modify alignment strength of all boids
+    private JSlider separationStrengthSlider;       // slider to modify current separation strength of all boids
     
-    JButton addBoidsButton;                 // button to add boids to the flock
-    JButton removeBoidsButton;              // button to remove boids from the flock
-    JButton drawPerceptionRadiusButton;     // button to draw the boids's current perception radius
+    private JButton addBoidsButton;                 // button to add boids to the flock
+    private JButton removeBoidsButton;              // button to remove boids from the flock
+    private JButton drawPerceptionRadiusButton;     // button to draw the boids's current perception radius
     
-    int sliderScale = 100;                  // increases sliders resolution
-    int sliderRange = 3;                    // sets the max value of the slider as slider range * starting value
+    private final int SLIDER_SCALE = 100;           // increases sliders resolution
     
-    boolean init = false;                   // true if the instance has been initialized, false otherwise
+    private boolean init = false;                   // true if the instance has been initialized, false otherwise
     
     /**
      * Creates a ControlPanel
@@ -65,22 +64,24 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
         if(!init) {
             setBackground(Color.white);
     
-            numberOfBoidsLabel = new JLabel("number of boids : " + GamePanel.get().initialNumberOfBoids);
+            numberOfBoidsLabel = new JLabel("number of boids : " + GamePanel.get().getDefaultNumberOfBoids());
             perceptionRadiusLabel = new JLabel("perception radius : " + Boid.perceptionRadius);
             maxVelocityLabel = new JLabel("max velocity : " + Boid.maxVelocity);
             maxAccelerationLabel = new JLabel("max acceleration : " + Boid.maxAcceleration);
             cohesionStrengthLabel = new JLabel("cohesion strength : " + Boid.cohesionStrength);
             alignmentStrengthLabel = new JLabel("alignment strength : " + Boid.alignmentStrength);
             separationStrengthLabel = new JLabel("separation strength : " + Boid.separationStrength);
-            fpsLabel = new JLabel(String.valueOf(GamePanel.get().fpsAvg));
+            fpsLabel = new JLabel(String.valueOf(GamePanel.get().getFps()));
     
-            int s = sliderRange*sliderScale;
-            perceptionRadiusSlider = new JSlider(JSlider.HORIZONTAL, 0, (int) (s*Boid.perceptionRadius), (int)(sliderScale*Boid.perceptionRadius));
-            maxVelocitySlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.maxVelocity), (int)(sliderScale*Boid.maxVelocity));
-            maxAccelerationSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.maxAcceleration), (int)(sliderScale*Boid.maxAcceleration));
-            cohesionStrengthSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.cohesionStrength), (int)(sliderScale*Boid.cohesionStrength));
-            alignmentStrengthSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.alignmentStrength), (int)(sliderScale*Boid.alignmentStrength));
-            separationStrengthSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.separationStrength), (int)(sliderScale*Boid.separationStrength));
+            // sets the max value of the slider as slider range * starting value
+            final int SLIDER_RANGE = 3;
+            int s = SLIDER_RANGE * SLIDER_SCALE;
+            perceptionRadiusSlider = new JSlider(JSlider.HORIZONTAL, 0, (int) (s*Boid.perceptionRadius), (int)(SLIDER_SCALE *Boid.perceptionRadius));
+            maxVelocitySlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.maxVelocity), (int)(SLIDER_SCALE *Boid.maxVelocity));
+            maxAccelerationSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.maxAcceleration), (int)(SLIDER_SCALE *Boid.maxAcceleration));
+            cohesionStrengthSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.cohesionStrength), (int)(SLIDER_SCALE *Boid.cohesionStrength));
+            alignmentStrengthSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.alignmentStrength), (int)(SLIDER_SCALE *Boid.alignmentStrength));
+            separationStrengthSlider = new JSlider(JSlider.HORIZONTAL, 0, (int)(s*Boid.separationStrength), (int)(SLIDER_SCALE *Boid.separationStrength));
     
             perceptionRadiusSlider.addChangeListener(this);
             maxVelocitySlider.addChangeListener(this);
@@ -137,8 +138,11 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
      * Resets the instance and sets init to false
      */
     protected void reset() {
-        instance = null;
-        init = false;
+        if(init) {
+            instance = null;
+            init = false;
+            timer.stop();
+        }
     }
     
     /**
@@ -150,23 +154,23 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
     @Override
     public void stateChanged(ChangeEvent e) {
         if(e.getSource() == perceptionRadiusSlider) {
-            perceptionRadiusLabel.setText("Perception radius : " + (double)perceptionRadiusSlider.getValue()/sliderScale);
-            Boid.perceptionRadius = (double)perceptionRadiusSlider.getValue()/sliderScale;
+            perceptionRadiusLabel.setText("Perception radius : " + (double)perceptionRadiusSlider.getValue()/ SLIDER_SCALE);
+            Boid.perceptionRadius = (double)perceptionRadiusSlider.getValue()/ SLIDER_SCALE;
         } else if(e.getSource() == maxVelocitySlider) {
-            maxVelocityLabel.setText("Max velocity : " + (double)maxVelocitySlider.getValue()/sliderScale);
-            Boid.maxVelocity = (double)maxVelocitySlider.getValue()/sliderScale;
+            maxVelocityLabel.setText("Max velocity : " + (double)maxVelocitySlider.getValue()/ SLIDER_SCALE);
+            Boid.maxVelocity = (double)maxVelocitySlider.getValue()/ SLIDER_SCALE;
         } else if(e.getSource() == maxAccelerationSlider) {
-            maxAccelerationLabel.setText("Max acceleration : " + (double)maxAccelerationSlider.getValue()/sliderScale);
-            Boid.maxAcceleration = (double)maxAccelerationSlider.getValue()/sliderScale;
+            maxAccelerationLabel.setText("Max acceleration : " + (double)maxAccelerationSlider.getValue()/ SLIDER_SCALE);
+            Boid.maxAcceleration = (double)maxAccelerationSlider.getValue()/ SLIDER_SCALE;
         } else if(e.getSource() == cohesionStrengthSlider) {
-            cohesionStrengthLabel.setText("Cohesion strength : " + (double)cohesionStrengthSlider.getValue()/sliderScale);
-            Boid.cohesionStrength = (double)cohesionStrengthSlider.getValue()/sliderScale;
+            cohesionStrengthLabel.setText("Cohesion strength : " + (double)cohesionStrengthSlider.getValue()/ SLIDER_SCALE);
+            Boid.cohesionStrength = (double)cohesionStrengthSlider.getValue()/ SLIDER_SCALE;
         } else if(e.getSource() == alignmentStrengthSlider) {
-            alignmentStrengthLabel.setText("Alignment strength : " + (double)alignmentStrengthSlider.getValue()/sliderScale);
-            Boid.alignmentStrength = (double)alignmentStrengthSlider.getValue()/sliderScale;
+            alignmentStrengthLabel.setText("Alignment strength : " + (double)alignmentStrengthSlider.getValue()/ SLIDER_SCALE);
+            Boid.alignmentStrength = (double)alignmentStrengthSlider.getValue()/ SLIDER_SCALE;
         } else if(e.getSource() == separationStrengthSlider) {
-            separationStrengthLabel.setText("Separation strength : " + (double)separationStrengthSlider.getValue()/sliderScale);
-            Boid.separationStrength = (double)separationStrengthSlider.getValue()/sliderScale;
+            separationStrengthLabel.setText("Separation strength : " + (double)separationStrengthSlider.getValue()/ SLIDER_SCALE);
+            Boid.separationStrength = (double)separationStrengthSlider.getValue()/ SLIDER_SCALE;
         }
     }
     
@@ -179,10 +183,10 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == addBoidsButton) {
             GamePanel.get().addBoids(50);
-            numberOfBoidsLabel.setText("number of boids : " + GamePanel.get().boids.size());
+            numberOfBoidsLabel.setText("number of boids : " + GamePanel.get().getNumberOfBoids());
         } else if (e.getSource() == removeBoidsButton) {
             GamePanel.get().removeBoids(50);
-            numberOfBoidsLabel.setText("number of boids : " + GamePanel.get().boids.size());
+            numberOfBoidsLabel.setText("number of boids : " + GamePanel.get().getNumberOfBoids());
         } else if (e.getSource() == drawPerceptionRadiusButton) {
             if (!Boid.drawPerceptionRadius) {
                 drawPerceptionRadiusButton.setForeground(Color.green);
@@ -194,7 +198,7 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
                 Boid.drawPerceptionRadius = false;
             }
         } else {
-            fpsLabel.setText("fps : " + GamePanel.get().fpsAvg);
+            fpsLabel.setText("fps : " + GamePanel.get().getFps());
         }
     }
 }

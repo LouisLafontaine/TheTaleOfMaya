@@ -11,10 +11,10 @@ public class GameWindow extends JFrame implements WindowListener {
     
     public static GameWindow instance;
     
-    GamePanel gamePanel;                    // panel in which all the boids are drawn
-    GameControlPanel controlPanel;          // panel with sliders and button to change the parameter of boids
+    private GamePanel gamePanel;                    // panel in which all the boids are drawn
+    private GameControlPanel controlPanel;          // panel with sliders and button to change the parameter of boids
     
-    boolean init = false;                   // true if the instance has been initialized, false otherwise
+    private boolean init = false;                   // true if the instance has been initialized, false otherwise
     
     
     /**
@@ -81,10 +81,12 @@ public class GameWindow extends JFrame implements WindowListener {
      * Resets the instance and sets init to false
      */
     private void reset() {
-        instance = null;
-        init = false;
-        gamePanel.reset();
-        controlPanel.reset();
+        if(init) {
+            instance = null;
+            init = false;
+            gamePanel.reset();
+            controlPanel.reset();
+        }
     }
     
     /**

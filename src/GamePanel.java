@@ -12,18 +12,15 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
     
-    LinkedList<Boid> boids;         // list of all the boids
-    Timer timer;                    // timer of the game loop
-    int initialNumberOfBoids = 400; // initial numbers of boids to create
-    int desiredFps = 60;            // the desired number of fps to run the simulation
-    long previousTime = 0;          // system time at previous frame in ms
-    long currentTime = 0;           // system time at current frame in ms
-    long elapsedTime = 0;           // elapsed time between the two last frame in ms
-    int frameCounter = 0;           // counts the number of frames elapsed, reset when > fpsAvg
-    int frameAverage = 10;          // number of frames to average the fps on
-    int avgTimeSum = 0;             // stores the sum of the elapsed times between frames to calculate the average fps
-    int fpsAvg;                     // the current average fps
-    boolean init = false;                   // true if the instance has been initialized, false otherwise
+    private LinkedList<Boid> boids;                         // list of all the boids
+    private Timer timer;                                    // timer of the game loop
+    private static final int DEFAULT_NUMBER_OF_BOIDS = 400; // initial numbers of boids to create
+    private long previousTime = 0;                          // system time at previous frame in ms
+    private int frameCounter = 0;                           // counts the number of frames elapsed, reset when > fps
+    private final int FRAME_AVERAGE = 10;                   // number of frames to average the fps on
+    private int avgTimeSum = 0;                             // stores the sum of the elapsed times between frames to calculate the average fps
+    private int fps;                                        // the current average fps (averaged on FRAME_AVERAGE)
+    private boolean init = false;                           // true if the instance has been initialized, false otherwise
     
     /**
      * Creates a GamePanel
@@ -53,12 +50,14 @@ public class GamePanel extends JPanel implements ActionListener {
             boids = new LinkedList<>();
     
             // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
-            for (int i = 0; i < initialNumberOfBoids; i++) {
+            for (int i = 0; i < DEFAULT_NUMBER_OF_BOIDS; i++) {
                 boids.add(Boid.random(getWidth(), getHeight()));
             }
     
             // Game loop timer
-            timer = new Timer(1000/desiredFps, this);
+            // the desired number of fps to run the simulation
+            int desiredFps = 60;
+            timer = new Timer(1000/ desiredFps, this);
             timer.start();
     
             repaint();
@@ -71,8 +70,11 @@ public class GamePanel extends JPanel implements ActionListener {
      * Resets the instance and sets init to false
      */
     protected void reset() {
-        instance = null;
-        init = false;
+        if(init) {
+            instance = null;
+            init = false;
+            timer.stop();
+        }
     }
     
     /**
@@ -90,15 +92,17 @@ public class GamePanel extends JPanel implements ActionListener {
         for(Boid b : boids) {
             b.draw(g);
         }
-
-        currentTime = System.currentTimeMillis();
-        elapsedTime = currentTime - previousTime;
+    
+        // system time at current frame in ms
+        long currentTime = System.currentTimeMillis();
+        // elapsed time between the two last frame in ms
+        long elapsedTime = currentTime - previousTime;
         previousTime = currentTime;
         avgTimeSum += elapsedTime;
         frameCounter++;
-        if(frameCounter >= frameAverage) {
+        if(frameCounter >= FRAME_AVERAGE) {
             avgTimeSum /= frameCounter;
-            fpsAvg = 1000 / avgTimeSum;
+            fps = 1000 / avgTimeSum;
             frameCounter = 0;
         }
     }
@@ -138,5 +142,17 @@ public class GamePanel extends JPanel implements ActionListener {
                 boids.removeLast();
             }
         }
+    }
+    
+    public int getFps() {
+        return fps;
+    }
+    
+    public int getDefaultNumberOfBoids() {
+        return DEFAULT_NUMBER_OF_BOIDS;
+    }
+    
+    public int getNumberOfBoids() {
+        return boids.size();
     }
 }

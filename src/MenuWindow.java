@@ -49,6 +49,8 @@ public class MenuWindow extends JFrame {
             menuPanel.init();
             
             init = true;
+        } else {
+            System.err.println("The MenuWindow instance has already been initialized !");
         }
     }
 }

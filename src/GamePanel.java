@@ -63,6 +63,8 @@ public class GamePanel extends JPanel implements ActionListener {
             repaint();
     
             init = true;
+        } else {
+            System.err.println("The GamePanel instance has already been initialized !");
         }
     }
     

@@ -45,6 +45,8 @@ public class MenuPanel extends JPanel implements ActionListener {
             repaint();
             
             init = true;
+        } else {
+            System.err.println("The MenuPanel instance has already been initialized !");
         }
     }
     

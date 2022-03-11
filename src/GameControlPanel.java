@@ -131,6 +131,8 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
             timer.start();
     
             init = true;
+        } else {
+            System.err.println("The GameControlPanel instance has already been initialized !");
         }
     }
     

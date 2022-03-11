@@ -74,6 +74,8 @@ public class GameWindow extends JFrame implements WindowListener {
             controlPanel.init();
     
             init = true;
+        } else {
+            System.err.println("The GameWindow instance has already been initialized !");
         }
     }
     

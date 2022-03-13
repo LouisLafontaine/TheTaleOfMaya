@@ -7,12 +7,12 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class GameWindow extends JFrame implements WindowListener {
+public class BoidWindow extends JFrame implements WindowListener {
     
-    public static GameWindow instance;
+    public static BoidWindow instance;
     
-    private GamePanel gamePanel;                    // panel in which all the boids are drawn
-    private GameControlPanel controlPanel;          // panel with sliders and button to change the parameter of boids
+    private BoidPanel boidPanel;                    // panel in which all the boids are drawn
+    private BoidControlPanel controlPanel;          // panel with sliders and button to change the parameter of boids
     
     private boolean init = false;                   // true if the instance has been initialized, false otherwise
     
@@ -20,7 +20,7 @@ public class GameWindow extends JFrame implements WindowListener {
     /**
      * Creates a GameWindow
      */
-    private GameWindow() {
+    private BoidWindow() {
         super("The Tale Of Maya - a boid adventure");
     }
     
@@ -29,9 +29,9 @@ public class GameWindow extends JFrame implements WindowListener {
      *
      * @return the instance of the GameWindow class
      */
-    public static GameWindow get() {
+    public static BoidWindow get() {
         if(instance == null) {
-            instance = new GameWindow();
+            instance = new BoidWindow();
         }
         return instance;
     }
@@ -50,19 +50,19 @@ public class GameWindow extends JFrame implements WindowListener {
     
     
             // Game panel --------------------------------------------------------------------------------------------------
-            gamePanel = GamePanel.get();
+            boidPanel = BoidPanel.get();
     
             // Control panel -----------------------------------------------------------------------------------------------
-            controlPanel = GameControlPanel.get();
+            controlPanel = BoidControlPanel.get();
     
             // Main panel --------------------------------------------------------------------------------------------------
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BorderLayout());
     
-            gamePanel.setPreferredSize(new Dimension(800,600));
+            boidPanel.setPreferredSize(new Dimension(800,600));
             controlPanel.setPreferredSize(new Dimension(200,600));
     
-            mainPanel.add(gamePanel, BorderLayout.CENTER);
+            mainPanel.add(boidPanel, BorderLayout.CENTER);
             mainPanel.add(controlPanel, BorderLayout.EAST);
     
             add(mainPanel);
@@ -70,12 +70,12 @@ public class GameWindow extends JFrame implements WindowListener {
             setVisible(true);
             
             // initialization must happen after the component has been added and setVisible(true)
-            gamePanel.init();
+            boidPanel.init();
             controlPanel.init();
     
             init = true;
         } else {
-            System.err.println("The GameWindow instance has already been initialized !");
+            System.err.println("The BoidWindow instance has already been initialized !");
         }
     }
     
@@ -86,7 +86,7 @@ public class GameWindow extends JFrame implements WindowListener {
         if(init) {
             instance = null;
             init = false;
-            gamePanel.reset();
+            boidPanel.reset();
             controlPanel.reset();
         }
     }

@@ -9,9 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class GameControlPanel extends JPanel implements ActionListener, ChangeListener {
+public class BoidControlPanel extends JPanel implements ActionListener, ChangeListener {
     
-    public static GameControlPanel instance;
+    public static BoidControlPanel instance;
     private Timer timer;
     
     private JLabel numberOfBoidsLabel;              // label displaying the number of boids displayed on screen
@@ -41,7 +41,7 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
     /**
      * Creates a ControlPanel
      */
-    private GameControlPanel() {
+    private BoidControlPanel() {
     
     }
     
@@ -50,9 +50,9 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
      *
      * @return the instance of the ControlPanel class
      */
-    public static GameControlPanel get() {
+    public static BoidControlPanel get() {
         if(instance == null) {
-            instance = new GameControlPanel();
+            instance = new BoidControlPanel();
         }
         return instance;
     }
@@ -64,14 +64,14 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
         if(!init) {
             setBackground(Color.white);
     
-            numberOfBoidsLabel = new JLabel("number of boids : " + GamePanel.get().getDefaultNumberOfBoids());
+            numberOfBoidsLabel = new JLabel("number of boids : " + BoidPanel.get().getDefaultNumberOfBoids());
             perceptionRadiusLabel = new JLabel("perception radius : " + Boid.perceptionRadius);
             maxVelocityLabel = new JLabel("max velocity : " + Boid.maxVelocity);
             maxAccelerationLabel = new JLabel("max acceleration : " + Boid.maxAcceleration);
             cohesionStrengthLabel = new JLabel("cohesion strength : " + Boid.cohesionStrength);
             alignmentStrengthLabel = new JLabel("alignment strength : " + Boid.alignmentStrength);
             separationStrengthLabel = new JLabel("separation strength : " + Boid.separationStrength);
-            fpsLabel = new JLabel(String.valueOf(GamePanel.get().getFps()));
+            fpsLabel = new JLabel(String.valueOf(BoidPanel.get().getFps()));
     
             // sets the max value of the slider as slider range * starting value
             final int SLIDER_RANGE = 3;
@@ -184,11 +184,11 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == addBoidsButton) {
-            GamePanel.get().addBoids(50);
-            numberOfBoidsLabel.setText("number of boids : " + GamePanel.get().getNumberOfBoids());
+            BoidPanel.get().addBoids(50);
+            numberOfBoidsLabel.setText("number of boids : " + BoidPanel.get().getNumberOfBoids());
         } else if (e.getSource() == removeBoidsButton) {
-            GamePanel.get().removeBoids(50);
-            numberOfBoidsLabel.setText("number of boids : " + GamePanel.get().getNumberOfBoids());
+            BoidPanel.get().removeBoids(50);
+            numberOfBoidsLabel.setText("number of boids : " + BoidPanel.get().getNumberOfBoids());
         } else if (e.getSource() == drawPerceptionRadiusButton) {
             if (!Boid.drawPerceptionRadius) {
                 drawPerceptionRadiusButton.setForeground(Color.green);
@@ -200,7 +200,7 @@ public class GameControlPanel extends JPanel implements ActionListener, ChangeLi
                 Boid.drawPerceptionRadius = false;
             }
         } else {
-            fpsLabel.setText("fps : " + GamePanel.get().getFps());
+            fpsLabel.setText("fps : " + BoidPanel.get().getFps());
         }
     }
 }

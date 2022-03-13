@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class BoidPanel extends JPanel implements ActionListener {
     
-    public static GamePanel instance;
+    public static BoidPanel instance;
     
     private LinkedList<Boid> boids;                         // list of all the boids
     private Timer timer;                                    // timer of the game loop
@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements ActionListener {
     /**
      * Creates a GamePanel
      */
-    private GamePanel() {
+    private BoidPanel() {
     
     }
     
@@ -34,9 +34,9 @@ public class GamePanel extends JPanel implements ActionListener {
      *
      * @return the instance of the GamePanel class
      */
-    public static GamePanel get() {
+    public static BoidPanel get() {
         if(instance == null) {
-            instance = new GamePanel();
+            instance = new BoidPanel();
         }
         return instance;
     }
@@ -64,7 +64,7 @@ public class GamePanel extends JPanel implements ActionListener {
     
             init = true;
         } else {
-            System.err.println("The GamePanel instance has already been initialized !");
+            System.err.println("The BoidPanel instance has already been initialized !");
         }
     }
     

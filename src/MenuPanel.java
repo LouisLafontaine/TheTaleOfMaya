@@ -71,7 +71,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == launchGameButton) {
             MenuWindow.get().setVisible(false);
-            GameWindow gameWindow = GameWindow.get();
+            BoidWindow gameWindow = BoidWindow.get();
             gameWindow.init();
         }
     }

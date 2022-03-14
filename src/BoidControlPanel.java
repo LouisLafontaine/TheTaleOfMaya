@@ -46,7 +46,7 @@ public class BoidControlPanel extends JPanel implements ActionListener, ChangeLi
     }
     
     /**
-     * This method ensures that only one instance of the Control class can be created
+     * This method ensures that only one instance the class can be created
      *
      * @return the instance of the ControlPanel class
      */
@@ -58,7 +58,7 @@ public class BoidControlPanel extends JPanel implements ActionListener, ChangeLi
     }
     
     /**
-     * Initializes the instance of the ControlPanel class
+     * Initializes the instance
      */
     public void init() {
         if(!init) {

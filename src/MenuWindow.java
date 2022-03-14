@@ -42,11 +42,10 @@ public class MenuWindow extends JFrame {
             // Main Panel --------------------------------------------------------------------------------------------------
             MenuPanel menuPanel = MenuPanel.get();
             add(menuPanel);
+            
+            menuPanel.init();
     
             setVisible(true);
-            
-            // initialization must happen after the component has been added and setVisible(true)
-            menuPanel.init();
             
             init = true;
         } else {

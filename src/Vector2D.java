@@ -53,6 +53,14 @@ public class Vector2D {
     /**
      * Adds each component of the vector to each component of the parameter vector
      */
+    public void add(double x, double y) {
+        this.x += x;
+        this.y += y;
+    }
+    
+    /**
+     * Adds each component of the vector to each component of the parameter vector
+     */
     public void add(Vector2D v) {
         x += v.x;
         y += v.y;

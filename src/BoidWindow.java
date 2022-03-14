@@ -18,16 +18,16 @@ public class BoidWindow extends JFrame implements WindowListener {
     
     
     /**
-     * Creates a GameWindow
+     * Creates a BoidWindow
      */
     private BoidWindow() {
-        super("The Tale Of Maya - a boid adventure");
+        super("Boid simulation");
     }
     
     /**
-     * This method ensures that only one instance of the GameWindow class can be created
+     * This method ensures that only one instance the class can be created
      *
-     * @return the instance of the GameWindow class
+     * @return the instance
      */
     public static BoidWindow get() {
         if(instance == null) {
@@ -37,7 +37,7 @@ public class BoidWindow extends JFrame implements WindowListener {
     }
     
     /**
-     * Initializes the instance of the GameWindow class
+     * Initializes the instance
      */
     public void init() {
         if(!init) {

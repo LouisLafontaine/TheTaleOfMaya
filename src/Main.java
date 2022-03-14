@@ -1,3 +1,4 @@
+import jaco.mp3.player.MP3Player;
 import util.SoundMP3;
 
 /**
@@ -8,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         MenuWindow menuWindow = MenuWindow.get();
         menuWindow.init();
-        SoundMP3 sound = new SoundMP3("resources/sound/Fantasy8Bit.mp3");
+        MP3Player sound = SoundMP3.getFrom("resources/sounds/Fantasy8Bit.mp3");
         sound.play();
     }
 }

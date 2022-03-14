@@ -21,6 +21,7 @@ public class BoidPanel extends JPanel implements ActionListener {
     private int avgTimeSum = 0;                             // stores the sum of the elapsed times between frames to calculate the average fps
     private int fps;                                        // the current average fps (averaged on FRAME_AVERAGE)
     private boolean init = false;                           // true if the instance has been initialized, false otherwise
+    private long currentTime;
     
     /**
      * Creates a GamePanel
@@ -30,7 +31,7 @@ public class BoidPanel extends JPanel implements ActionListener {
     }
     
     /**
-     * This method ensures that only one instance of the GamePanel class can be created
+     * This method ensures that only one instance the class can be created
      *
      * @return the instance of the GamePanel class
      */
@@ -42,7 +43,7 @@ public class BoidPanel extends JPanel implements ActionListener {
     }
     
     /**
-     * Initializes the instance of the GamePanel class
+     * Initializes the instance
      */
     public void init() {
         if(!init) {
@@ -59,6 +60,9 @@ public class BoidPanel extends JPanel implements ActionListener {
             int desiredFps = 60;
             timer = new Timer(1000/ desiredFps, this);
             timer.start();
+            
+            currentTime = System.currentTimeMillis();
+            previousTime = currentTime;
     
             repaint();
     
@@ -96,7 +100,7 @@ public class BoidPanel extends JPanel implements ActionListener {
         }
     
         // system time at current frame in ms
-        long currentTime = System.currentTimeMillis();
+        currentTime = System.currentTimeMillis();
         // elapsed time between the two last frame in ms
         long elapsedTime = currentTime - previousTime;
         previousTime = currentTime;

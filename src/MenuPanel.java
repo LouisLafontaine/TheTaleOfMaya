@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 public class MenuPanel extends JPanel implements ActionListener {
     
     public static MenuPanel instance;       // instance of the MenuPanel class
+    private JButton launchBoidButton;       // button to launch the boid simulation
     private JButton launchGameButton;       // button to launch the game
     private boolean init = false;                   // true if the instance has been initialized, false otherwise
     
@@ -37,29 +38,22 @@ public class MenuPanel extends JPanel implements ActionListener {
      */
     public void init() {
         if(!init) {
-            setLayout(null);
+            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+            setBackground(Color.red);
+            
+            launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
-            launchGameButton.setBounds(getWidth()/2 - 50, getHeight()/2 - 30,100,60);
+    
+            launchBoidButton.addActionListener(this);
             launchGameButton.addActionListener(this);
+    
+            add(launchBoidButton);
             add(launchGameButton);
-            repaint();
             
             init = true;
         } else {
             System.err.println("The MenuPanel instance has already been initialized !");
         }
-    }
-    
-    /**
-     * Draws on the screen
-     *
-     * @param g  a Graphics object to draw on the screen
-     */
-    @Override
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.setColor(Color.red);
-        g.fillRect(0, 0, getWidth(), getHeight());
     }
     
     /**
@@ -69,9 +63,13 @@ public class MenuPanel extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == launchGameButton) {
+        if(e.getSource() == launchBoidButton) {
             MenuWindow.get().setVisible(false);
-            BoidWindow gameWindow = BoidWindow.get();
+            BoidWindow boidWindow = BoidWindow.get();
+            boidWindow.init();
+        } else if(e.getSource() == launchGameButton) {
+            MenuWindow.get().setVisible(false);
+            GameWindow gameWindow = GameWindow.get();
             gameWindow.init();
         }
     }

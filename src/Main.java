@@ -4,6 +4,7 @@
 
 public class Main {
     public static void main(String[] args) {
-        new GameWindow();
+        MenuWindow menuWindow = MenuWindow.get();
+        menuWindow.init();
     }
 }

@@ -7,22 +7,28 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public class Boid {
-    Vector2D position;                              // the boid's position
-    Vector2D velocity;                              // the boid's velocity vector
-    Vector2D acceleration;                          // the boid's acceleration vector
+    Vector2D position;                                      // the boid's position
+    Vector2D velocity;                                      // the boid's velocity vector
+    Vector2D acceleration;                                  // the boid's acceleration vector
     
-    static int size = 3;                            // every boid's screen drawing size in pixels
+    static double maxVelocity;                              // maximum velocity of all boids
+    static double maxAcceleration;                          // maximum acceleration of all boids
+    static double perceptionRadius;                         // perception radius of all boids
+    static double cohesionStrength;                         // strength of the cohesion rule of all boids
+    static double alignmentStrength;                        // strength of the alignment rule of all boids
+    static double separationStrength;                       // strength of the separation rule of all boids
     
-    static double maxVelocity = 4;                  // every boid's maximum velocity
-    static double maxAcceleration = 0.2;            // every boid's maximum acceleration
-    static double perceptionRadius = 20;            // every boid's perception radius
-    static double cohesionStrength = 1;             // every boid's strength of the cohesion rule
-    static double alignmentStrength = 1;            // every boid's strength of the alignment rule
-    static double separationStrength = 70;          // every boid's strength of the separation rule
+    static boolean drawPerceptionRadius = false;            // true if the perception radius of all boids is drawn
     
-    static boolean drawPerceptionRadius = false;    // perception radius, true if drawn
+    private static final double MAX_VELOCITY = 4;                   // default maximum velocity of all boids
+    private static final double MAX_ACCELERATION = 0.2;             // default maximum acceleration of all boids
+    private static final double PERCEPTION_RADIUS = 20;             // default perception radius of all boids
+    private static final double COHESION_STRENGTH = 1;              // default strength of the cohesion rule of all boids
+    private static final double ALIGNMENT_STRENGTH = 1;             // default strength of the alignment rule of all boids
+    private static final double SEPARATION_STRENGTH = 1;           // default strength of the separation rule of all boids
+    private static final boolean DRAW_PERCEPTION_RADIUS = false;    // perception radius, true if drawn
     
-    Color color;                                    // the boid's color
+    Color color;                                            // the boid's color
     
     /**
      * Creates a boid with a random color
@@ -35,6 +41,16 @@ public class Boid {
         this.velocity = new Vector2D(velocity);
         this.acceleration = new Vector2D(acceleration);
         color = new Color((int)(Math.random()*100 +155),(int)(Math.random()*100 +155),(int)(Math.random()*100 +155));
+    }
+    
+    protected static void setDefaultParameters() {
+        maxVelocity = MAX_VELOCITY;
+        maxAcceleration = MAX_ACCELERATION;
+        perceptionRadius = PERCEPTION_RADIUS;
+        cohesionStrength = COHESION_STRENGTH;
+        alignmentStrength = ALIGNMENT_STRENGTH;
+        separationStrength = SEPARATION_STRENGTH;
+        drawPerceptionRadius = DRAW_PERCEPTION_RADIUS;
     }
     
     /**
@@ -54,7 +70,7 @@ public class Boid {
      * Draws the boid on the screen and its perception radius if perceptionRadius is true
      * @param g  a Graphics object to draw on the screen
      */
-    public void draw(Graphics g) {
+    protected void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform initial = g2d.getTransform();
     
@@ -82,7 +98,7 @@ public class Boid {
     /**
      * Updates the position and velocity of the boid
      */
-    public void update() {
+    protected void update() {
         velocity.limit(maxVelocity);
         position.add(velocity);
         velocity.add(acceleration);
@@ -92,7 +108,7 @@ public class Boid {
      * Flocks the boid by applying 3 rules : cohesion, alignment, separation
      * @param boids  list of all the boids
      */
-    public void flock(LinkedList<Boid> boids) {
+    protected void flock(LinkedList<Boid> boids) {
         int perceivedNeighbors = 0;
         Vector2D cohesion = new Vector2D();
         Vector2D alignment = new Vector2D();
@@ -118,7 +134,7 @@ public class Boid {
         
         cohesion.mult(cohesionStrength);
         alignment.mult(alignmentStrength);
-        separation.mult(separationStrength);
+        separation.mult(separationStrength*70);
     
         acceleration.set(0,0); // so that acceleration does not accumulate over time
         acceleration.add(cohesion);
@@ -134,7 +150,7 @@ public class Boid {
      * @param width  width of the screen space
      * @param height  height of the screen space
      */
-    public void loopEdges(int width, int height){
+    protected void loopEdges(int width, int height){
         if(!(width == 0 && height == 0)) {  // necessary because at the first timer event JPanel getWidth / getHeight returns 0,0...
             if(position.x < 0) position.x = width + position.x % width;
             else if(position.x > width) position.x %= width;

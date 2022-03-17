@@ -12,7 +12,8 @@ public class MenuPanel extends JPanel implements ActionListener {
     public static MenuPanel instance;       // instance of the MenuPanel class
     private JButton launchBoidButton;       // button to launch the boid simulation
     private JButton launchGameButton;       // button to launch the game
-    private boolean init = false;                   // true if the instance has been initialized, false otherwise
+    private JButton exitMenuButton;         // button to exit the menu
+    private boolean init = false;           // true if the instance has been initialized, false otherwise
     
     /**
      * Creates a MenuPanel
@@ -38,19 +39,22 @@ public class MenuPanel extends JPanel implements ActionListener {
      */
     public void init() {
         if(!init) {
+            init = true;
+            
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             setBackground(Color.red);
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
+            exitMenuButton = new JButton("Exit menu");
     
             launchBoidButton.addActionListener(this);
             launchGameButton.addActionListener(this);
+            exitMenuButton.addActionListener(this);
     
             add(launchBoidButton);
             add(launchGameButton);
-            
-            init = true;
+            add(exitMenuButton);
         } else {
             System.err.println("The MenuPanel instance has already been initialized !");
         }
@@ -71,6 +75,16 @@ public class MenuPanel extends JPanel implements ActionListener {
             MenuWindow.get().conceal();
             GameWindow gameWindow = GameWindow.get();
             gameWindow.init();
+        } else if(e.getSource() == exitMenuButton) {
+            String title = "Quitting the menu";
+            String message = "Are you sure you want to leave the menu ?";
+            int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+            if (reply == JOptionPane.YES_OPTION) {
+                JOptionPane.showMessageDialog(null, "Bye");
+                System.exit(0);
+            } else {
+                JOptionPane.showMessageDialog(null, "alright so you stay");
+            }
         }
     }
 }

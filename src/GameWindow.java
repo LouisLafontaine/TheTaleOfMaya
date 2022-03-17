@@ -98,7 +98,7 @@ public class GameWindow extends JFrame implements WindowListener {
     @Override
     public void windowClosed(WindowEvent e) {
         reset();
-        MenuWindow.get().setVisible(true);
+        MenuWindow.get().display();
         
     }
     

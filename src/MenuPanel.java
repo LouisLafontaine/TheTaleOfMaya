@@ -64,11 +64,11 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == launchBoidButton) {
-            MenuWindow.get().setVisible(false);
+            MenuWindow.get().conceal();
             BoidWindow boidWindow = BoidWindow.get();
             boidWindow.init();
         } else if(e.getSource() == launchGameButton) {
-            MenuWindow.get().setVisible(false);
+            MenuWindow.get().conceal();
             GameWindow gameWindow = GameWindow.get();
             gameWindow.init();
         }

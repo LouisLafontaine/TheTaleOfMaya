@@ -3,7 +3,6 @@
  */
 
 import javax.swing.*;
-import java.awt.*;
 
 public class MenuWindow extends JFrame {
     
@@ -42,15 +41,11 @@ public class MenuWindow extends JFrame {
             
             menuPanel.init();
     
-            setVisible(true);
-    
             // Window settings -----------------------------------------------------------------------------------------
-            setLocation(200, 200);
-            setSize(500, 200);
-            setAlwaysOnTop(true);
-            setVisible(true);
-            System.err.println("!!! Full-screen not supported");
+            setExtendedState(JFrame.MAXIMIZED_BOTH);   // fullscreen
+            setUndecorated(true);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setVisible(true);
         } else {
             System.err.println("The MenuWindow instance has already been initialized !");
         }

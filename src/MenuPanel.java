@@ -68,22 +68,19 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == launchBoidButton) {
-            MenuWindow.get().conceal();
+            MenuWindow.get().setVisible(false);
             BoidWindow boidWindow = BoidWindow.get();
             boidWindow.init();
         } else if(e.getSource() == launchGameButton) {
-            MenuWindow.get().conceal();
+            MenuWindow.get().setVisible(false);
             GameWindow gameWindow = GameWindow.get();
             gameWindow.init();
         } else if(e.getSource() == exitMenuButton) {
             String title = "Quitting the menu";
-            String message = "Are you sure you want to leave the menu ?";
+            String message = "Are you sure you want to leave the game ?";
             int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
-                JOptionPane.showMessageDialog(null, "Bye");
                 System.exit(0);
-            } else {
-                JOptionPane.showMessageDialog(null, "alright so you stay");
             }
         }
     }

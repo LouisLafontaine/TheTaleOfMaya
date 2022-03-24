@@ -17,15 +17,13 @@ public abstract class Entity {
 
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        AffineTransform old = g2d.getTransform();
         int centerX = (int)(position.x- bounds.width/2.0);
         int centerY = (int)(position.y- bounds.height/2.0);
         g2d.drawImage(image,centerX ,centerY, bounds.width, bounds.height, null);
-        showBoundary(g2d);
-        g2d.transform(old);
     }
 
-    public void showBoundary(Graphics2D g2d) {
+    public void showBoundary(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
         Stroke old = g2d.getStroke();
         g2d.setStroke(new java.awt.BasicStroke(3));
         g2d.setColor(Color.green);

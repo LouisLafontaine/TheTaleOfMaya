@@ -1,5 +1,5 @@
 import util.Keyboard;
-import util.Image;
+import util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements ActionListener {
             init = true;
             
             // Background
-            background = Image.getFrom("resources/images/topdown level.png");
+            background = ImageUtil.getFrom("resources/images/topdown level.png");
             
             // Entities displayed
             player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0, "resources/images/character.png");

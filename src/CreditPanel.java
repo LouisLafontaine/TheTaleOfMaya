@@ -2,13 +2,8 @@
  * This class is a panel containing all the game's credits elements
  */
 
-import util.Image;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 public class CreditPanel extends JPanel {
 

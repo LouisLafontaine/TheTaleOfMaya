@@ -1,5 +1,5 @@
 import util.Keyboard;
-import util.Image;
+import util.ImageUtil;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,14 +14,14 @@ public class Player extends Entity {
     public Player(double x, double y, String imageFilename) {
         super(x, y, imageFilename);
         //directionImage counterclockwise
-        directionImage[0] = Image.getFrom("resources/images/playerImages/top.jpg");
-        directionImage[1] = Image.getFrom("resources/images/playerImages/left.jpg");
-        directionImage[2] = Image.getFrom("resources/images/playerImages/bottom.png");
-        directionImage[3] = Image.getFrom("resources/images/playerImages/right.png");
-        directionImage[4] = Image.getFrom("resources/images/playerImages/top_left.png");
-        directionImage[5] = Image.getFrom("resources/images/playerImages/bottom_left.png");
-        directionImage[6] = Image.getFrom("resources/images/playerImages/bottom_right.png");
-        directionImage[7] = Image.getFrom("resources/images/playerImages/top_right.jpg");
+        directionImage[0] = ImageUtil.getFrom("resources/images/playerImages/top.jpg");
+        directionImage[1] = ImageUtil.getFrom("resources/images/playerImages/left.jpg");
+        directionImage[2] = ImageUtil.getFrom("resources/images/playerImages/bottom.png");
+        directionImage[3] = ImageUtil.getFrom("resources/images/playerImages/right.png");
+        directionImage[4] = ImageUtil.getFrom("resources/images/playerImages/top_left.png");
+        directionImage[5] = ImageUtil.getFrom("resources/images/playerImages/bottom_left.png");
+        directionImage[6] = ImageUtil.getFrom("resources/images/playerImages/bottom_right.png");
+        directionImage[7] = ImageUtil.getFrom("resources/images/playerImages/top_right.jpg");
     }
 
     public void draw(Graphics g) {

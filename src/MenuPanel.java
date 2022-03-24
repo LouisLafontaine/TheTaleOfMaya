@@ -2,7 +2,7 @@
  * This class is a panel containing all the game's menu elements
  */
 
-import util.Image;
+import util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,7 +48,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            menuBackground = Image.getFrom("resources/images/menuImages/forest.jpg");
+            menuBackground = ImageUtil.getFrom("resources/images/menuImages/forest.jpg");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");

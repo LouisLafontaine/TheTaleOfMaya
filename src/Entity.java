@@ -1,4 +1,4 @@
-import util.Image;
+import util.ImageUtil;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -11,7 +11,7 @@ public abstract class Entity {
 
     public Entity(double x, double y, String file) {
         position = new Vector2D(x,y);
-        image = Image.getFrom(file);
+        image = ImageUtil.getFrom(file);
         bounds = new Rectangle(image.getWidth(),image.getHeight());
     }
 

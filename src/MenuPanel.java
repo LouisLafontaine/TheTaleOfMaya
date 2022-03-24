@@ -16,6 +16,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton launchBoidButton;       // button to launch the boid simulation
     private JButton launchGameButton;       // button to launch the game
     private JButton exitMenuButton;         // button to exit the menu
+    private JButton creditsButton;          // button to show the credits
     private boolean init = false;           // true if the instance has been initialized, false otherwise
     private BufferedImage menubackground;
     
@@ -52,14 +53,17 @@ public class MenuPanel extends JPanel implements ActionListener {
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
             exitMenuButton = new JButton("Exit menu");
+            creditsButton = new JButton("Credits");
     
             launchBoidButton.addActionListener(this);
             launchGameButton.addActionListener(this);
             exitMenuButton.addActionListener(this);
+            creditsButton.addActionListener(this);
     
             add(launchBoidButton);
             add(launchGameButton);
             add(exitMenuButton);
+            add(creditsButton);
         } else {
             System.err.println("The MenuPanel instance has already been initialized !");
         }
@@ -87,11 +91,14 @@ public class MenuPanel extends JPanel implements ActionListener {
             if (reply == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
+        } else if(e.getSource() == creditsButton){
+            CreditWindow.get().setVisible(false);
+            CreditWindow creditWindow = CreditWindow.get();
+            creditWindow.init();
         }
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(menubackground, 0, 0, null);
     }
-
 }

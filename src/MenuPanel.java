@@ -13,12 +13,12 @@ import java.awt.image.BufferedImage;
 public class MenuPanel extends JPanel implements ActionListener {
     
     public static MenuPanel instance;       // instance of the MenuPanel class
+    private boolean init = false;           // true if the instance has been initialized, false otherwise
     private JButton launchBoidButton;       // button to launch the boid simulation
     private JButton launchGameButton;       // button to launch the game
     private JButton exitMenuButton;         // button to exit the menu
     private JButton creditsButton;          // button to show the credits
-    private boolean init = false;           // true if the instance has been initialized, false otherwise
-    private BufferedImage menubackground;
+    private BufferedImage menuBackground;
     
     /**
      * Creates a MenuPanel
@@ -48,7 +48,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            menubackground = Image.getFrom("resources/images/menubg.png");
+            menuBackground = Image.getFrom("resources/images/menuImages/forest.jpg");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
@@ -77,28 +77,31 @@ public class MenuPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == launchBoidButton) {
-            MenuWindow.get().setVisible(false);
+            MenuWindow.gd.setFullScreenWindow(null);
             BoidWindow boidWindow = BoidWindow.get();
             boidWindow.init();
         } else if(e.getSource() == launchGameButton) {
-            MenuWindow.get().setVisible(false);
+            MenuWindow.gd.setFullScreenWindow(null);
             GameWindow gameWindow = GameWindow.get();
             gameWindow.init();
         } else if(e.getSource() == exitMenuButton) {
+            MenuWindow.gd.setFullScreenWindow(null);
             String title = "Quitting the menu";
             String message = "Are you sure you want to leave the game ?";
             int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 System.exit(0);
+            } else {
+                MenuWindow.gd.setFullScreenWindow(MenuWindow.get());
             }
         } else if(e.getSource() == creditsButton){
-            CreditWindow.get().setVisible(false);
+            MenuWindow.gd.setFullScreenWindow(null);
             CreditWindow creditWindow = CreditWindow.get();
             creditWindow.init();
         }
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(menubackground, 0, 0, null);
+        g.drawImage(menuBackground, 0, 0, getWidth(), getHeight(), null);
     }
 }

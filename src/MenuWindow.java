@@ -3,11 +3,13 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MenuWindow extends JFrame {
     
-    public static MenuWindow instance;  // instance of the MenuWindow class
-    private boolean init = false;       // true if the instance has been initialized, false otherwise
+    public static MenuWindow instance;      // instance of the MenuWindow class
+    private boolean init = false;           // true if the instance has been initialized, false otherwise
+    protected static GraphicsDevice gd;
     
     /**
      * Creates a MenuWindow
@@ -34,7 +36,7 @@ public class MenuWindow extends JFrame {
     public void init() {
         if(!init) {
             init = true;
-    
+            
             // Main Panel ----------------------------------------------------------------------------------------------
             MenuPanel menuPanel = MenuPanel.get();
             add(menuPanel);
@@ -42,10 +44,17 @@ public class MenuWindow extends JFrame {
             menuPanel.init();
     
             // Window settings -----------------------------------------------------------------------------------------
-            setExtendedState(JFrame.MAXIMIZED_BOTH);   // fullscreen
-            setUndecorated(true);
+            gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            if (gd.isFullScreenSupported()) {
+                setUndecorated(true);
+                gd.setFullScreenWindow(this);
+            } else {
+                setSize(600,600); // to still see the window even if there is a problem
+                System.err.println("Full screen not supported");
+            }
+            setResizable(false);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setVisible(true);
+
         } else {
             System.err.println("The MenuWindow instance has already been initialized !");
         }

@@ -6,14 +6,16 @@ import java.awt.event.WindowListener;
 public class GameWindow extends JFrame implements WindowListener {
     
     public static GameWindow instance;
-    private GamePanel gamePanel;
     private boolean init = false;
+    GraphicsDevice gd;
+    
+    private GamePanel gamePanel;
     
     /**
      * Creates a GameWindow
      */
     private GameWindow() {
-        super("The Tale Of Maya - a boid adventure");
+        super();
     }
     
     /**
@@ -33,25 +35,26 @@ public class GameWindow extends JFrame implements WindowListener {
      */
     public void init() {
         if(!init) {
-            // Window settings ---------------------------------------------------------------------------------------------
-            addWindowListener(this);
-            setExtendedState(JFrame.MAXIMIZED_BOTH);   // fullscreen
-            setUndecorated(true);
-            setAlwaysOnTop(true);
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            init = true;
+            
+            // Window settings -----------------------------------------------------------------------------------------
+            gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            if (gd.isFullScreenSupported()) {
+                setUndecorated(true);
+                gd.setFullScreenWindow(this);
+            } else {
+                setSize(600,600); // to still see the window even if there is a problem
+                System.err.println("Full screen not supported");
+            }
+            setResizable(false);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             
             // Game panel --------------------------------------------------------------------------------------------------
             gamePanel = GamePanel.get();
             add(gamePanel);
-            
-            
-            setVisible(true);
-            
-            // initialization must happen after the component has been added and setVisible(true)
             gamePanel.init();
             
-            init = true;
         } else {
             System.err.println("The GameWindow instance has already been initialized !");
         }
@@ -98,7 +101,7 @@ public class GameWindow extends JFrame implements WindowListener {
     @Override
     public void windowClosed(WindowEvent e) {
         reset();
-        MenuWindow.get().setVisible(true);
+        MenuWindow.gd.setFullScreenWindow(MenuWindow.get());
         
     }
     

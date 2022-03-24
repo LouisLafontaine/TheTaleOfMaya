@@ -39,24 +39,22 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     public void init() {
         if (!init) {
-
+            init = true;
+            
+            // Background
             background = Image.getFrom("resources/images/topdown level.png");
-
-            player = new Player(background.getWidth() / 2.0, background.getHeight() / 2.0);
-
+            
+            // Entities displayed
+            player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0, "resources/images/character.png");
             boulder = new Rock(200,200,"resources/images/rock.png");
 
-            setFocusable(true);
+            // Keyboard inputs
             Keyboard keyboard = Keyboard.get();
             addKeyListener(keyboard);
-            
-
-            GameWindow.get().setSize(background.getWidth(), background.getHeight());
+            setFocusable(true);
             
             timer = new Timer(33, this);
             timer.start();
-            
-            init = true;
         } else {
             System.err.println("The GamePanel instance has already been initialized !");
         }
@@ -86,10 +84,9 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     public void paintComponent(Graphics g) {
-//        g.setColor(Color.black);
-//        g.fillRect(0, 0, getWidth(), getHeight());
-        g.drawImage(background,0,0,null);
-        player.draw(g);
+//        super.paintComponent(g);
+        g.drawImage(background,0,0, getWidth(), getHeight(), null);
         boulder.draw(g);
+        player.draw(g);
     }
 }

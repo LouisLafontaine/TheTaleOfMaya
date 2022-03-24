@@ -2,10 +2,13 @@
  * This class is a panel containing all the game's menu elements
  */
 
+import util.Image;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 public class MenuPanel extends JPanel implements ActionListener {
     
@@ -14,6 +17,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton launchGameButton;       // button to launch the game
     private JButton exitMenuButton;         // button to exit the menu
     private boolean init = false;           // true if the instance has been initialized, false otherwise
+    private BufferedImage menubackground;
     
     /**
      * Creates a MenuPanel
@@ -42,7 +46,8 @@ public class MenuPanel extends JPanel implements ActionListener {
             init = true;
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-            setBackground(Color.red);
+
+            menubackground = Image.getFrom("resources/images/menubg.png");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
@@ -84,4 +89,9 @@ public class MenuPanel extends JPanel implements ActionListener {
             }
         }
     }
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(menubackground, 0, 0, null);
+    }
+
 }

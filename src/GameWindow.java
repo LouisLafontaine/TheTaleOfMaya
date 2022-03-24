@@ -35,8 +35,8 @@ public class GameWindow extends JFrame implements WindowListener {
         if(!init) {
             // Window settings ---------------------------------------------------------------------------------------------
             addWindowListener(this);
-            setLocation(450, 200);
-            setSize(1000, 600);
+            setExtendedState(JFrame.MAXIMIZED_BOTH);   // fullscreen
+            setUndecorated(true);
             setAlwaysOnTop(true);
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             

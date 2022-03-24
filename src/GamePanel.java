@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Player player;
     private Timer timer;
     private BufferedImage background;
-    
+    private Rock boulder;
     /**
      * Creates a GamePanel
      */
@@ -43,7 +43,9 @@ public class GamePanel extends JPanel implements ActionListener {
             background = Image.getFrom("resources/images/topdown level.png");
 
             player = new Player(background.getWidth() / 2.0, background.getHeight() / 2.0,"resources/images/character.png");
-            
+
+            boulder = new Rock(200,200,"resources/images/rock.png");
+
             setFocusable(true);
             Keyboard keyboard = Keyboard.get();
             addKeyListener(keyboard);
@@ -88,5 +90,6 @@ public class GamePanel extends JPanel implements ActionListener {
 //        g.fillRect(0, 0, getWidth(), getHeight());
         g.drawImage(background,0,0,null);
         player.draw(g);
+        boulder.draw(g);
     }
 }

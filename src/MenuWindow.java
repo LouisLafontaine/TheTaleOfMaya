@@ -7,7 +7,7 @@ import javax.swing.*;
 public class MenuWindow extends JFrame {
     
     public static MenuWindow instance;  // instance of the MenuWindow class
-    private boolean init = false;               // true if the instance has been initialized, false otherwise
+    private boolean init = false;       // true if the instance has been initialized, false otherwise
     
     /**
      * Creates a MenuWindow
@@ -33,22 +33,21 @@ public class MenuWindow extends JFrame {
      */
     public void init() {
         if(!init) {
-            // Window settings ---------------------------------------------------------------------------------------------
-            setLocation(200, 200);
-            setSize(500, 200);
-            setAlwaysOnTop(true);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            init = true;
     
-            // Main Panel --------------------------------------------------------------------------------------------------
+            // Main Panel ----------------------------------------------------------------------------------------------
             MenuPanel menuPanel = MenuPanel.get();
             add(menuPanel);
-    
-            setVisible(true);
             
-            // initialization must happen after the component has been added and setVisible(true)
             menuPanel.init();
-            
-            init = true;
+    
+            // Window settings -----------------------------------------------------------------------------------------
+            setExtendedState(JFrame.MAXIMIZED_BOTH);   // fullscreen
+            setUndecorated(true);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setVisible(true);
+        } else {
+            System.err.println("The MenuWindow instance has already been initialized !");
         }
     }
 }

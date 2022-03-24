@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void init() {
         if (!init) {
             
-            player = new Player(getWidth() / 2.0, getHeight() / 2.0);
+            player = new Player(getWidth() / 2.0, getHeight() / 2.0,"resources/images/character.png");
             
             setFocusable(true);
             keybaord = Keyboard.get();

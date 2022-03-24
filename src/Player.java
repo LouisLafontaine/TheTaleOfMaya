@@ -8,24 +8,13 @@ import java.awt.image.BufferedImage;
 
 import static java.awt.event.KeyEvent.*;
 
-public class Player {
-    private Vector2D pos;
-    private final BufferedImage image;
-    
-    
-    
-    public Player(double x, double y) {
-        pos = new Vector2D(x,y);
-        image = Image.getFrom("resources/images/character.png");
+public class Player extends Entity{
+
+    public Player(double x,double y,String file){
+        super.Entity(x,y,file);
     }
     
-    public void draw(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
-        AffineTransform old = g2d.getTransform();
-        g2d.scale(0.75, 0.75);
-        g2d.drawImage(image, (int)(pos.x-image.getWidth()/2.0), (int)(pos.y-image.getHeight()/2.0), null);
-        g2d.transform(old);
-    }
+
     
     public void update() {
         movement();
@@ -44,5 +33,9 @@ public class Player {
         if(Keyboard.isPressed(VK_LEFT) || Keyboard.isPressed(VK_A)){
             pos.add(-10,0);
         }
+    }
+
+    public boolean isColliding() {
+
     }
 }

@@ -1,6 +1,6 @@
-package Game;
+package game;
 
-import util.Keyboard;
+import util.KeHandler;
 import util.Image;
 
 import javax.swing.*;
@@ -51,7 +51,7 @@ public class GamePanel extends JPanel implements ActionListener {
             boulder = new Rock(200,200,"resources/images/rock.png");
 
             // Keyboard inputs
-            Keyboard keyboard = Keyboard.get();
+            KeHandler keyboard = KeHandler.get();
             addKeyListener(keyboard);
             setFocusable(true);
             

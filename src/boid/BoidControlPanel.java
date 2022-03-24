@@ -2,6 +2,8 @@
  * This class is a panel with sliders and button to change the parameters of boids
  */
 
+package boid;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;

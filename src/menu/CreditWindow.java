@@ -2,7 +2,7 @@
  * This class is a GUI of the game's credits
  */
 
-package Menu;
+package menu;
 
 import javax.swing.*;
 

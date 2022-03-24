@@ -1,6 +1,4 @@
-package Game;
-
-import Game.Entity;
+package game;
 
 public class Rock extends Entity {
 

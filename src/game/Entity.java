@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import util.Image;
 import util.Vector2D;

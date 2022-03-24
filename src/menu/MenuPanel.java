@@ -2,10 +2,10 @@
  * This class is a panel containing all the game's menu elements
  */
 
-package Menu;
+package menu;
 
-import Boid.BoidWindow;
-import Game.GameWindow;
+import boid.BoidWindow;
+import game.GameWindow;
 import util.Image;
 
 import javax.swing.*;

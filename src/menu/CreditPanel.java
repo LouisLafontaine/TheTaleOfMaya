@@ -2,7 +2,7 @@
  * This class is a panel containing all the game's credits elements
  */
 
-package Menu;
+package menu;
 
 import javax.swing.*;
 import java.awt.*;

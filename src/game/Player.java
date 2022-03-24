@@ -1,6 +1,6 @@
-package Game;
+package game;
 
-import util.Keyboard;
+import util.KeHandler;
 import util.Image;
 
 import java.awt.*;
@@ -36,10 +36,10 @@ public class Player extends Entity {
     }
     
     public void movement() {
-        boolean up = Keyboard.isPressed(VK_UP);
-        boolean down = Keyboard.isPressed(VK_DOWN);
-        boolean right = Keyboard.isPressed(VK_RIGHT);
-        boolean left = Keyboard.isPressed(VK_LEFT);
+        boolean up = KeHandler.isPressed(VK_UP);
+        boolean down = KeHandler.isPressed(VK_DOWN);
+        boolean right = KeHandler.isPressed(VK_RIGHT);
+        boolean left = KeHandler.isPressed(VK_LEFT);
         
         if(up && !(down || right || left)) {
             position.add(0, -10);

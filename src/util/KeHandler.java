@@ -3,18 +3,18 @@ package util;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Keyboard implements KeyListener {
+public class KeHandler implements KeyListener {
     
-    private static Keyboard instance;
+    private static KeHandler instance;
     private static boolean[] keyPressed = new boolean[KeyEvent.KEY_LAST];
     
-    private Keyboard() {
+    private KeHandler() {
     
     }
     
-    public static Keyboard get() {
+    public static KeHandler get() {
         if(instance == null) {
-            instance = new Keyboard();
+            instance = new KeHandler();
         }
         return instance;
     }

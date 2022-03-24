@@ -2,7 +2,7 @@
  * This class is the panel in which all the boids handled and drawn on the screen
  */
 
-package Boid;
+package boid;
 
 import javax.swing.*;
 import java.awt.*;

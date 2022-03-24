@@ -1,10 +1,10 @@
-package Game;
+package game;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import Menu.MenuWindow;
+import menu.MenuWindow;
 
 public class GameWindow extends JFrame implements WindowListener {
     

@@ -2,7 +2,7 @@
  * This class describes a boid on a 2D plane
  */
 
-package Boid;
+package boid;
 
 import util.Vector2D;
 

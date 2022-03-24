@@ -2,13 +2,13 @@
  * This class is a GUI that allows users to visualize boids and experiment with the variables dictating their behaviour
  */
 
-package Boid;
+package boid;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import Menu.MenuWindow;
+import menu.MenuWindow;
 
 public class BoidWindow extends JFrame implements WindowListener {
     

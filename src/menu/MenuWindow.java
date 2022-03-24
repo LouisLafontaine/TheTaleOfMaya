@@ -2,7 +2,7 @@
  * This class is a GUI of the game's menu
  */
 
-package Menu;
+package menu;
 
 import javax.swing.*;
 import java.awt.*;

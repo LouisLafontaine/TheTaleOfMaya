@@ -11,7 +11,7 @@ import static java.awt.event.KeyEvent.*;
 public class Player extends Entity{
 
     public Player(double x,double y,String file){
-        super.Entity(x,y,file);
+        super(x,y,file);
     }
     
 
@@ -35,7 +35,4 @@ public class Player extends Entity{
         }
     }
 
-    public boolean isColliding() {
-
-    }
 }

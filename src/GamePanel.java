@@ -13,7 +13,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private boolean init = false;
     private Player player;
     private Timer timer;
-    private Keyboard keybaord;
     private BufferedImage background;
     
     /**
@@ -40,14 +39,16 @@ public class GamePanel extends JPanel implements ActionListener {
      */
     public void init() {
         if (!init) {
-            
-            player = new Player(getWidth() / 2.0, getHeight() / 2.0,"resources/images/character.png");
+
+            background = Image.getFrom("resources/images/topdown level.png");
+
+            player = new Player(background.getWidth() / 2.0, background.getHeight() / 2.0,"resources/images/character.png");
             
             setFocusable(true);
-            keybaord = Keyboard.get();
-            addKeyListener(keybaord);
+            Keyboard keyboard = Keyboard.get();
+            addKeyListener(keyboard);
             
-            background = Image.getFrom("resources/images/topdown level.png");
+
             GameWindow.get().setSize(background.getWidth(), background.getHeight());
             
             timer = new Timer(33, this);

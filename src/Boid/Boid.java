@@ -2,6 +2,10 @@
  * This class describes a boid on a 2D plane
  */
 
+package Boid;
+
+import util.Vector2D;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
@@ -57,7 +61,7 @@ public class Boid {
      * Creates a boid with random position, velocity, acceleration and color, within a defined area
      * @param x  width of the area for the random position
      * @param y  height of the area for the random position
-     * @return a Boid
+     * @return a Boid.Boid
      */
     public static Boid random(int x, int y){
         Vector2D randomPosition = new Vector2D(Math.random() * x,Math.random() * y);

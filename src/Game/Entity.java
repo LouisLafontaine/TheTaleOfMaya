@@ -1,7 +1,9 @@
-import util.ImageUtil;
+package Game;
+
+import util.Image;
+import util.Vector2D;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public abstract class Entity {
@@ -11,7 +13,7 @@ public abstract class Entity {
 
     public Entity(double x, double y, String file) {
         position = new Vector2D(x,y);
-        image = ImageUtil.getFrom(file);
+        image = Image.getFrom(file);
         bounds = new Rectangle(image.getWidth(),image.getHeight());
     }
 

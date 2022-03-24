@@ -2,7 +2,11 @@
  * This class is a panel containing all the game's menu elements
  */
 
-import util.ImageUtil;
+package Menu;
+
+import Boid.BoidWindow;
+import Game.GameWindow;
+import util.Image;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +16,7 @@ import java.awt.image.BufferedImage;
 
 public class MenuPanel extends JPanel implements ActionListener {
     
-    public static MenuPanel instance;       // instance of the MenuPanel class
+    public static MenuPanel instance;       // instance of the Menu.MenuPanel class
     private boolean init = false;           // true if the instance has been initialized, false otherwise
     private JButton launchBoidButton;       // button to launch the boid simulation
     private JButton launchGameButton;       // button to launch the game
@@ -21,16 +25,16 @@ public class MenuPanel extends JPanel implements ActionListener {
     private BufferedImage menuBackground;
     
     /**
-     * Creates a MenuPanel
+     * Creates a Menu.MenuPanel
      */
     private MenuPanel() {
     
     }
     
     /**
-     * This method ensures that only one instance of the MenuPanel class can be created
+     * This method ensures that only one instance of the Menu.MenuPanel class can be created
      *
-     * @return the instance of the MenuPanel class
+     * @return the instance of the Menu.MenuPanel class
      */
     public static MenuPanel get() {
         if(instance == null) {
@@ -40,7 +44,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     }
     
     /**
-     * Initializes the instance of the MenuPanel class
+     * Initializes the instance of the Menu.MenuPanel class
      */
     public void init() {
         if(!init) {
@@ -48,7 +52,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            menuBackground = ImageUtil.getFrom("resources/images/menuImages/forest.jpg");
+            menuBackground = Image.getFrom("resources/images/menuImages/forest.jpg");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
@@ -65,7 +69,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             add(exitMenuButton);
             add(creditsButton);
         } else {
-            System.err.println("The MenuPanel instance has already been initialized !");
+            System.err.println("The Menu.MenuPanel instance has already been initialized !");
         }
     }
     

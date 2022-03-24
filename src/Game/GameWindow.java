@@ -1,81 +1,65 @@
-/**
- * This class is a GUI that allows users to visualize boids and experiment with the variables dictating their behaviour
- */
+package Game;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import Menu.MenuWindow;
 
-public class BoidWindow extends JFrame implements WindowListener {
+public class GameWindow extends JFrame implements WindowListener {
     
-    public static BoidWindow instance;
+    public static GameWindow instance;
+    private boolean init = false;
+    GraphicsDevice gd;
     
-    private BoidPanel boidPanel;                    // panel in which all the boids are drawn
-    private BoidControlPanel controlPanel;          // panel with sliders and button to change the parameter of boids
-    
-    private boolean init = false;                   // true if the instance has been initialized, false otherwise
-    
+    private GamePanel gamePanel;
     
     /**
-     * Creates a BoidWindow
+     * Creates a Game.GameWindow
      */
-    private BoidWindow() {
-        super("Boid simulation");
+    private GameWindow() {
+        super();
     }
     
     /**
-     * This method ensures that only one instance the class can be created
+     * This method ensures that only one instance of the Game.GameWindow class can be created
      *
-     * @return the instance
+     * @return the instance of the Game.GameWindow class
      */
-    public static BoidWindow get() {
+    public static GameWindow get() {
         if(instance == null) {
-            instance = new BoidWindow();
+            instance = new GameWindow();
         }
         return instance;
     }
     
     /**
-     * Initializes the instance
+     * Initializes the instance of the Game.GameWindow class
      */
     public void init() {
         if(!init) {
-            // Window settings ---------------------------------------------------------------------------------------------
-            addWindowListener(this);
-            setLocation(450, 200);
-            setSize(1000, 600);
-            setAlwaysOnTop(true);
-            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    
-    
-            // Game panel --------------------------------------------------------------------------------------------------
-            boidPanel = BoidPanel.get();
-    
-            // Control panel -----------------------------------------------------------------------------------------------
-            controlPanel = BoidControlPanel.get();
-    
-            // Main panel --------------------------------------------------------------------------------------------------
-            JPanel mainPanel = new JPanel();
-            mainPanel.setLayout(new BorderLayout());
-    
-            boidPanel.setPreferredSize(new Dimension(800,600));
-            controlPanel.setPreferredSize(new Dimension(200,600));
-    
-            mainPanel.add(boidPanel, BorderLayout.CENTER);
-            mainPanel.add(controlPanel, BorderLayout.EAST);
-    
-            add(mainPanel);
-    
-            setVisible(true);
-            
-            // initialization must happen after the component has been added and setVisible(true)
-            boidPanel.init();
-            controlPanel.init();
-    
             init = true;
+            
+            // Window settings -----------------------------------------------------------------------------------------
+            gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+            if (gd.isFullScreenSupported()) {
+                setUndecorated(true);
+                gd.setFullScreenWindow(this);
+            } else {
+                setSize(600,600); // to still see the window even if there is a problem
+                System.err.println("Full screen not supported");
+            }
+            setResizable(false);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            
+            // Game panel --------------------------------------------------------------------------------------------------
+            gamePanel = GamePanel.get();
+            add(gamePanel);
+            gamePanel.init();
+            
         } else {
-            System.err.println("The BoidWindow instance has already been initialized !");
+            System.err.println("The Game.GameWindow instance has already been initialized !");
         }
     }
     
@@ -86,8 +70,7 @@ public class BoidWindow extends JFrame implements WindowListener {
         if(init) {
             instance = null;
             init = false;
-            boidPanel.reset();
-            controlPanel.reset();
+            gamePanel.reset();
         }
     }
     
@@ -98,6 +81,7 @@ public class BoidWindow extends JFrame implements WindowListener {
      */
     @Override
     public void windowOpened(WindowEvent e) {
+    
     }
     
     /**
@@ -121,6 +105,7 @@ public class BoidWindow extends JFrame implements WindowListener {
     public void windowClosed(WindowEvent e) {
         reset();
         MenuWindow.gd.setFullScreenWindow(MenuWindow.get());
+        
     }
     
     /**

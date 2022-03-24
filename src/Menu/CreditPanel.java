@@ -2,25 +2,27 @@
  * This class is a panel containing all the game's credits elements
  */
 
+package Menu;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CreditPanel extends JPanel {
 
-    public static CreditPanel instance;       // instance of the CreditPanel class
+    public static CreditPanel instance;       // instance of the Menu.CreditPanel class
     private boolean init = false;           // true if the instance has been initialized, false otherwise
 
     /**
-     * Creates a CreditPanel
+     * Creates a Menu.CreditPanel
      */
     private CreditPanel() {
 
     }
 
     /**
-     * This method ensures that only one instance of the CreditPanel class can be created
+     * This method ensures that only one instance of the Menu.CreditPanel class can be created
      *
-     * @return the instance of the CreditPanel class
+     * @return the instance of the Menu.CreditPanel class
      */
     public static CreditPanel get() {
         if(instance == null) {
@@ -30,14 +32,14 @@ public class CreditPanel extends JPanel {
     }
 
     /**
-     * Initializes the instance of the CreditPanel class
+     * Initializes the instance of the Menu.CreditPanel class
      */
     public void init() {
         if(!init) {
             init = true;
 
         } else {
-            System.err.println("The CreditPanel instance has already been initialized !");
+            System.err.println("The Menu.CreditPanel instance has already been initialized !");
         }
     }
 

@@ -1,5 +1,7 @@
+package Game;
+
 import util.Keyboard;
-import util.ImageUtil;
+import util.Image;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +18,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private BufferedImage background;
     private Rock boulder;
     /**
-     * Creates a GamePanel
+     * Creates a Game.GamePanel
      */
     private GamePanel() {
     
@@ -42,7 +44,7 @@ public class GamePanel extends JPanel implements ActionListener {
             init = true;
             
             // Background
-            background = ImageUtil.getFrom("resources/images/topdown level.png");
+            background = Image.getFrom("resources/images/topdown level.png");
             
             // Entities displayed
             player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0, "resources/images/character.png");
@@ -56,7 +58,7 @@ public class GamePanel extends JPanel implements ActionListener {
             timer = new Timer(33, this);
             timer.start();
         } else {
-            System.err.println("The GamePanel instance has already been initialized !");
+            System.err.println("The Game.GamePanel instance has already been initialized !");
         }
     }
     

@@ -1,10 +1,12 @@
+package util;
+
 /**
  * This class describes either a 2 dimensional euclidean vector or a point in euclidean space
  * inspired by the Vector class of the p5.js JavaScript library
  */
 public class Vector2D {
-    double x; // the x component of the vector or point
-    double y; // the y component of the vector or point
+    public double x; // the x component of the vector or point
+    public double y; // the y component of the vector or point
     
     /**
      * Creates a null vector

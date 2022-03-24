@@ -2,6 +2,8 @@
  * This class is the panel in which all the boids handled and drawn on the screen
  */
 
+package Boid;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +26,7 @@ public class BoidPanel extends JPanel implements ActionListener {
     private long currentTime;
     
     /**
-     * Creates a GamePanel
+     * Creates a Game.GamePanel
      */
     private BoidPanel() {
     
@@ -33,7 +35,7 @@ public class BoidPanel extends JPanel implements ActionListener {
     /**
      * This method ensures that only one instance the class can be created
      *
-     * @return the instance of the GamePanel class
+     * @return the instance of the Game.GamePanel class
      */
     public static BoidPanel get() {
         if(instance == null) {
@@ -68,7 +70,7 @@ public class BoidPanel extends JPanel implements ActionListener {
     
             init = true;
         } else {
-            System.err.println("The BoidPanel instance has already been initialized !");
+            System.err.println("The Boid.BoidPanel instance has already been initialized !");
         }
     }
     

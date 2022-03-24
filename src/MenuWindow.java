@@ -52,6 +52,19 @@ public class MenuWindow extends JFrame {
                 setSize(600,600); // to still see the window even if there is a problem
                 System.err.println("Full screen not supported");
             }
+            
+            if(gd.isDisplayChangeSupported()) {
+                DisplayMode dm = gd.getDisplayMode();
+                try {
+                    gd.setDisplayMode(new DisplayMode(1920,1080 , dm.getBitDepth(),dm.getRefreshRate()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    gd.setFullScreenWindow(null);
+                    System.err.println("1920 x 1080 not supported by your screen"); // 1920 x 1080 forced is to make it easier for us to draw on the screen
+                    System.exit(0);
+                }
+            }
+            
             setResizable(false);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import static java.awt.event.KeyEvent.*;
 
+
 public class Player {
     private Vector2D pos;
     private BufferedImage image;
@@ -57,4 +58,5 @@ public class Player {
             image = directionImage[1];
         }
     }
+
 }

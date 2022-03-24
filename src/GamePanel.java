@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
             background = Image.getFrom("resources/images/topdown level.png");
 
-            player = new Player(background.getWidth() / 2.0, background.getHeight() / 2.0,"resources/images/character.png");
+            player = new Player(background.getWidth() / 2.0, background.getHeight() / 2.0);
 
             boulder = new Rock(200,200,"resources/images/rock.png");
 

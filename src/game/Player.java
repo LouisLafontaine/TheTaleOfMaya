@@ -1,30 +1,34 @@
 package game;
 
 import util.KeHandler;
-import util.Image;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import java.util.HashMap;
 
 
 import static java.awt.event.KeyEvent.*;
 
 
 public class Player extends Entity {
-    private final BufferedImage[] directionImage = new BufferedImage[8];
+    private final HashMap<String, Animation> directionImage = new HashMap<>();
+    Animation up;
+    Animation down;
+    Animation right;
+    Animation left;
     
-    public Player(double x, double y, String imageFilename) {
-        super(x, y, imageFilename);
-        //directionImage counterclockwise
-        //TODO change Image[] directionImage to a hashmap
-        directionImage[0] = Image.getFrom("resources/images/playerImages/top.jpg");
-        directionImage[1] = Image.getFrom("resources/images/playerImages/left.jpg");
-        directionImage[2] = Image.getFrom("resources/images/playerImages/bottom.png");
-        directionImage[3] = Image.getFrom("resources/images/playerImages/right.png");
-        directionImage[4] = Image.getFrom("resources/images/playerImages/top_left.png");
-        directionImage[5] = Image.getFrom("resources/images/playerImages/bottom_left.png");
-        directionImage[6] = Image.getFrom("resources/images/playerImages/bottom_right.png");
-        directionImage[7] = Image.getFrom("resources/images/playerImages/top_right.jpg");
+    public Player(double x, double y) {
+        super(x, y, "resources/images/playerImages/zelda.png");
+        image = image.getSubimage(0,0,120,130);
+        
+        up = new Animation("resources/images/playerImages/zelda.png",120,130,10,7,10);
+        down = new Animation("resources/images/playerImages/zelda.png",120,130,10,5,10);
+        right = new Animation("resources/images/playerImages/zelda.png",120,130,10,8,10);
+        left = new Animation("resources/images/playerImages/zelda.png",120,130,10,6,10);
+        
+        directionImage.put("up", up);
+        directionImage.put("down", down);
+        directionImage.put("right", right);
+        directionImage.put("left", left);
     }
 
     public void draw(Graphics g) {
@@ -41,30 +45,18 @@ public class Player extends Entity {
         boolean right = KeHandler.isPressed(VK_RIGHT);
         boolean left = KeHandler.isPressed(VK_LEFT);
         
-        if(up && !(down || right || left)) {
+        if(up) {
             position.add(0, -10);
-            image = directionImage[0];
-        } else if(down && !(up || right || left)) {
+            image = directionImage.get("up").getCurrentFrame();
+        } else if(down) {
             position.add(0,10);
-            image = directionImage[2];
-        } else if(right && !(up || down || left)) {
+            image = directionImage.get("down").getCurrentFrame();
+        } else if(right) {
             position.add(10,0);
-            image = directionImage[3];
-        } else if(left && !(up || down || right)) {
+            image = directionImage.get("right").getCurrentFrame();
+        } else if(left) {
             position.add(-10,0);
-            image = directionImage[1];
-        } else if((up && right) && !(down || left)) {
-            position.add(7,-7);
-            image = directionImage[7];
-        } else if((up && left) && !(down || right)) {
-            position.add(-7,-7);
-            image = directionImage[4];
-        } else if((down && right) && !(up || left )) {
-            position.add(7,7);
-            image = directionImage[6];
-        } else if((down && left) && !(up || right)) {
-            position.add(-7,7);
-            image = directionImage[5];
+            image = directionImage.get("left").getCurrentFrame();
         }
     }
 }

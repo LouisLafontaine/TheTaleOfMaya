@@ -1,7 +1,7 @@
 package game;
 
 import util.KeHandler;
-import util.Image;
+import util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +17,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private Timer timer;
     private BufferedImage background;
     private Rock boulder;
+    
     /**
      * Creates a Game.GamePanel
      */
@@ -44,11 +45,11 @@ public class GamePanel extends JPanel implements ActionListener {
             init = true;
             
             // Background
-            background = Image.getFrom("resources/images/topdown level.png");
+            background = ImageUtil.getFrom("resources/images/topdown level.png");
             
             // Entities displayed
-            player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0, "resources/images/character.png");
-            boulder = new Rock(200,200,"resources/images/rock.png");
+            player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0);
+//            boulder = new Rock(200,200,"resources/images/rock.png");
 
             // Keyboard inputs
             KeHandler keyboard = KeHandler.get();
@@ -88,7 +89,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background,0,0, getWidth(), getHeight(), null);
-        boulder.draw(g);
+//        boulder.draw(g);
         player.draw(g);
     }
 }

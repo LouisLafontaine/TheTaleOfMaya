@@ -1,3 +1,4 @@
+import game.Animation;
 import menu.MenuWindow;
 import jaco.mp3.player.MP3Player;
 import util.SoundMP3;

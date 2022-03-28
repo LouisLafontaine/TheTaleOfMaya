@@ -1,6 +1,6 @@
 package game;
 
-import util.Image;
+import util.ImageUtil;
 import util.Vector2D;
 
 import java.awt.*;
@@ -11,10 +11,10 @@ public abstract class Entity {
     protected Rectangle bounds;
     protected BufferedImage image;
 
-    public Entity(double x, double y, String file) {
+    public Entity(double x, double y, String imageFilename) {
         position = new Vector2D(x,y);
-        image = Image.getFrom(file);
-        bounds = new Rectangle(image.getWidth(),image.getHeight());
+        image = ImageUtil.getFrom(imageFilename);
+        bounds = new Rectangle(100,100);
     }
 
     public void draw(Graphics g) {

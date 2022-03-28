@@ -6,7 +6,7 @@ package menu;
 
 import boid.BoidWindow;
 import game.GameWindow;
-import util.Image;
+import util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     private JButton launchGameButton;       // button to launch the game
     private JButton exitMenuButton;         // button to exit the menu
     private JButton creditsButton;          // button to show the credits
-    private BufferedImage menuBackground;
+    private BufferedImage backgroundImage;
     
     /**
      * Creates a Menu.MenuPanel
@@ -52,7 +52,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            menuBackground = Image.getFrom("resources/images/menuImages/forest.jpg");
+            backgroundImage = ImageUtil.getFrom("resources/images/menuImages/forest.jpg");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");
@@ -106,6 +106,6 @@ public class MenuPanel extends JPanel implements ActionListener {
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(menuBackground, 0, 0, getWidth(), getHeight(), null);
+        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
     }
 }

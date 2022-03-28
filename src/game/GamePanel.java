@@ -13,6 +13,7 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
     private boolean init = false;
+    private TileManager tileManager;
     private Player player;
     private Timer timer;
     private BufferedImage background;
@@ -50,6 +51,10 @@ public class GamePanel extends JPanel implements ActionListener {
             // Entities displayed
             player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0);
 //            boulder = new Rock(200,200,"resources/images/rock.png");
+            
+            tileManager = TileManager.get();
+            tileManager.loadMap();
+            
 
             // Keyboard inputs
             KeHandler keyboard = KeHandler.get();
@@ -88,8 +93,10 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(background,0,0, getWidth(), getHeight(), null);
+        Graphics2D g2 = (Graphics2D) g;
+//        g.drawImage(background,0,0, getWidth(), getHeight(), null);
 //        boulder.draw(g);
+        tileManager.draw(g2);
         player.draw(g);
     }
 }

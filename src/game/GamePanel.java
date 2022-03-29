@@ -1,7 +1,7 @@
 package game;
 
 import util.KeHandler;
-import util.ImageUtil;
+import util.Img;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements ActionListener {
             init = true;
             
             // Background
-            background = ImageUtil.getFrom("resources/images/topdown level.png");
+            background = Img.load("resources/images/topdown level.png");
             
             // Entities displayed
             player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0);

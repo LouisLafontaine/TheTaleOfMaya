@@ -4,12 +4,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class ImageUtil {
+public class Img {
     
-    public static BufferedImage getFrom(String filename) {
+    public static BufferedImage load(String imagePath) {
         BufferedImage img = null;
         try {
-            File file = new File(filename);
+            File file = new File(imagePath);
             img = ImageIO.read(file);
         } catch(Exception e) {
             System.err.print(e.getMessage());

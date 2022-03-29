@@ -6,7 +6,7 @@ package menu;
 
 import boid.BoidWindow;
 import game.GameWindow;
-import util.ImageUtil;
+import util.Img;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +52,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            backgroundImage = ImageUtil.getFrom("resources/images/menuImages/forest.jpg");
+            backgroundImage = Img.load("resources/images/menuImages/forest.jpg");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");

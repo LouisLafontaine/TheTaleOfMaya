@@ -4,16 +4,16 @@
 
 package boid;
 
-import util.Vector2D;
+import util.Vect;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public class Boid {
-    Vector2D position;                                      // the boid's position
-    Vector2D velocity;                                      // the boid's velocity vector
-    Vector2D acceleration;                                  // the boid's acceleration vector
+    Vect position;                                      // the boid's position
+    Vect velocity;                                      // the boid's velocity vector
+    Vect acceleration;                                  // the boid's acceleration vector
     
     static double maxVelocity;                              // maximum velocity of all boids
     static double maxAcceleration;                          // maximum acceleration of all boids
@@ -40,10 +40,10 @@ public class Boid {
      * @param velocity  the boid's velocity
      * @param acceleration  the boids's acceleration
      */
-    public Boid(Vector2D position, Vector2D velocity, Vector2D acceleration) {
-        this.position = new Vector2D(position);
-        this.velocity = new Vector2D(velocity);
-        this.acceleration = new Vector2D(acceleration);
+    public Boid(Vect position, Vect velocity, Vect acceleration) {
+        this.position = new Vect(position);
+        this.velocity = new Vect(velocity);
+        this.acceleration = new Vect(acceleration);
         color = new Color((int)(Math.random()*100 +155),(int)(Math.random()*100 +155),(int)(Math.random()*100 +155));
     }
     
@@ -64,9 +64,9 @@ public class Boid {
      * @return a Boid.Boid
      */
     public static Boid random(int x, int y){
-        Vector2D randomPosition = new Vector2D(Math.random() * x,Math.random() * y);
-        Vector2D randomVelocity = Vector2D.random(Boid.maxVelocity);
-        Vector2D randomAcceleration = Vector2D.random(Boid.maxAcceleration);
+        Vect randomPosition = new Vect(Math.random() * x,Math.random() * y);
+        Vect randomVelocity = Vect.random(Boid.maxVelocity);
+        Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
         return new Boid(randomPosition,randomVelocity, randomAcceleration);
     }
     
@@ -114,15 +114,15 @@ public class Boid {
      */
     protected void flock(LinkedList<Boid> boids) {
         int perceivedNeighbors = 0;
-        Vector2D cohesion = new Vector2D();
-        Vector2D alignment = new Vector2D();
-        Vector2D separation = new Vector2D();
+        Vect cohesion = new Vect();
+        Vect alignment = new Vect();
+        Vect separation = new Vect();
         for(Boid other : boids) {
             double distance = position.dist(other.position);
             if(other != this && distance < perceptionRadius) {
                 cohesion.add(other.position);
                 alignment.add(other.velocity);
-                Vector2D repelForce = Vector2D.sub(position, other.position);
+                Vect repelForce = Vect.sub(position, other.position);
                 repelForce.div(distance * distance); // repel force is inversely proportional to the distance
                 separation.add(repelForce);
                 perceivedNeighbors++;

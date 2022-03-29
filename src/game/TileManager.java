@@ -37,11 +37,7 @@ public class TileManager {
         int columns = GamePanel.get().getHeight() / tileSize;
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {
-                if(map[i][j] == 0) {
-                    g.drawImage(tiles.get(0).image, i*tileSize, j*tileSize, tileSize,tileSize, null);
-                } else {
-                    g.drawImage(tiles.get(1).image, i*tileSize, j*tileSize, tileSize,tileSize, null);
-                }
+                g.drawImage(tiles.get(map[i][j]).image, i*tileSize, j*tileSize, tileSize,tileSize, null);
             }
         }
     }
@@ -60,6 +56,7 @@ public class TileManager {
             
             br.close();
     
+            System.out.println("map : ");
             for(int i=0; i<map.length; i++) {
                 for (int j = 0; j < map[0].length; j++) {
                     System.out.print(map[i][j] + " ");

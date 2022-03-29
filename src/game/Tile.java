@@ -1,6 +1,6 @@
 package game;
 
-import util.ImageUtil;
+import util.Img;
 import java.awt.image.BufferedImage;
 
 public class Tile {
@@ -8,7 +8,7 @@ public class Tile {
     boolean collision;
     
     public Tile(String imagePath, boolean collision) {
-        this.image = ImageUtil.getFrom(imagePath);
+        this.image = Img.load(imagePath);
         this.collision = collision;
     }
     

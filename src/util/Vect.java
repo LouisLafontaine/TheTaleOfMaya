@@ -4,14 +4,14 @@ package util;
  * This class describes either a 2 dimensional euclidean vector or a point in euclidean space
  * inspired by the Vector class of the p5.js JavaScript library
  */
-public class Vector2D {
+public class Vect {
     public double x; // the x component of the vector or point
     public double y; // the y component of the vector or point
     
     /**
      * Creates a null vector
      */
-    public Vector2D() {
+    public Vect() {
         this.x = 0;
         this.y = 0;
     }
@@ -21,7 +21,7 @@ public class Vector2D {
      * @param x  the x component of the vector
      * @param y  the y component of the vector
      */
-    public Vector2D(double x, double y) {
+    public Vect(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -30,7 +30,7 @@ public class Vector2D {
      * Creates a vector based on another vector
      * @param v  other vector to copy
      */
-    public Vector2D(Vector2D v) {
+    public Vect(Vect v) {
         this.x = v.x;
         this.y = v.y;
     }
@@ -63,7 +63,7 @@ public class Vector2D {
     /**
      * Adds each component of the vector to each component of the parameter vector
      */
-    public void add(Vector2D v) {
+    public void add(Vect v) {
         x += v.x;
         y += v.y;
     }
@@ -71,7 +71,7 @@ public class Vector2D {
     /**
      * Subtracts each component of the vector by each component of the parameter vector
      */
-    public void sub(Vector2D v) {
+    public void sub(Vect v) {
         x -= v.x;
         y -= v.y;
     }
@@ -82,8 +82,8 @@ public class Vector2D {
      * @param v2  a vector to subtract
      * @return  v1 - v2
      */
-    public static Vector2D sub(Vector2D v1, Vector2D v2){
-        Vector2D r = new Vector2D();
+    public static Vect sub(Vect v1, Vect v2){
+        Vect r = new Vect();
         r.x = v1.x - v2.x;
         r.y = v1.y - v2.y;
         return r;
@@ -97,8 +97,8 @@ public class Vector2D {
         y *= m;
     }
     
-    public static Vector2D mult(Vector2D v, double m) {
-        Vector2D r = new Vector2D();
+    public static Vect mult(Vect v, double m) {
+        Vect r = new Vect();
         r.x = v.x * m;
         r.y = v.y * m;
         return r;
@@ -115,7 +115,7 @@ public class Vector2D {
     /**
     * Calculates the euclidean distance between two points (considering a vector as a point)
     */
-    public double dist(Vector2D v) {
+    public double dist(Vect v) {
         return Math.sqrt(Math.pow(x - v.x, 2) + Math.pow(y - v.y, 2));
     }
     
@@ -148,8 +148,8 @@ public class Vector2D {
      * @param range  the range around 0 for the x and y component
      * @return v a vector with random components within the range
      */
-    public static Vector2D random(double range){
-        Vector2D v = new Vector2D();
+    public static Vect random(double range){
+        Vect v = new Vect();
         v.x = Math.random()*range-range/2;
         v.y = Math.random()*range-range/2;
         return v;

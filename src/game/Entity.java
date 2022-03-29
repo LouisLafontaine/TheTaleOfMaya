@@ -1,19 +1,19 @@
 package game;
 
-import util.ImageUtil;
-import util.Vector2D;
+import util.Img;
+import util.Vect;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class Entity {
-    protected Vector2D position;
+    protected Vect position;
     protected Rectangle bounds;
     protected BufferedImage image;
 
     public Entity(double x, double y, String imageFilename) {
-        position = new Vector2D(x,y);
-        image = ImageUtil.getFrom(imageFilename);
+        position = new Vect(x,y);
+        image = Img.load(imageFilename);
         bounds = new Rectangle(100,100);
     }
 

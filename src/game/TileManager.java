@@ -5,26 +5,21 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class MapManager {
-    public static MapManager instance;
+public class TileManager {
+    public static TileManager instance;
     ArrayList<Tile> tiles;
     int tileRes = 16;
     int scale = 6;
     int tileSize = tileRes * scale;
     int[][] map;
-    int maxScreenRow;
-    int maxScreenCol;
     
-    private MapManager() {
+    private TileManager() {
         tiles = new ArrayList<>();
-        
-        maxScreenRow = 20;
-        maxScreenCol = 30;
     }
     
-    public static MapManager get() {
+    public static TileManager get() {
         if(instance == null) {
-            instance = new MapManager();
+            instance = new TileManager();
         }
         return instance;
     }
@@ -32,7 +27,17 @@ public class MapManager {
     public void draw(Graphics2D g) {
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {
-                g.drawImage(tiles.get(map[i][j]).image, j*tileSize, i*tileSize, tileSize,tileSize, null);
+                int worldX = (j * tileSize);
+                int worldY = (i * tileSize);
+                int screenX = (int) (worldX - Player.get().pos.x + Player.get().screenPos.x);
+                int screenY = (int) (worldY - Player.get().pos.y + Player.get().screenPos.y);
+                // if statement to not draw tiles outside the screen
+                if((worldX > Player.get().pos.x - Player.get().screenPos.x - tileSize)
+                        && (worldX < Player.get().pos.x + Player.get().screenPos.x)
+                        && (worldY > Player.get().pos.y - Player.get().screenPos.y - tileSize)
+                        && (worldY < Player.get().pos.y + Player.get().screenPos.y)) {
+                    g.drawImage(tiles.get(map[i][j]).image, screenX, screenY, tileSize,tileSize, null);
+                }
             }
         }
     }

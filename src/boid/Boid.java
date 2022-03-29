@@ -11,7 +11,7 @@ import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public class Boid {
-    Vect position;                                      // the boid's position
+    Vect position;                                      // the boid's pos
     Vect velocity;                                      // the boid's velocity vector
     Vect acceleration;                                  // the boid's acceleration vector
     
@@ -36,7 +36,7 @@ public class Boid {
     
     /**
      * Creates a boid with a random color
-     * @param position  the boid's position
+     * @param position  the boid's pos
      * @param velocity  the boid's velocity
      * @param acceleration  the boids's acceleration
      */
@@ -58,9 +58,9 @@ public class Boid {
     }
     
     /**
-     * Creates a boid with random position, velocity, acceleration and color, within a defined area
-     * @param x  width of the area for the random position
-     * @param y  height of the area for the random position
+     * Creates a boid with random pos, velocity, acceleration and color, within a defined area
+     * @param x  width of the area for the random pos
+     * @param y  height of the area for the random pos
      * @return a Boid.Boid
      */
     public static Boid random(int x, int y){
@@ -100,7 +100,7 @@ public class Boid {
     }
     
     /**
-     * Updates the position and velocity of the boid
+     * Updates the pos and velocity of the boid
      */
     protected void update() {
         velocity.limit(maxVelocity);
@@ -149,7 +149,7 @@ public class Boid {
     }
     
     /**
-     * Keeps the boid on screen when it leaves it by looping its position as if the screen space was a torus
+     * Keeps the boid on screen when it leaves it by looping its pos as if the screen space was a torus
      * However the distance calculations don't take into account the torus space
      * @param width  width of the screen space
      * @param height  height of the screen space

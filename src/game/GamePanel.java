@@ -1,23 +1,27 @@
 package game;
 
 import util.KeHandler;
-import util.Img;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
     private boolean init = false;
-    private MapManager tileManager;
+    private TileManager tileManager;
     private Player player;
     private Timer timer;
-    private BufferedImage background;
-    private Rock boulder;
+    
+    // Screen settings
+    public final static int tileRes = 16;
+    public final static int scale = 16;
+    public final static int tileSize = tileRes * scale;
+    
+    
+    // World settings
     
     /**
      * Creates a Game.GamePanel
@@ -45,15 +49,13 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!init) {
             init = true;
             
-            // Background
-            background = Img.load("resources/images/topdown level.png");
-            
-            // Entities displayed
-            player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0);
-//            boulder = new Rock(200,200,"resources/images/rock.png");
-            
-            tileManager = MapManager.get();
+            tileManager = TileManager.get();
             tileManager.loadMap("resources/maps/map.txt");
+    
+            // Entities displayed
+            double x = (tileManager.map[0].length/2.0) * tileManager.tileSize;
+            double y = (tileManager.map.length/2.0) * tileManager.tileSize;
+            player = Player.get(x, y);
             
 
             // Keyboard inputs

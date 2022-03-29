@@ -11,5 +11,4 @@ public class Tile {
         this.image = Img.load(imagePath);
         this.collision = collision;
     }
-    
 }

@@ -24,10 +24,10 @@ public class Player extends Entity {
         screenPos = new Vect(GameWindow.get().getWidth()/2.0, GameWindow.get().getHeight()/2.0);
         image = image.getSubimage(0,0,120,130);
         
-        up = new Animation("resources/images/playerImages/zelda.png",120,130,10,7,10);
-        down = new Animation("resources/images/playerImages/zelda.png",120,130,10,5,10);
-        right = new Animation("resources/images/playerImages/zelda.png",120,130,10,8,10);
-        left = new Animation("resources/images/playerImages/zelda.png",120,130,10,6,10);
+        up = new Animation("resources/images/playerImages/zelda.png",120,130,10,7,12);
+        down = new Animation("resources/images/playerImages/zelda.png",120,130,10,5,12);
+        right = new Animation("resources/images/playerImages/zelda.png",120,130,10,8,12);
+        left = new Animation("resources/images/playerImages/zelda.png",120,130,10,6,12);
         
         directionImage.put("up", up);
         directionImage.put("down", down);

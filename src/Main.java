@@ -11,6 +11,6 @@ public class Main {
         MenuWindow menuWindow = MenuWindow.get();
         menuWindow.init();
         MP3Player sound = new Sound("resources/sounds/Fantasy8Bit.mp3");
-//        sound.play();
+        sound.play();
     }
 }

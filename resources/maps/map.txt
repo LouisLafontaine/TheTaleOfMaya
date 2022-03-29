@@ -1,4 +1,7 @@
-1 1 1 1
-1 0 0 1
-1 0 0 1
-1 1 1 1
+false resources/images/worldTiles/sand.png
+false resources/images/worldTiles/water.png
+--
+1 1 1 1 1 0 1 0
+1 0 0 0 0 0 1 0
+1 0 0 0 0 0 1 0
+1 1 1 1 1 0 1 0

@@ -12,7 +12,7 @@ public class Img {
             File file = new File(imagePath);
             img = ImageIO.read(file);
         } catch(Exception e) {
-            System.err.print(e.getMessage());
+            System.err.println(e.getMessage() + "\nat " + imagePath + "");
         }
         return img;
     }

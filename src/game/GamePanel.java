@@ -13,7 +13,7 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
     private boolean init = false;
-    private TileManager tileManager;
+    private MapManager tileManager;
     private Player player;
     private Timer timer;
     private BufferedImage background;
@@ -52,8 +52,8 @@ public class GamePanel extends JPanel implements ActionListener {
             player = new Player(GameWindow.get().getWidth() / 2.0, GameWindow.get().getHeight() / 2.0);
 //            boulder = new Rock(200,200,"resources/images/rock.png");
             
-            tileManager = TileManager.get();
-            tileManager.loadMap();
+            tileManager = MapManager.get();
+            tileManager.loadMap("resources/maps/map.txt");
             
 
             // Keyboard inputs

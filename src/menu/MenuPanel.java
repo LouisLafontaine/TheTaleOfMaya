@@ -50,7 +50,12 @@ public class MenuPanel extends JPanel implements ActionListener {
         if(!init) {
             init = true;
             
-            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+            // Setting Layout
+            // https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
+            setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
 
             backgroundImage = Img.getFrom("resources/images/menuImages/forest.jpg");
             
@@ -64,10 +69,10 @@ public class MenuPanel extends JPanel implements ActionListener {
             exitMenuButton.addActionListener(this);
             creditsButton.addActionListener(this);
     
-            add(launchBoidButton);
-            add(launchGameButton);
-            add(exitMenuButton);
-            add(creditsButton);
+            add(launchBoidButton, gbc);
+            add(launchGameButton, gbc);
+            add(exitMenuButton, gbc);
+            add(creditsButton, gbc);
         } else {
             System.err.println("The Menu.MenuPanel instance has already been initialized !");
         }

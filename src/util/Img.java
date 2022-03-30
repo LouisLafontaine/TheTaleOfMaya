@@ -6,7 +6,7 @@ import java.io.File;
 
 public class Img {
     
-    public static BufferedImage load(String imagePath) {
+    public static BufferedImage getFrom(String imagePath) {
         BufferedImage img = null;
         try {
             File file = new File(imagePath);

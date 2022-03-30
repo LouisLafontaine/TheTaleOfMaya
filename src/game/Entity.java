@@ -14,7 +14,7 @@ public abstract class Entity {
 
     public Entity(double x, double y, String imageFilename) {
         pos = new Vect(x,y);
-        image = Img.load(imageFilename);
+        image = Img.getFrom(imageFilename);
         bounds = new Rectangle(100,100);
     }
 

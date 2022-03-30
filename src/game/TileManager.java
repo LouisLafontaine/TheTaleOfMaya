@@ -24,7 +24,7 @@ public class TileManager {
         return instance;
     }
     
-    public void draw(Graphics2D g) {
+    public void draw(Graphics g) {
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {
                 int worldX = (j * tileSize);
@@ -63,7 +63,7 @@ public class TileManager {
             br.close();
         } catch(Exception e) {
             e.printStackTrace();
-            System.err.println("Couldn't load map at \"" + mapPath + "\"");
+            System.err.println("Couldn't getFrom map at \"" + mapPath + "\"");
         }
     }
     

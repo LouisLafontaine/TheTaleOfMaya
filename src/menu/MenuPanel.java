@@ -52,7 +52,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             
             setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-            backgroundImage = Img.load("resources/images/menuImages/forest.jpg");
+            backgroundImage = Img.getFrom("resources/images/menuImages/forest.jpg");
             
             launchBoidButton = new JButton("Launch boid");
             launchGameButton = new JButton("Launch game");

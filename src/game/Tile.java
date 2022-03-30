@@ -8,7 +8,7 @@ public class Tile {
     boolean collision;
     
     public Tile(String imagePath, boolean collision) {
-        this.image = Img.load(imagePath);
+        this.image = Img.getFrom(imagePath);
         this.collision = collision;
     }
 }

@@ -1,11 +1,14 @@
 package game;
 
-import util.KeHandler;
+import menu.MenuWindow;
+import util.KeyHandler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 public class GamePanel extends JPanel implements ActionListener {
     
@@ -59,7 +62,7 @@ public class GamePanel extends JPanel implements ActionListener {
             
 
             // Keyboard inputs
-            KeHandler keyboard = KeHandler.get();
+            KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
             setFocusable(true);
             
@@ -88,17 +91,22 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
+            keyInput();
             player.update();
             repaint();
         }
     }
     
+    private void keyInput() {
+        if(KeyHandler.isPressed(VK_ESCAPE)) {
+            reset();
+            MenuWindow.gd.setFullScreenWindow(MenuWindow.get());
+        }
+    }
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-//        g.drawImage(background,0,0, getWidth(), getHeight(), null);
-//        boulder.draw(g);
-        tileManager.draw(g2);
+        tileManager.draw(g);
         player.draw(g);
     }
 }

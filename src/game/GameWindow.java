@@ -39,9 +39,7 @@ public class GameWindow extends JFrame {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             
             // Game panel --------------------------------------------------------------------------------------------------
-            GamePanel gamePanel = GamePanel.get();
-            add(gamePanel);
-            gamePanel.init();
+            add(GamePanel.get().init());
             
         } else {
             System.err.println("The GameWindow instance has already been initialized !");

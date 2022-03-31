@@ -60,16 +60,16 @@ public class Player extends Entity {
         g2d.drawImage(image, (int) screenPos.x, (int) screenPos.y, tileSize, tileSize, null);
     }
     
-//    @Override
-//    public Rectangle getBounds() {
-//        Rectangle r = super.getBounds();
-//        int tileSize = TileManager.get().getTileSize();
-//        r.x = (int) (pos.x + 0.2 * tileSize);
-//        r.y = (int) (pos.y + 0.4 * tileSize);
-//        r.width = (int) (0.6 * tileSize);
-//        r.height = (int) (0.6 * tileSize);
-//        return r;
-//    }
+    @Override
+    public Rectangle getBounds() {
+        Rectangle r = super.getBounds();
+        int tileSize = TileManager.get().getTileSize();
+        r.x = (int) (pos.x + 0.2 * tileSize);
+        r.y = (int) (pos.y + 0.4 * tileSize);
+        r.width = (int) (0.6 * tileSize);
+        r.height = (int) (0.6 * tileSize);
+        return r;
+    }
     
     public void update() {
         movement();

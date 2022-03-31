@@ -110,17 +110,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         tileManager.draw(g);
         boulder.draw(g);
         player.draw(g);
-//        if(player.isColliding(boulder)) {
-//            player.showBoundary(g, Color.red);
-//            boulder.showBoundary(g, Color.red);
-//        } else {
-//            player.showBoundary(g, Color.green);
-//            boulder.showBoundary(g, Color.green);
-//        }
-        player.showBoundary(g, Color.green);
-        int tileSize = TileManager.get().getTileSize();
-        if(player.isCollidingMap()) {
+        if(player.isColliding(boulder)) {
             player.showBoundary(g, Color.red);
+            boulder.showBoundary(g, Color.red);
+        } else {
+            player.showBoundary(g, Color.green);
+            boulder.showBoundary(g, Color.green);
         }
     }
     

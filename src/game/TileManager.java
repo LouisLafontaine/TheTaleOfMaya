@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class TileManager {
     public static TileManager instance;
-    public final ArrayList<Tile> tiles;
+    private final ArrayList<Tile> tiles;
     private final int tileRes = 32;
     private final int scale = 3;
     private final int tileSize = tileRes * scale;
@@ -25,10 +25,10 @@ public class TileManager {
     }
     
     public void draw(Graphics g) {
-        for(int row = 0; row < map.length; row++) {
-            for(int col = 0; col < map[row].length; col++) {
-                int worldX = (col * tileSize);
-                int worldY = (row * tileSize);
+        for(int i = 0; i < map.length; i++) {
+            for(int j = 0; j < map[i].length; j++) {
+                int worldX = (j * tileSize);
+                int worldY = (i * tileSize);
                 int screenX = (int) (worldX - Player.get().pos.x + Player.get().screenPos.x);
                 int screenY = (int) (worldY -  Player.get().pos.y + Player.get().screenPos.y);
                 // if statement to not draw tiles outside the screen
@@ -36,7 +36,7 @@ public class TileManager {
                         && (worldX < Player.get().pos.x + Player.get().screenPos.x + tileSize)
                         && (worldY > Player.get().pos.y - Player.get().screenPos.y - tileSize)
                         && (worldY < Player.get().pos.y + Player.get().screenPos.y + tileSize)) {
-                    g.drawImage(tiles.get(map[row][col]).image, screenX, screenY, tileSize,tileSize, null);
+                    g.drawImage(tiles.get(map[i][j]).image, screenX, screenY, tileSize,tileSize, null);
                 }
             }
         }
@@ -95,25 +95,5 @@ public class TileManager {
     
     public int getTileSize() {
         return tileSize;
-    }
-    
-    public int[][] getMap() {
-        return map;
-    }
-    
-    public boolean getCollidable(int tileRow, int tileColumn) {
-        if(tileRow < map.length && tileColumn < map[0].length && tileRow > -1 && tileColumn > - 1) {
-            return tiles.get(map[tileRow][tileColumn]).collision;
-        }
-        return false;
-    }
-    
-    public void printCollision() {
-        for(int row = 0; row < map.length; row++) {
-            for(int col=0; col < map[0].length; col ++) {
-                System.out.print(tiles.get(map[row][col]).collision+ " ");
-            }
-            System.out.println();
-        }
     }
 }

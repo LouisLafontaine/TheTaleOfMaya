@@ -44,6 +44,7 @@ public class MainWindow extends JFrame {
     }
     
     public static void switchTo(JFrame f) {
+        f.setUndecorated(true);
         gd.setFullScreenWindow(f);
     }
     

@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Timer timer;
     private TileManager tileManager;
     private Player player;
+    private Obstacle boulder;
     
     // Screen settings
     public final int tileRes = 16;
@@ -65,7 +66,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             double x = (tileManager.map[0].length/2.0) * tileManager.tileSize;
             double y = (tileManager.map.length/2.0) * tileManager.tileSize;
             player = Player.get(x, y);
-            
+            boulder = new Obstacle(x,y,"resources/images/rock.png");
+
+            // Entity placement
+
+
 
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -113,6 +118,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         tileManager.draw(g);
         player.draw(g);
         player.showBoundary(g);
+        boulder.draw(g);
+        boulder.showBoundary(g);
     }
     
     /**

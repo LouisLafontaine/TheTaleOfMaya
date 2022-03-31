@@ -19,10 +19,15 @@ public class Player extends Entity {
     private Player(double x, double y) {
         super(x, y, "resources/images/playerImages/zelda.png");
         image = image.getSubimage(0,0,120,130);
-        
+
         Dimension screenSize = MainWindow.getScreenDimension();
         screenPos = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
-        
+
+        boundsX1 = (int) (screenPos.x - boundsArea.width / 4.0);
+        boundsY1 = (int) (screenPos.y);
+        boundsX2 = (int) (screenPos.x + boundsArea.width / 4.0);
+        boundsY2 = (int) (screenPos.y + boundsArea.width / 2.0);
+
         Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
         Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
         Animation right = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 8, 12);

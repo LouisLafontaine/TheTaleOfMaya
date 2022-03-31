@@ -8,7 +8,7 @@ import util.Sound;
 
 public class Main {
     public static void main(String[] args) {
-        MP3Player sound = new Sound("resources/sounds/musics/Title Theme.mp3");
+        MP3Player sound = new Sound("resources/sounds/Fantasy8Bit.mp3");
         sound.play();
         MainWindow.get().init();
     }

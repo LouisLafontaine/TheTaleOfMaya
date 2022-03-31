@@ -5,24 +5,28 @@
 package menu;
 
 import boid.BoidWindow;
+import game.Animation;
 import game.GameWindow;
-import util.Img;
+import util.FontUtil;
+import util.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
 
-public class MenuPanel extends JPanel implements ActionListener {
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+
+public class MenuPanel extends JPanel implements ActionListener, KeyListener {
     
-    public static MenuPanel instance;       // instance of the Menu.MenuPanel class
-    private boolean init = false;           // true if the instance has been initialized, false otherwise
-    private JButton launchBoidButton;       // button to launch the boid simulation
-    private JButton launchGameButton;       // button to launch the game
-    private JButton exitMenuButton;         // button to exit the menu
-    private JButton creditsButton;          // button to show the credits
-    private BufferedImage backgroundImage;
+    public static MenuPanel instance;           // instance of the Menu.MenuPanel class
+    private boolean init = false;               // true if the instance has been initialized, false otherwise
+    private Timer timer;
+    private HashMap<String, JButton> buttons;
+    private Animation background;
     
     /**
      * Creates a Menu.MenuPanel
@@ -37,7 +41,7 @@ public class MenuPanel extends JPanel implements ActionListener {
      * @return the instance of the Menu.MenuPanel class
      */
     public static MenuPanel get() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new MenuPanel();
         }
         return instance;
@@ -46,36 +50,54 @@ public class MenuPanel extends JPanel implements ActionListener {
     /**
      * Initializes the instance of the Menu.MenuPanel class
      */
-    public void init() {
-        if(!init) {
+    public MenuPanel init() {
+        if (!init) {
             init = true;
+            
+            addKeyListener(this);
+            setFocusable(true);
+            
+            background = new Animation("resources/images/menuImages/cherryBlossom.png", 576, 324, 128, 1, 12);
+            timer = new Timer(1000 / 60, this);
             
             // Setting Layout
             // https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
+            
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.REMAINDER;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-
-            backgroundImage = Img.getFrom("resources/images/menuImages/forest.jpg");
+    
+            buttons = new HashMap<>();
+            String[] buttonNames = new String[]{"Launch game", "Launch boid", "Credits", "Exit menu"};
+    
+            Color pink = new Color(240, 98, 146);
             
-            launchBoidButton = new JButton("Launch boid");
-            launchGameButton = new JButton("Launch game");
-            exitMenuButton = new JButton("Exit menu");
-            creditsButton = new JButton("Credits");
-    
-            launchBoidButton.addActionListener(this);
-            launchGameButton.addActionListener(this);
-            exitMenuButton.addActionListener(this);
-            creditsButton.addActionListener(this);
-    
-            add(launchBoidButton, gbc);
-            add(launchGameButton, gbc);
-            add(exitMenuButton, gbc);
-            add(creditsButton, gbc);
+            for (String s : buttonNames) {
+                JButton b = new JButton(s);
+                b.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf", 50));
+                b.setMargin(new Insets(5, 0, 7, 0));
+                b.setForeground(pink);
+                b.addActionListener(this);
+                add(b, gbc);
+                buttons.put(s, b);
+            }
+            
+            JLabel exitLabel = new JLabel("Press ESC to quit");
+            exitLabel.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf", 40));
+            exitLabel.setForeground(pink);
+            add(exitLabel, gbc);
+            
+            timer.start();
         } else {
             System.err.println("The Menu.MenuPanel instance has already been initialized !");
         }
+        return MenuPanel.get();
+    }
+    
+    protected void dispose() {
+        instance = null;
+        timer.stop();
     }
     
     /**
@@ -85,32 +107,69 @@ public class MenuPanel extends JPanel implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == launchBoidButton) {
-            MenuWindow.gd.setFullScreenWindow(null);
-            BoidWindow boidWindow = BoidWindow.get();
-            boidWindow.init();
-        } else if(e.getSource() == launchGameButton) {
-            MenuWindow.gd.setFullScreenWindow(null);
-            GameWindow gameWindow = GameWindow.get();
-            gameWindow.init();
-        } else if(e.getSource() == exitMenuButton) {
-            MenuWindow.gd.setFullScreenWindow(null);
-            String title = "Quitting the menu";
-            String message = "Are you sure you want to leave the game ?";
-            int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
-            if (reply == JOptionPane.YES_OPTION) {
-                System.exit(0);
-            } else {
-                MenuWindow.gd.setFullScreenWindow(MenuWindow.get());
-            }
-        } else if(e.getSource() == creditsButton){
-            MenuWindow.gd.setFullScreenWindow(null);
-            CreditWindow creditWindow = CreditWindow.get();
-            creditWindow.init();
+        if (e.getSource() == timer) {
+            repaint();
+        }
+        if (e.getSource() == buttons.get("Launch boid")) {
+            MenuWindow.get().dispose();
+            MainWindow.switchTo(BoidWindow.get().init());
+        } else if (e.getSource() == buttons.get("Launch game")) {
+            MenuWindow.get().dispose();
+            MainWindow.switchTo(GameWindow.get().init());
+        } else if (e.getSource() == buttons.get("Credits")) {
+            MenuWindow.get().dispose();
+            MainWindow.switchTo(CreditWindow.get().init());
+        } else if (e.getSource() == buttons.get("Exit menu")) {
+            System.exit(0);
         }
     }
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), null);
+        g.drawImage(background.getCurrentFrame(), 0, 0, getWidth(), getHeight(), null);
+    }
+    
+    
+    //==================================================================================================================
+    // KeyListener Methods
+    //==================================================================================================================
+    
+    /**
+     * Invoked when a key has been typed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key typed event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+    
+    }
+    
+    /**
+     * Invoked when a key has been pressed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key pressed event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == VK_ESCAPE) {
+            System.out.println("Thanks for playing !");
+            System.exit(0);
+        }
+    }
+    
+    /**
+     * Invoked when a key has been released.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key released event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+    
     }
 }

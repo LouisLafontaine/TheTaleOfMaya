@@ -4,13 +4,20 @@
 
 package boid;
 
+import menu.MenuWindow;
+import util.MainWindow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.LinkedList;
 
-public class BoidPanel extends JPanel implements ActionListener {
+import static java.awt.event.KeyEvent.VK_ESCAPE;
+
+public class BoidPanel extends JPanel implements ActionListener, KeyListener {
     
     public static BoidPanel instance;
     
@@ -47,42 +54,43 @@ public class BoidPanel extends JPanel implements ActionListener {
     /**
      * Initializes the instance
      */
-    public void init() {
+    public BoidPanel init() {
         if(!init) {
+            init = true;
+            
+            addKeyListener(this);
+            setFocusable(true);
+            
             Boid.setDefaultParameters();
             boids = new LinkedList<>();
-    
+            
+            Dimension screenSize = MainWindow.getScreenDimension();
             // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
             for (int i = 0; i < DEFAULT_NUMBER_OF_BOIDS; i++) {
-                boids.add(Boid.random(getWidth(), getHeight()));
+                boids.add(Boid.random(screenSize.width, screenSize.height));
             }
     
             // Game loop timer
-            // the desired number of fps to run the simulation
-            int desiredFps = 60;
+            int desiredFps = 60; // the desired number of fps to run the simulation
             timer = new Timer(1000/ desiredFps, this);
             timer.start();
             
             currentTime = System.currentTimeMillis();
             previousTime = currentTime;
-    
+            
             repaint();
-    
-            init = true;
         } else {
             System.err.println("The Boid.BoidPanel instance has already been initialized !");
         }
+        return BoidPanel.get();
     }
     
     /**
      * Resets the instance and sets init to false
      */
-    protected void reset() {
-        if(init) {
-            instance = null;
-            init = false;
-            timer.stop();
-        }
+    protected void dispose() {
+        instance = null;
+        timer.stop();
     }
     
     /**
@@ -162,5 +170,44 @@ public class BoidPanel extends JPanel implements ActionListener {
     
     public int getNumberOfBoids() {
         return boids.size();
+    }
+    
+    /**
+     * Invoked when a key has been typed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key typed event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+    
+    }
+    
+    /**
+     * Invoked when a key has been pressed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key pressed event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == VK_ESCAPE) {
+            BoidWindow.get().dispose();
+            MainWindow.switchTo(MenuWindow.get().init());
+        }
+    }
+    
+    /**
+     * Invoked when a key has been released.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key released event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+    
     }
 }

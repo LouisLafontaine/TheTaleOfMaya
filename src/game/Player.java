@@ -1,6 +1,7 @@
 package game;
 
 import util.KeyHandler;
+import util.MainWindow;
 import util.Vect;
 
 import java.awt.*;
@@ -12,22 +13,20 @@ import static java.awt.event.KeyEvent.*;
 
 public class Player extends Entity {
     
-    static Player instance;
+    public static Player instance;
     private final HashMap<String, Animation> directionImage = new HashMap<>();
-    Animation up;
-    Animation down;
-    Animation right;
-    Animation left;
     
     private Player(double x, double y) {
         super(x, y, "resources/images/playerImages/zelda.png");
-        screenPos = new Vect(GameWindow.get().getWidth()/2.0, GameWindow.get().getHeight()/2.0);
         image = image.getSubimage(0,0,120,130);
         
-        up = new Animation("resources/images/playerImages/zelda.png",120,130,10,7,12);
-        down = new Animation("resources/images/playerImages/zelda.png",120,130,10,5,12);
-        right = new Animation("resources/images/playerImages/zelda.png",120,130,10,8,12);
-        left = new Animation("resources/images/playerImages/zelda.png",120,130,10,6,12);
+        Dimension screenSize = MainWindow.getScreenDimension();
+        screenPos = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
+        
+        Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
+        Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
+        Animation right = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 8, 12);
+        Animation left = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 6, 12);
         
         directionImage.put("up", up);
         directionImage.put("down", down);
@@ -59,10 +58,10 @@ public class Player extends Entity {
     }
     
     public void movement() {
-        boolean up = KeyHandler.isPressed(VK_UP);
-        boolean down = KeyHandler.isPressed(VK_DOWN);
-        boolean right = KeyHandler.isPressed(VK_RIGHT);
-        boolean left = KeyHandler.isPressed(VK_LEFT);
+        boolean up = KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_W);
+        boolean down = KeyHandler.isPressed(VK_DOWN)|| KeyHandler.isPressed(VK_S);
+        boolean right = KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_D);
+        boolean left = KeyHandler.isPressed(VK_LEFT) || KeyHandler.isPressed(VK_A);
         
         if(up) {
             pos.add(0, -10);

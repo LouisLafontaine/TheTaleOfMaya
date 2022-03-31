@@ -1,6 +1,6 @@
 package game;
 
-import util.Img;
+import util.ImageUtil;
 import util.Vect;
 
 import java.awt.*;
@@ -12,9 +12,9 @@ public abstract class Entity {
     protected Rectangle bounds;
     protected BufferedImage image;
 
-    public Entity(double x, double y, String imageFilename) {
+    public Entity(double x, double y, String imagePath) {
         pos = new Vect(x,y);
-        image = Img.getFrom(imageFilename);
+        image = ImageUtil.getFrom(imagePath);
         bounds = new Rectangle(100,100);
     }
 
@@ -30,7 +30,7 @@ public abstract class Entity {
         Stroke old = g2d.getStroke();
         g2d.setStroke(new java.awt.BasicStroke(3));
         g2d.setColor(Color.green);
-        g2d.drawRect((int)(screenPos.x- bounds.width/2.0),(int)(screenPos.y- bounds.height/2.0), bounds.width, bounds.height);
+        g2d.drawRect((int)(screenPos.x - bounds.width/2.0),(int)(screenPos.y - bounds.height/2.0), bounds.width, bounds.height);
         g2d.setStroke(old);
     }
 }

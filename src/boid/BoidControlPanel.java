@@ -62,8 +62,15 @@ public class BoidControlPanel extends JPanel implements ActionListener, ChangeLi
     /**
      * Initializes the instance
      */
-    public void init() {
+    public BoidControlPanel init() {
         if(!init) {
+            init = true;
+            
+            setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridwidth = GridBagConstraints.REMAINDER;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            
             setBackground(Color.white);
     
             numberOfBoidsLabel = new JLabel("number of boids : " + BoidPanel.get().getDefaultNumberOfBoids());
@@ -104,38 +111,39 @@ public class BoidControlPanel extends JPanel implements ActionListener, ChangeLi
             removeBoidsButton.addActionListener(this);
             drawPerceptionRadiusButton.addActionListener(this);
     
-            add(numberOfBoidsLabel);
-            add(addBoidsButton);
-            add(removeBoidsButton);
+            add(numberOfBoidsLabel, gbc);
+            
+            add(addBoidsButton, gbc);
+            add(removeBoidsButton, gbc);
     
-            add(perceptionRadiusLabel);
-            add(perceptionRadiusSlider);
-            add(drawPerceptionRadiusButton);
+            add(perceptionRadiusLabel, gbc);
+            add(perceptionRadiusSlider, gbc);
+            add(drawPerceptionRadiusButton, gbc);
     
-            add(cohesionStrengthLabel);
-            add(cohesionStrengthSlider);
+            add(cohesionStrengthLabel, gbc);
+            add(cohesionStrengthSlider, gbc);
     
-            add(alignmentStrengthLabel);
-            add(alignmentStrengthSlider);
+            add(alignmentStrengthLabel, gbc);
+            add(alignmentStrengthSlider, gbc);
     
-            add(separationStrengthLabel);
-            add(separationStrengthSlider);
+            add(separationStrengthLabel, gbc);
+            add(separationStrengthSlider, gbc);
     
-            add(maxVelocityLabel);
-            add(maxVelocitySlider);
+            add(maxVelocityLabel, gbc);
+            add(maxVelocitySlider, gbc);
     
-            add(maxAccelerationLabel);
-            add(maxAccelerationSlider);
+            add(maxAccelerationLabel, gbc);
+            add(maxAccelerationSlider, gbc);
     
-            add(fpsLabel);
+            add(fpsLabel, gbc);
+            add(new JLabel("ESC to return to the menu"), gbc);
     
             timer = new Timer(33, this);
             timer.start();
-    
-            init = true;
         } else {
             System.err.println("The GameControlPanel instance has already been initialized !");
         }
+        return BoidControlPanel.get();
     }
     
     /**

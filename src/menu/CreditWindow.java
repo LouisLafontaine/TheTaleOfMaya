@@ -4,12 +4,22 @@
 
 package menu;
 
+import util.MainWindow;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 public class CreditWindow extends JFrame {
+    
     public static CreditWindow instance;  // instance of the Menu.CreditWindow class
     private boolean init = false;       // true if the instance has been initialized, false otherwise
-
+    
     /**
      * Creates a Menu.CreditWindow
      */
@@ -32,23 +42,27 @@ public class CreditWindow extends JFrame {
     /**
      * Initializes the instance of the Menu.CreditWindow class
      */
-    public void init() {
+    public CreditWindow init() {
         if(!init) {
             init = true;
-
+            
+            // Window settings -----------------------------------------------------------------------------------------
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    
             // Main Panel ----------------------------------------------------------------------------------------------
             CreditPanel creditPanel = CreditPanel.get();
             add(creditPanel);
-
             creditPanel.init();
-
-            // Window settings -----------------------------------------------------------------------------------------
-            setExtendedState(JFrame.MAXIMIZED_BOTH);   // fullscreen
-            setUndecorated(true);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setVisible(true);
         } else {
             System.err.println("The Menu.CreditWindow instance has already been initialized !");
         }
+        return instance;
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        instance = null;
+        CreditPanel.get().dispose();
     }
 }

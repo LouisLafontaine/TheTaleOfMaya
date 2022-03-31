@@ -1,6 +1,6 @@
 package game;
 
-import util.Img;
+import util.ImageUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,7 +18,7 @@ public class Animation implements ActionListener {
     int pointer;
     
     public Animation(String filename, int spriteWidth, int spriteHeight, int nOfFrames, int row, int frameRate) {
-        BufferedImage temp = Img.getFrom(filename);
+        BufferedImage temp = ImageUtil.getFrom(filename);
         this.spriteSheet = temp.getSubimage(0, (row-1) * spriteHeight, nOfFrames * spriteWidth, spriteHeight);
         this.spriteWidth = spriteWidth;
         this.spriteHeight = spriteHeight;

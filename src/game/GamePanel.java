@@ -1,5 +1,6 @@
 package game;
 
+import util.MainWindow;
 import menu.MenuWindow;
 import util.KeyHandler;
 
@@ -7,21 +8,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 
-public class GamePanel extends JPanel implements ActionListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
     public static GamePanel instance;
     private boolean init = false;
+    private Timer timer;
     private TileManager tileManager;
     private Player player;
-    private Timer timer;
     
     // Screen settings
-    public final static int tileRes = 16;
-    public final static int scale = 16;
-    public final static int tileSize = tileRes * scale;
+    public final int tileRes = 16;
+    public final int scale = 16;
+    public final int tileSize = tileRes * scale;
     
     
     // World settings
@@ -48,9 +51,12 @@ public class GamePanel extends JPanel implements ActionListener {
     /**
      * Initializes the instance
      */
-    public void init() {
+    public GamePanel init() {
         if (!init) {
             init = true;
+            
+            addKeyListener(this);
+            setFocusable(true);
             
             tileManager = TileManager.get();
             tileManager.loadMap("resources/maps/map.txt");
@@ -64,23 +70,21 @@ public class GamePanel extends JPanel implements ActionListener {
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
-            setFocusable(true);
             
             timer = new Timer(33, this);
             timer.start();
         } else {
             System.err.println("The Game.GamePanel instance has already been initialized !");
         }
+        return GamePanel.get();
     }
     
     /**
      * Resets the instance and sets init to false
      */
-    protected void reset() {
-        if (init) {
-            instance = null;
-            init = false;
-        }
+    protected void dispose() {
+        instance = null;
+        timer.stop();
     }
     
     /**
@@ -99,8 +103,8 @@ public class GamePanel extends JPanel implements ActionListener {
     
     private void keyInput() {
         if(KeyHandler.isPressed(VK_ESCAPE)) {
-            reset();
-            MenuWindow.gd.setFullScreenWindow(MenuWindow.get());
+            dispose();
+            MainWindow.switchTo(MenuWindow.get());
         }
     }
     
@@ -108,5 +112,45 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         tileManager.draw(g);
         player.draw(g);
+        player.showBoundary(g);
+    }
+    
+    /**
+     * Invoked when a key has been typed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key typed event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyTyped(KeyEvent e) {
+    
+    }
+    
+    /**
+     * Invoked when a key has been pressed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key pressed event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == VK_ESCAPE) {
+            GameWindow.get().dispose();
+            MainWindow.switchTo(MenuWindow.get().init());
+        }
+    }
+    
+    /**
+     * Invoked when a key has been released.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key released event.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void keyReleased(KeyEvent e) {
+    
     }
 }

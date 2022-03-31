@@ -1,7 +1,6 @@
 package game;
 
 import util.ImageUtil;
-import util.MainWindow;
 import util.Vect;
 
 import java.awt.*;
@@ -10,39 +9,42 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
     protected Vect pos;
-    protected Vect screenPos;
-    protected Rectangle boundsArea;
-    protected int boundsX1;
-    protected int boundsY1;
-    protected int boundsX2;
-    protected int boundsY2;
+    private final Rectangle bounds;
     protected BufferedImage image;
-    protected boolean collisionOn = false;
 
-    public Entity(double x, double y, String imagePath) {
-        pos = new Vect(x, y);
+    public Entity(double x, double y, String imagePath) { //TODO overload constructor make one without imagePath
+        pos = new Vect(x  * TileManager.get().getTileSize(), y  * TileManager.get().getTileSize());
         image = ImageUtil.getFrom(imagePath);
-        boundsArea= new Rectangle(100, 100);
-
-
-
-
-
+        bounds = new Rectangle(100, 100);
     }
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g) { //TODO don't draw entity if out of screen
         Graphics2D g2d = (Graphics2D) g;
-        int centerX = (int) (screenPos.x - boundsArea.width / 2);
-        int centerY = (int) (screenPos.y - boundsArea.height / 2);
-        g2d.drawImage(image, centerX, centerY, boundsArea.width, boundsArea.height, null);
+        int tileSize = TileManager.get().getTileSize();
+        int screenX = (int) (pos.x - Player.get().pos.x + Player.get().screenPos.x);
+        int screenY = (int) (pos.y - Player.get().pos.y + Player.get().screenPos.y);
+        g2d.drawImage(image, screenX, screenY, tileSize, tileSize, null);
     }
 
-    public void showBoundary(Graphics g) {
+    public void showBoundary(Graphics g, Color c) {
         Graphics2D g2d = (Graphics2D) g;
         Stroke old = g2d.getStroke();
+        Rectangle r = getBounds();
+        int screenX = (int) (r.x - Player.get().pos.x + Player.get().screenPos.x);
+        int screenY = (int) (r.y - Player.get().pos.y + Player.get().screenPos.y);
         g2d.setStroke(new java.awt.BasicStroke(3));
-        g2d.setColor(Color.green);
-        g2d.drawRect(boundsX1, boundsY1, boundsX2 - boundsX1, boundsY2 - boundsY1);
+        g2d.setColor(c);
+        g2d.drawRect(screenX , screenY, r.width, r.height);
         g2d.setStroke(old);
+    }
+    
+    public boolean isColliding(Entity e) {
+        return(getBounds().intersects(e.getBounds()));
+    }
+    
+    public Rectangle getBounds() {
+        bounds.x = (int) pos.x;
+        bounds.y = (int) pos.y;
+        return bounds;
     }
 }

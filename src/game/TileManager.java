@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class TileManager {
     public static TileManager instance;
-    ArrayList<Tile> tiles;
-    int tileRes = 16;
-    int scale = 6;
-    int tileSize = tileRes * scale;
+    private final ArrayList<Tile> tiles;
+    private final int tileRes = 32;
+    private final int scale = 3;
+    private final int tileSize = tileRes * scale;
     int[][] map;
     
     private TileManager() {
@@ -30,12 +30,12 @@ public class TileManager {
                 int worldX = (j * tileSize);
                 int worldY = (i * tileSize);
                 int screenX = (int) (worldX - Player.get().pos.x + Player.get().screenPos.x);
-                int screenY = (int) (worldY - Player.get().pos.y + Player.get().screenPos.y);
+                int screenY = (int) (worldY -  Player.get().pos.y + Player.get().screenPos.y);
                 // if statement to not draw tiles outside the screen
                 if((worldX > Player.get().pos.x - Player.get().screenPos.x - tileSize)
-                        && (worldX < Player.get().pos.x + Player.get().screenPos.x)
+                        && (worldX < Player.get().pos.x + Player.get().screenPos.x + tileSize)
                         && (worldY > Player.get().pos.y - Player.get().screenPos.y - tileSize)
-                        && (worldY < Player.get().pos.y + Player.get().screenPos.y)) {
+                        && (worldY < Player.get().pos.y + Player.get().screenPos.y + tileSize)) {
                     g.drawImage(tiles.get(map[i][j]).image, screenX, screenY, tileSize,tileSize, null);
                 }
             }
@@ -91,5 +91,9 @@ public class TileManager {
         }
         if(mapWidth == 0 && mapHeight == 0) System.err.println("the map at : \"" + mapPath + "\" is empty !");
         return new Dimension(mapWidth, mapHeight);
+    }
+    
+    public int getTileSize() {
+        return tileSize;
     }
 }

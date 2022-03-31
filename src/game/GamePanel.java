@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
+import static java.awt.event.KeyEvent.VK_SHIFT;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
@@ -21,12 +22,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private TileManager tileManager;
     private Player player;
     private Obstacle boulder;
-    
-    // Screen settings
-    public final int tileRes = 16;
-    public final int scale = 16;
-    public final int tileSize = tileRes * scale;
-    
     
     // World settings
     
@@ -62,16 +57,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             tileManager = TileManager.get();
             tileManager.loadMap("resources/maps/map.txt");
     
-            // Entities displayed
-            double x = (tileManager.map[0].length/2.0) * tileManager.tileSize;
-            double y = (tileManager.map.length/2.0) * tileManager.tileSize;
-            player = Player.get(x, y);
-            boulder = new Obstacle(x,y,"resources/images/rock.png");
-
-            // Entity placement
-
-
-
+            // Entities
+            double mapCenterX = (tileManager.map[0].length/2.0);
+            double mapCenterY = (tileManager.map.length/2.0);
+            player = Player.get(mapCenterX, mapCenterY);
+            boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/rock.png");
+            
+            
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
@@ -116,10 +108,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         tileManager.draw(g);
-        player.draw(g);
-        player.showBoundary(g);
         boulder.draw(g);
-        boulder.showBoundary(g);
+        player.draw(g);
+        if(player.isColliding(boulder)) {
+            player.showBoundary(g, Color.red);
+            boulder.showBoundary(g, Color.red);
+        } else {
+            player.showBoundary(g, Color.green);
+            boulder.showBoundary(g, Color.green);
+        }
     }
     
     /**
@@ -146,6 +143,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if(e.getKeyCode() == VK_ESCAPE) {
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
+        } else if(e.getKeyCode() == VK_ESCAPE && e.getKeyCode() == VK_SHIFT) {
+            System.exit(0);
         }
     }
     

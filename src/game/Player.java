@@ -15,18 +15,17 @@ public class Player extends Entity {
     
     public static Player instance;
     private final HashMap<String, Animation> directionImage = new HashMap<>();
+    public Vect screenPos;
     
     private Player(double x, double y) {
         super(x, y, "resources/images/playerImages/zelda.png");
         image = image.getSubimage(0,0,120,130);
+        
+        
 
         Dimension screenSize = MainWindow.getScreenDimension();
-        screenPos = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
-
-        boundsX1 = (int) (screenPos.x - boundsArea.width / 4.0);
-        boundsY1 = (int) (screenPos.y);
-        boundsX2 = (int) (screenPos.x + boundsArea.width / 4.0);
-        boundsY2 = (int) (screenPos.y + boundsArea.width / 2.0);
+        int tileSize = TileManager.get().getTileSize();
+        screenPos = new Vect(screenSize.width/2.0 - tileSize/2.0, screenSize.getHeight()/2.0 - tileSize/2.0);
 
         Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
         Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
@@ -53,9 +52,23 @@ public class Player extends Entity {
         }
         return instance;
     }
-
+    
+    @Override
     public void draw(Graphics g) {
-        super.draw(g);
+        Graphics2D g2d = (Graphics2D) g;
+        int tileSize = TileManager.get().getTileSize();
+        g2d.drawImage(image, (int) screenPos.x, (int) screenPos.y, tileSize, tileSize, null);
+    }
+    
+    @Override
+    public Rectangle getBounds() {
+        Rectangle r = super.getBounds();
+        int tileSize = TileManager.get().getTileSize();
+        r.x = (int) (pos.x + 0.2 * tileSize);
+        r.y = (int) (pos.y + 0.4 * tileSize);
+        r.width = (int) (0.6 * tileSize);
+        r.height = (int) (0.6 * tileSize);
+        return r;
     }
     
     public void update() {

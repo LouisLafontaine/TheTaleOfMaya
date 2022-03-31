@@ -5,7 +5,7 @@
 package menu;
 
 import boid.BoidWindow;
-import game.Animation;
+import util.Animation;
 import game.GameWindow;
 import util.FontUtil;
 import util.MainWindow;

@@ -1,5 +1,6 @@
 package game;
 
+import util.Animation;
 import util.KeyHandler;
 import util.MainWindow;
 import util.Vect;

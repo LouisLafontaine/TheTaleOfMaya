@@ -96,4 +96,8 @@ public class TileManager {
     public int getTileSize() {
         return tileSize;
     }
+    
+    public boolean getCollidable(int row, int col) {
+        return tiles.get(map[row][col]).collision;
+    }
 }

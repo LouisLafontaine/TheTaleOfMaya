@@ -51,9 +51,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (!init) {
             init = true;
             
-            addKeyListener(this);
-            setFocusable(true);
-            
             tileManager = TileManager.get();
             tileManager.loadMap("resources/maps/map.txt");
     
@@ -67,6 +64,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
+            setFocusable(true);
             
             timer = new Timer(33, this);
             timer.start();
@@ -82,6 +80,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     protected void dispose() {
         instance = null;
         timer.stop();
+        player.dispose();
     }
     
     /**
@@ -94,14 +93,28 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource() == timer) {
             keyInput();
             player.update();
+            int[][] map = TileManager.get().map;
+            int tileSize = TileManager.get().getTileSize();
+            outerloop:
+            for(int row = 0; row < map.length; row++) {
+                for(int col = 0; col < map[0].length; col ++) {
+                    int x = col * tileSize;
+                    int y = row * tileSize;
+                    Rectangle r = new Rectangle(x, y, tileSize, tileSize);
+                    if(player.isColliding(r) && TileManager.get().getCollidable(row, col)) {
+                        player.solveCollision(r);
+                        break outerloop; // TODO
+                    }
+                }
+            }
             repaint();
         }
     }
     
-    private void keyInput() {
+    private void keyInput() { //TODO handle this
         if(KeyHandler.isPressed(VK_ESCAPE)) {
-            dispose();
-            MainWindow.switchTo(MenuWindow.get());
+            GameWindow.get().dispose();
+            MainWindow.switchTo(MenuWindow.get().init());
         }
     }
     

@@ -42,6 +42,28 @@ public abstract class Entity {
         return(getBounds().intersects(e.getBounds()));
     }
     
+    public boolean isColliding(Rectangle r) {
+        return getBounds().intersects(r);
+    }
+    
+    
+    public void solveCollision(Rectangle r) {
+        Rectangle i = getBounds().intersection(r);
+        if(i.width < i.height) {
+            if(pos.x < r.x) {
+                pos.x -= i.width;
+            } else {
+                pos.x += i.width;
+            }
+        } else {
+            if(pos.y < r.y) {
+                pos.y -= i.height;
+            } else {
+                pos.y += i.height;
+            }
+        }
+    }
+    
     public Rectangle getBounds() {
         bounds.x = (int) pos.x;
         bounds.y = (int) pos.y;

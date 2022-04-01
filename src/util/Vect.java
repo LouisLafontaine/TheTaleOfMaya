@@ -1,5 +1,7 @@
 package util;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * This class describes either a 2 dimensional euclidean vector or a point in euclidean space
  * inspired by the Vector class of the p5.js JavaScript library
@@ -40,6 +42,17 @@ public class Vect {
      */
     public String toString() {
         return "(" + x + ", " + y + ")";
+    }
+    
+    /**
+     * Copies the vector passed as argument
+     * @param v  the vector to copy
+     */
+    public void copy(Vect v) {
+        if (v != null) {
+            x = v.x;
+            y = v.y;
+        }
     }
     
     /**

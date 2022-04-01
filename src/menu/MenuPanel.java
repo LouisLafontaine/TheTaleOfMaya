@@ -7,6 +7,7 @@ package menu;
 import boid.BoidWindow;
 import game.Animation;
 import game.GameWindow;
+import game.mapEditor.MapEditorWindow;
 import util.FontUtil;
 import util.MainWindow;
 
@@ -69,7 +70,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
             gbc.fill = GridBagConstraints.HORIZONTAL;
     
             buttons = new HashMap<>();
-            String[] buttonNames = new String[]{"Launch game", "Launch boid", "Credits", "Exit menu"};
+            String[] buttonNames = new String[]{"Launch game", "Launch boid", "Map editor", "Credits", "Exit menu"};
     
             Color pink = new Color(240, 98, 146);
             
@@ -107,19 +108,23 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == timer) {
+        Object source = e.getSource();
+        if (source == timer) {
             repaint();
         }
-        if (e.getSource() == buttons.get("Launch boid")) {
+        if (source == buttons.get("Launch boid")) {
             MenuWindow.get().dispose();
             MainWindow.switchTo(BoidWindow.get().init());
-        } else if (e.getSource() == buttons.get("Launch game")) {
+        } else if (source == buttons.get("Launch game")) {
             MenuWindow.get().dispose();
             MainWindow.switchTo(GameWindow.get().init());
-        } else if (e.getSource() == buttons.get("Credits")) {
+        } else if (source == buttons.get("Credits")) {
             MenuWindow.get().dispose();
             MainWindow.switchTo(CreditWindow.get().init());
-        } else if (e.getSource() == buttons.get("Exit menu")) {
+        } else if(source == buttons.get("Map editor")) {
+            MenuWindow.get().dispose();
+            MainWindow.switchTo(MapEditorWindow.get().init());
+        } else if (source == buttons.get("Exit menu")) {
             System.exit(0);
         }
     }

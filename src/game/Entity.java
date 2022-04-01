@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 
 public abstract class Entity {
+    
     protected Vect pos;
     private final Rectangle bounds;
     protected BufferedImage image;
@@ -15,25 +16,25 @@ public abstract class Entity {
     public Entity(double x, double y, String imagePath) { //TODO overload constructor make one without imagePath
         pos = new Vect(x  * TileManager.get().getTileSize(), y  * TileManager.get().getTileSize());
         image = ImageUtil.getFrom(imagePath);
-        bounds = new Rectangle(100, 100);
+        bounds = new Rectangle(TileManager.get().getTileSize(), TileManager.get().getTileSize());
     }
 
-    public void draw(Graphics g) { //TODO don't draw entity if out of screen
+    public void draw(Graphics g, Camera c) { //TODO don't draw entity if out of screen
         Graphics2D g2d = (Graphics2D) g;
         int tileSize = TileManager.get().getTileSize();
-        int screenX = (int) (pos.x - Player.get().pos.x + Player.get().screenPos.x);
-        int screenY = (int) (pos.y - Player.get().pos.y + Player.get().screenPos.y);
+        int screenX = (int) (pos.x - c.getPos().x + c.getCenter().x);
+        int screenY = (int) (pos.y - c.getPos().y + c.getCenter().y);
         g2d.drawImage(image, screenX, screenY, tileSize, tileSize, null);
     }
 
-    public void showBoundary(Graphics g, Color c) {
+    public void showBoundary(Graphics g, Camera c, Color co) {
         Graphics2D g2d = (Graphics2D) g;
         Stroke old = g2d.getStroke();
         Rectangle r = getBounds();
-        int screenX = (int) (r.x - Player.get().pos.x + Player.get().screenPos.x);
-        int screenY = (int) (r.y - Player.get().pos.y + Player.get().screenPos.y);
+        int screenX = (int) (r.x - c.getPos().x + c.getCenter().x);
+        int screenY = (int) (r.y - c.getPos().y + c.getCenter().y);
         g2d.setStroke(new java.awt.BasicStroke(3));
-        g2d.setColor(c);
+        g2d.setColor(co);
         g2d.drawRect(screenX , screenY, r.width, r.height);
         g2d.setStroke(old);
     }
@@ -62,6 +63,10 @@ public abstract class Entity {
                 pos.y += i.height;
             }
         }
+    }
+    
+    public void solveCollision(Entity e) {
+        solveCollision(e.getBounds());
     }
     
     public Rectangle getBounds() {

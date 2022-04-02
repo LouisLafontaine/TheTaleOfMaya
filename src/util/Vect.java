@@ -43,6 +43,17 @@ public class Vect {
     }
     
     /**
+     * Copies the vector passed as argument
+     * @param v  the vector to copy
+     */
+    public void copy(Vect v) {
+        if (v != null) {
+            x = v.x;
+            y = v.y;
+        }
+    }
+    
+    /**
      * Sets the vector to given x and y
      * @param x  the desired x component
      * @param y  the desired y component

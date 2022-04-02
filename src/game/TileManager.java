@@ -7,11 +7,14 @@ import java.util.ArrayList;
 
 public class TileManager {
     public static TileManager instance;
-    ArrayList<Tile> tiles;
-    int tileRes = 16;
-    int scale = 6;
-    int tileSize = tileRes * scale;
-    int[][] map;
+    private boolean init = false;
+    private final ArrayList<Tile> tiles;
+    private final int tileRes = 32;
+    private double scale = 2;
+    private int tileSize = (int) (tileRes * scale);
+    private int[][] map;
+    private Dimension mapDimension;
+    private Camera camera;
     
     private TileManager() {
         tiles = new ArrayList<>();
@@ -24,36 +27,51 @@ public class TileManager {
         return instance;
     }
     
+    public TileManager init(String mapPath, Camera camera) {
+        if(!init) {
+            init = true;
+            this.camera = camera;
+            loadMap(mapPath);
+        } else {
+            System.err.println("The TileManager instance has already been initialized !");
+        }
+        return TileManager.get();
+    }
+    
+    public void dispose() {
+        instance = null;
+    }
+    
     public void draw(Graphics g) {
         for(int i = 0; i < map.length; i++) {
             for(int j = 0; j < map[i].length; j++) {
                 int worldX = (j * tileSize);
                 int worldY = (i * tileSize);
-                int screenX = (int) (worldX - Player.get().pos.x + Player.get().screenPos.x);
-                int screenY = (int) (worldY - Player.get().pos.y + Player.get().screenPos.y);
+                int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
+                int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
                 // if statement to not draw tiles outside the screen
-                if((worldX > Player.get().pos.x - Player.get().screenPos.x - tileSize)
-                        && (worldX < Player.get().pos.x + Player.get().screenPos.x)
-                        && (worldY > Player.get().pos.y - Player.get().screenPos.y - tileSize)
-                        && (worldY < Player.get().pos.y + Player.get().screenPos.y)) {
+                if((worldX > camera.getPos().x - camera.getCenter().x - tileSize)
+                        && (worldX < camera.getPos().x + camera.getCenter().x + tileSize)
+                        && (worldY > camera.getPos().y - camera.getCenter().y - tileSize)
+                        && (worldY < camera.getPos().y + camera.getCenter().y + tileSize)) {
                     g.drawImage(tiles.get(map[i][j]).image, screenX, screenY, tileSize,tileSize, null);
                 }
             }
         }
     }
     
-    public void loadMap(String mapPath) {
+    private void loadMap(String mapPath) {
         try {
-            Dimension mapSize = mapSize(mapPath);
-            map = new int[mapSize.height][mapSize.width];
-            BufferedReader br = new BufferedReader(new FileReader(mapPath));
+            mapDimension = mapSize(mapPath);
+            map = new int[mapDimension.height][mapDimension.width];
+            BufferedReader br = new BufferedReader(new FileReader("resources/" + mapPath));
             String s;
             while(!(s = br.readLine()).equals("--")) {
                 String[] tileInfo = s.split(" ");
                 tiles.add(new Tile(tileInfo[1], Boolean.parseBoolean(tileInfo[0])));
             }
             s = br.readLine();
-            for(int i = 0; i < mapSize.height ; i++) {
+            for(int i = 0; i < mapDimension.height ; i++) {
                 String[] numbers = s.split(" ");
                 for(int j=0 ; j < numbers.length ; j++) {
                     map[i][j] = Integer.parseInt(numbers[j]);
@@ -71,7 +89,7 @@ public class TileManager {
         int mapWidth = 0;
         int mapHeight = 0;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(mapPath));
+            BufferedReader br = new BufferedReader(new FileReader("resources/" + mapPath));
             String s = br.readLine();
             while(!(s.equals("--"))) {
                 s = br.readLine();
@@ -91,5 +109,24 @@ public class TileManager {
         }
         if(mapWidth == 0 && mapHeight == 0) System.err.println("the map at : \"" + mapPath + "\" is empty !");
         return new Dimension(mapWidth, mapHeight);
+    }
+    
+    public int getTileSize() {
+        return tileSize;
+    }
+    
+    public boolean getCollidable(int row, int col) {
+        return tiles.get(map[row][col]).collision;
+    }
+    
+    public Dimension getMapDimension() {
+        return mapDimension;
+    }
+    
+    public void zoom(double d) {
+        if(scale + d > 0) {
+            scale += d;
+            tileSize = (int) (scale * tileRes);
+        }
     }
 }

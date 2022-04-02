@@ -9,10 +9,10 @@ public class ImageUtil {
     public static BufferedImage getFrom(String imagePath) {
         BufferedImage img = null;
         try {
-            File file = new File(imagePath);
+            File file = new File("resources/" + imagePath);
             img = ImageIO.read(file);
         } catch(Exception e) {
-            System.err.println(e.getMessage() + "\nat " + imagePath + "");
+            System.err.println(e.getMessage() + " at resources/" + imagePath);
         }
         return img;
     }

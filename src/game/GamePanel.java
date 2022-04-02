@@ -3,6 +3,7 @@ package game;
 import util.MainWindow;
 import menu.MenuWindow;
 import util.KeyHandler;
+import util.Vect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
+import static java.awt.event.KeyEvent.VK_SHIFT;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
@@ -20,12 +23,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Timer timer;
     private TileManager tileManager;
     private Player player;
-    
-    // Screen settings
-    public final int tileRes = 16;
-    public final int scale = 16;
-    public final int tileSize = tileRes * scale;
-    
+    private Camera camera;
+    private ArrayList<Entity> entities;
     
     // World settings
     
@@ -54,22 +53,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public GamePanel init() {
         if (!init) {
             init = true;
-            
-            addKeyListener(this);
-            setFocusable(true);
-            
-            tileManager = TileManager.get();
-            tileManager.loadMap("resources/maps/map.txt");
     
-            // Entities displayed
-            double x = (tileManager.map[0].length/2.0) * tileManager.tileSize;
-            double y = (tileManager.map.length/2.0) * tileManager.tileSize;
-            player = Player.get(x, y);
+            // Camera
+            Dimension screenSize = MainWindow.getScreenDimension();
+            int tileSize = TileManager.get().getTileSize();
+            Vect center = new Vect(screenSize.width/2.0 - tileSize/2.0, screenSize.getHeight()/2.0 - tileSize/2.0);
+            camera = new Camera(center);
+    
+            // World
+            tileManager = TileManager.get().init("maps/map.txt", camera);
+    
+            // Entities
+            Dimension mapDimension = tileManager.getMapDimension();
+            double mapCenterX = (mapDimension.height/2.0);
+            double mapCenterY = (mapDimension.width/2.0);
+            player = Player.get().init(mapCenterX, mapCenterY);
             
-
+            entities = new ArrayList<>();
+            Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"images/rock.png");
+            entities.add(boulder);
+            
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
+            setFocusable(true);
             
             timer = new Timer(33, this);
             timer.start();
@@ -85,6 +92,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     protected void dispose() {
         instance = null;
         timer.stop();
+        player.dispose();
     }
     
     /**
@@ -97,22 +105,51 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if (e.getSource() == timer) {
             keyInput();
             player.update();
+            
+            // Checking collisions with map
+            Dimension mapDimension = tileManager.getMapDimension();
+            int tileSize = tileManager.getTileSize();
+            outerloop:
+            for(int row = 0; row < mapDimension.height; row++) {
+                for(int col = 0; col < mapDimension.width; col ++) {
+                    int x = col * tileSize;
+                    int y = row * tileSize;
+                    Rectangle r = new Rectangle(x, y, tileSize, tileSize);
+                    if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
+                        player.solveCollision(r);
+                        break outerloop; // TODO
+                    }
+                }
+            }
+            // Checking collisions with entities
+            for(Entity en : entities) {
+                if(player.isColliding(en)) {
+                    player.solveCollision(en);
+                }
+            }
+            camera.follow(player);
             repaint();
         }
     }
     
-    private void keyInput() {
+    private void keyInput() { //TODO handle this
         if(KeyHandler.isPressed(VK_ESCAPE)) {
-            dispose();
-            MainWindow.switchTo(MenuWindow.get());
+            GameWindow.get().dispose();
+            MainWindow.switchTo(MenuWindow.get().init());
         }
     }
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Drawing the map
         tileManager.draw(g);
-        player.draw(g);
-        player.showBoundary(g);
+        // Drawing the entities
+        for(Entity e : entities) {
+            e.draw(g, camera);
+        }
+        // Drawing the player
+        player.draw(g, camera);
+        player.showBoundary(g, camera, Color.green);
     }
     
     /**
@@ -139,6 +176,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         if(e.getKeyCode() == VK_ESCAPE) {
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
+        } else if(e.getKeyCode() == VK_ESCAPE && e.getKeyCode() == VK_SHIFT) {
+            System.exit(0);
         }
     }
     

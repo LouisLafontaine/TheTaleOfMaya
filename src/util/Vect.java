@@ -1,7 +1,5 @@
 package util;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
  * This class describes either a 2 dimensional euclidean vector or a point in euclidean space
  * inspired by the Vector class of the p5.js JavaScript library

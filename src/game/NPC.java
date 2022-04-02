@@ -2,9 +2,11 @@ package game;
 
 
 public class NPC extends Entity {
-    public DialogPanel dialogPanel;
+    
+    public DialogueLabel dialogueLabel;
+    
     public NPC(double x, double y, String imagePath, String text){
         super(x,y, imagePath);
-        this.dialogPanel = new DialogPanel(text);
+        this.dialogueLabel = new DialogueLabel(text);
     }
 }

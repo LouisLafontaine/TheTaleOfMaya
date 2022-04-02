@@ -131,7 +131,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                     player.solveCollision(en);
                     if(en instanceof NPC){
                         System.out.println("test");
-                        ((NPC) en).dialogPanel.setVisible(true);
+                        NPC npc = (NPC) en;
+                        add(npc.dialogueLabel);
                     }
                 }
             }

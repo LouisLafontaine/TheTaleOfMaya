@@ -129,8 +129,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             for(Entity en : entities) {
                 if(player.isColliding(en)) {
                     player.solveCollision(en);
-                    if(en instanceof NPC){
-                        System.out.println("test");
+                    if(en instanceof NPC) {
                         NPC npc = (NPC) en;
                         add(npc.dialogueLabel);
                     }
@@ -189,7 +188,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             System.exit(0);
         }
     }
-    
+
     /**
      * Invoked when a key has been released.
      * See the class description for {@link KeyEvent} for a definition of

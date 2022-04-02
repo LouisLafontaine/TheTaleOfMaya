@@ -61,7 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/map.txt", camera);
+            tileManager = TileManager.get().init("maps/map.txt", camera);
     
             // Entities
             Dimension mapDimension = tileManager.getMapDimension();
@@ -70,7 +70,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
-            Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/rock.png");
+            Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"images/rock.png");
             entities.add(boulder);
             
             // Keyboard inputs

@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 
 import static java.awt.event.KeyEvent.*;
 
+
 public class MapEditorPanel extends JPanel implements ActionListener, KeyListener {
     
     public static MapEditorPanel instance;
@@ -60,7 +61,7 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/map.txt", camera);
+            tileManager = TileManager.get().init("maps/map.txt", camera);
             
             addKeyListener(this);
             setFocusable(true);
@@ -120,8 +121,10 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        
         if(key == VK_UP) {
             camera.move(0,-10);
+            System.out.println("I work just fine");
         } else if(key == VK_DOWN) {
             camera.move(0,10);
         } else if(key == VK_RIGHT) {
@@ -135,7 +138,7 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
         }
         
         if(key == VK_ESCAPE) {
-            MapEditorWindow.get().dispose();
+            MapEditorPanel.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
         }
     }

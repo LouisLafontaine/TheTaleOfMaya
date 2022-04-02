@@ -1,8 +1,8 @@
 package game;
 
-import util.MainWindow;
 import menu.MenuWindow;
 import util.KeyHandler;
+import util.MainWindow;
 import util.Vect;
 
 import javax.swing.*;
@@ -70,8 +70,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
+
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/rock.png");
             entities.add(boulder);
+
+            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/npc.png", "bonjour");
+            entities.add(npc);
             
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -81,7 +85,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             timer = new Timer(33, this);
             timer.start();
         } else {
-            System.err.println("The Game.GamePanel instance has already been initialized !");
+            System.err.println("The Game. GamePanel instance has already been initialized !");
         }
         return GamePanel.get();
     }
@@ -125,6 +129,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             for(Entity en : entities) {
                 if(player.isColliding(en)) {
                     player.solveCollision(en);
+                    if(en instanceof NPC){
+                        System.out.println("test");
+                        ((NPC) en).dialogPanel.setVisible(true);
+                    }
                 }
             }
             camera.follow(player);

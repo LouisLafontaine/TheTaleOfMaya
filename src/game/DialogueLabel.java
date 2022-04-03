@@ -19,6 +19,6 @@ public class DialogueLabel extends JLabel {
         setForeground(Color.black);
         setFont(new Font("Serif", Font.PLAIN, 30));
         this.setHorizontalTextPosition(JLabel.CENTER);
+        this.setFocusable(true);
     }
-
 }

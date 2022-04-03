@@ -1,8 +1,10 @@
 package game;
 
+import jaco.mp3.player.MP3Player;
 import menu.MenuWindow;
 import util.KeyHandler;
 import util.MainWindow;
+import util.Sound;
 import util.Vect;
 
 import javax.swing.*;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 import static java.awt.event.KeyEvent.VK_SHIFT;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener {
+public class GamePanel<collisionSound> extends JPanel implements ActionListener, KeyListener {
     
     public static GamePanel instance;
     private boolean init = false;
@@ -25,7 +27,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     private Player player;
     private Camera camera;
     private ArrayList<Entity> entities;
-    
+
+    MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3");
+
+    ArrayList<Sound> soundList = new ArrayList<Sound>();
+
+    Sound collisionSound = new Sound("resources/sounds/ambientSound/collision.mp3");
+    Sound walkingSound = new Sound("resources/sounds/ambientSound/walking.mp3");
+
     // World settings
     
     /**
@@ -53,7 +62,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     public GamePanel init() {
         if (!init) {
             init = true;
-    
+
+            // Music
+            soundList.add(collisionSound);
+            soundList.add(walkingSound);
+
+            BgMusic.play();
+
             // Camera
             Dimension screenSize = MainWindow.getScreenDimension();
             int tileSize = TileManager.get().getTileSize();
@@ -120,6 +135,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
                     int y = row * tileSize;
                     Rectangle r = new Rectangle(x, y, tileSize, tileSize);
                     if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
+                        (soundList.get(0)).play();
                         player.solveCollision(r);
                         break outerloop; // TODO
                     }
@@ -128,13 +144,19 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             // Checking collisions with entities
             for(Entity en : entities) {
                 if(player.isColliding(en)) {
-                    player.solveCollision(en);
                     if(en instanceof NPC) {
                         NPC npc = (NPC) en;
                         add(npc.dialogueLabel);
                     }
+                    else {
+                        (soundList.get(0)).play();
+                        (soundList.get(0)).setRepeat(false);
+                    }
+                    player.solveCollision(en);
                 }
             }
+
+
             camera.follow(player);
             repaint();
         }
@@ -142,6 +164,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
     private void keyInput() { //TODO handle this
         if(KeyHandler.isPressed(VK_ESCAPE)) {
+            BgMusic.stop();
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
         }
@@ -159,7 +182,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         player.draw(g, camera);
         player.showBoundary(g, camera, Color.green);
     }
-    
+
     /**
      * Invoked when a key has been typed.
      * See the class description for {@link KeyEvent} for a definition of
@@ -182,6 +205,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == VK_ESCAPE) {
+            BgMusic.stop();
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
         } else if(e.getKeyCode() == VK_ESCAPE && e.getKeyCode() == VK_SHIFT) {

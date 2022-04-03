@@ -5,7 +5,6 @@
 package menu;
 
 import util.MainWindow;
-
 import javax.swing.*;
 
 public class MenuWindow extends JFrame {

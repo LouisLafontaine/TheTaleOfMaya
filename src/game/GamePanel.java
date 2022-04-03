@@ -147,7 +147,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Drawing the map
-        tileManager.draw(g);
+        tileManager.draw(g, true);
         // Drawing the entities
         for(Entity e : entities) {
             e.draw(g, camera);

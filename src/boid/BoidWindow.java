@@ -6,15 +6,6 @@ package boid;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-
-import menu.MenuWindow;
-import util.MainWindow;
-
-import static java.awt.event.KeyEvent.VK_ESCAPE;
 
 public class BoidWindow extends JFrame {
     
@@ -83,5 +74,6 @@ public class BoidWindow extends JFrame {
         super.dispose();
         instance = null;
         BoidPanel.get().dispose();
+        BoidControlPanel.get().dispose();
     }
 }

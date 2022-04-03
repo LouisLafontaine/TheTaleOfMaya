@@ -141,7 +141,7 @@ public class BoidControlPanel extends JPanel implements ActionListener, ChangeLi
             timer = new Timer(33, this);
             timer.start();
         } else {
-            System.err.println("The GameControlPanel instance has already been initialized !");
+            System.err.println("The BoidControlPanel instance has already been initialized !");
         }
         return BoidControlPanel.get();
     }
@@ -149,12 +149,8 @@ public class BoidControlPanel extends JPanel implements ActionListener, ChangeLi
     /**
      * Resets the instance and sets init to false
      */
-    protected void reset() {
-        if(init) {
-            instance = null;
-            init = false;
-            timer.stop();
-        }
+    protected void dispose() {
+        instance = null;
     }
     
     /**

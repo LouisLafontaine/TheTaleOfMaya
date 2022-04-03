@@ -3,20 +3,19 @@ package game;
 import menu.MenuWindow;
 import util.KeyHandler;
 import util.MainWindow;
+import util.ReturnToMenu;
 import util.Vect;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
-import static java.awt.event.KeyEvent.VK_SHIFT;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener {
+
+public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
     private boolean init = false;
@@ -56,8 +55,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     
             // Camera
             Dimension screenSize = MainWindow.getScreenDimension();
-            int tileSize = TileManager.get().getTileSize();
-            Vect center = new Vect(screenSize.width/2.0 - tileSize/2.0, screenSize.getHeight()/2.0 - tileSize/2.0);
+            Vect center = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
             camera = new Camera(center);
     
             // World
@@ -81,6 +79,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
             setFocusable(true);
+            requestFocus();
+    
+            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
+            getActionMap().put("ReturnToMenu", new ReturnToMenu(GameWindow.get()));
+            
             
             timer = new Timer(33, this);
             timer.start();
@@ -97,6 +100,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         instance = null;
         timer.stop();
         player.dispose();
+        tileManager.dispose();
     }
     
     /**
@@ -107,7 +111,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
-            keyInput();
             player.update();
             
             // Checking collisions with map
@@ -140,12 +143,6 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         }
     }
     
-    private void keyInput() { //TODO handle this
-        if(KeyHandler.isPressed(VK_ESCAPE)) {
-            GameWindow.get().dispose();
-            MainWindow.switchTo(MenuWindow.get().init());
-        }
-    }
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -158,46 +155,5 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
         // Drawing the player
         player.draw(g, camera);
         player.showBoundary(g, camera, Color.green);
-    }
-    
-    /**
-     * Invoked when a key has been typed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key typed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyTyped(KeyEvent e) {
-    
-    }
-    
-    /**
-     * Invoked when a key has been pressed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key pressed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == VK_ESCAPE) {
-            GameWindow.get().dispose();
-            MainWindow.switchTo(MenuWindow.get().init());
-        } else if(e.getKeyCode() == VK_ESCAPE && e.getKeyCode() == VK_SHIFT) {
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key released event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyReleased(KeyEvent e) {
-    
     }
 }

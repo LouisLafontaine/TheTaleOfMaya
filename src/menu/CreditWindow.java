@@ -4,14 +4,12 @@
 
 package menu;
 
+import com.sun.tools.javac.Main;
 import util.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 

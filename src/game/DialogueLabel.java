@@ -1,6 +1,5 @@
 package game;
 
-import util.FontUtil;
 import util.MainWindow;
 import util.ImageUtil;
 import javax.swing.*;
@@ -20,5 +19,4 @@ public class DialogueLabel extends JLabel {
         setFont(new Font("Serif", Font.PLAIN, 30));
         this.setHorizontalTextPosition(JLabel.CENTER);
     }
-
 }

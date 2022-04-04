@@ -60,7 +60,7 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/map.txt", camera);
+            tileManager = TileManager.get().init("resources/maps/world.tmx", "resources/images/worldTiles/world.png", camera);
             
             addKeyListener(this);
             setFocusable(true);
@@ -127,11 +127,7 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
         } else if(key == VK_RIGHT) {
             camera.move(10,0);
         } else if(key == VK_LEFT) {
-            camera.move(-10,0);
-        } else if(key == VK_1) {
-            tileManager.zoom(0.3);
-        } else if (key == VK_2) {
-            tileManager.zoom(-0.3);
+            camera.move(-10, 0);
         }
         
         if(key == VK_ESCAPE) {

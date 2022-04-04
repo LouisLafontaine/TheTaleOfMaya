@@ -59,12 +59,11 @@ public class GamePanel extends JPanel implements ActionListener {
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/map.txt", camera);
+            tileManager = TileManager.get().init("resources/maps/world.tmx", "resources/images/worldTiles/world.png", camera);
     
             // Entities
-            Dimension mapDimension = tileManager.getMapDimension();
-            double mapCenterX = (mapDimension.height/2.0);
-            double mapCenterY = (mapDimension.width/2.0);
+            double mapCenterX = (tileManager.getMapWidth()/2.0);
+            double mapCenterY = (tileManager.getMapHeight()/2.0);
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
@@ -114,7 +113,6 @@ public class GamePanel extends JPanel implements ActionListener {
             player.update();
             
             // Checking collisions with map
-            Dimension mapDimension = tileManager.getMapDimension();
             int tileSize = tileManager.getTileSize();
 //            outerloop:
 //            for(int row = 0; row < mapDimension.height; row++) {
@@ -147,7 +145,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         // Drawing the map
-        tileManager.draw(g, true);
+        tileManager.draw(g);
         // Drawing the entities
         for(Entity e : entities) {
             e.draw(g, camera);

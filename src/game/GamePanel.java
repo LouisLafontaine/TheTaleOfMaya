@@ -30,10 +30,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3");
 
-    ArrayList<Sound> soundList = new ArrayList<Sound>();
-
-    Sound collisionSound = new Sound("resources/sounds/ambientSound/collision.mp3");
-    Sound walkingSound = new Sound("resources/sounds/ambientSound/walking.mp3");
+    SoundEffect sound = new SoundEffect();
 
     // World settings
     
@@ -64,9 +61,6 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             init = true;
 
             // Music
-            soundList.add(collisionSound);
-            soundList.add(walkingSound);
-
             BgMusic.play();
 
             // Camera
@@ -89,7 +83,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/rock.png");
             entities.add(boulder);
 
-            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/npc.png", "bonjour");
+            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/npc.png", "Maya! Te voilà enfin réveillée! Vite! il faut aller sauver ton petit frère. Des monstres l'ont capturé et se sont dirigés vers le nord! Tu peux utiliser ton épée grâce au bouton ___");
             entities.add(npc);
             
             // Keyboard inputs
@@ -135,7 +129,6 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
                     int y = row * tileSize;
                     Rectangle r = new Rectangle(x, y, tileSize, tileSize);
                     if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
-                        (soundList.get(0)).play();
                         player.solveCollision(r);
                         break outerloop; // TODO
                     }
@@ -147,10 +140,6 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
                     if(en instanceof NPC) {
                         NPC npc = (NPC) en;
                         add(npc.dialogueLabel);
-                    }
-                    else {
-                        (soundList.get(0)).play();
-                        (soundList.get(0)).setRepeat(false);
                     }
                     player.solveCollision(en);
                 }

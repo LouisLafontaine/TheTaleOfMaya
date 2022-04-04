@@ -13,12 +13,13 @@ public class DialogueLabel extends JLabel {
     public DialogueLabel(String dialogue) {
         super(dialogue);
         setLocation((int) (MainWindow.getScreenDimension().width / 2.0), 200);
-        setSize(500, 200);
+        setSize(420, 120);
         BufferedImage dialogFrame = ImageUtil.getFrom("resources/images/dialogFrame.png");
-        this.setIcon(new ImageIcon(dialogFrame));
+        //this.setIcon(new ImageIcon(dialogFrame));
         setForeground(Color.black);
         setFont(new Font("Serif", Font.PLAIN, 30));
-        this.setHorizontalTextPosition(JLabel.CENTER);
+        //this.setHorizontalTextPosition(JLabel.CENTER);
+        this.setLineWrap(true);
         this.setFocusable(true);
     }
 }

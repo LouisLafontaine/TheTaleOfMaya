@@ -2,6 +2,7 @@ package game;
 
 import util.ImageUtil;
 import util.Vect;
+import util.Sound;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,6 +13,7 @@ public abstract class Entity {
     protected Vect pos;
     private final Rectangle bounds;
     protected BufferedImage image;
+    protected Sound collisionSound= new Sound("resources/sounds/ambientSound/Collision.mp3");
 
     public Entity(double x, double y, String imagePath) { //TODO overload constructor make one without imagePath
         pos = new Vect(x  * TileManager.get().getTileSize(), y  * TileManager.get().getTileSize());
@@ -49,6 +51,7 @@ public abstract class Entity {
     
     
     public void solveCollision(Rectangle r) {
+        collisionSound.play();
         Rectangle i = getBounds().intersection(r);
         if(i.width < i.height) {
             if(pos.x < r.x) {

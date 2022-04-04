@@ -116,18 +116,18 @@ public class GamePanel extends JPanel implements ActionListener {
             // Checking collisions with map
             Dimension mapDimension = tileManager.getMapDimension();
             int tileSize = tileManager.getTileSize();
-            outerloop:
-            for(int row = 0; row < mapDimension.height; row++) {
-                for(int col = 0; col < mapDimension.width; col ++) {
-                    int x = col * tileSize;
-                    int y = row * tileSize;
-                    Rectangle r = new Rectangle(x, y, tileSize, tileSize);
-                    if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
-                        player.solveCollision(r);
-                        break outerloop; // TODO
-                    }
-                }
-            }
+//            outerloop:
+//            for(int row = 0; row < mapDimension.height; row++) {
+//                for(int col = 0; col < mapDimension.width; col ++) {
+//                    int x = col * tileSize;
+//                    int y = row * tileSize;
+//                    Rectangle r = new Rectangle(x, y, tileSize, tileSize);
+//                    if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
+//                        player.solveCollision(r);
+//                        break outerloop; // TODO
+//                    }
+//                }
+//            }
             // Checking collisions with entities
             for(Entity en : entities) {
                 if(player.isColliding(en)) {
@@ -154,6 +154,5 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         // Drawing the player
         player.draw(g, camera);
-        player.showBoundary(g, camera, Color.green);
     }
 }

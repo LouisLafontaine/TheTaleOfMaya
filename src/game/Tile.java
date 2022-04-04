@@ -11,4 +11,14 @@ public class Tile {
         this.image = ImageUtil.getFrom(imagePath);
         this.collision = collision;
     }
+    
+    public Tile(BufferedImage bufferedImage, boolean collision) {
+        this.image = bufferedImage;
+        this.collision = collision;
+    }
+    
+    public Tile() {
+        this.image = null;
+        this. collision = false;
+    }
 }

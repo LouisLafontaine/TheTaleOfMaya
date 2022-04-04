@@ -7,11 +7,12 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TileManager {
     public static TileManager instance;
     private boolean init = false;
-    private final ArrayList<Tile> tiles;
+    private final ArrayList<Tile> tiless;
     private ArrayList<int[][]> maps;
     private final int tileRes = 16;
     private double scale = 4;
@@ -22,9 +23,10 @@ public class TileManager {
     private int mapWidth;
     private int mapHeight;
     BufferedImage mapImage;
+    HashMap<Integer, Tile> tiles;
     
     private TileManager() {
-        tiles = new ArrayList<>();
+        tiless = new ArrayList<>();
     }
     
     public static TileManager get() {
@@ -40,8 +42,7 @@ public class TileManager {
             this.camera = camera;
             maps = new ArrayList<>();
             loadMap(mapPath);
-            loadMap("resources/maps/world.tmx", true);
-            mapImage = ImageUtil.getFrom("resources/images/worldTiles/world.png");
+            loadMap("resources/maps/world.tmx", "resources/images/worldTiles/world.png");
         } else {
             System.err.println("The TileManager instance has already been initialized !");
         }
@@ -64,7 +65,7 @@ public class TileManager {
                         && (worldX < camera.getPos().x + camera.getCenter().x + tileSize)
                         && (worldY > camera.getPos().y - camera.getCenter().y - tileSize)
                         && (worldY < camera.getPos().y + camera.getCenter().y + tileSize)) {
-                    g.drawImage(tiles.get(map[i][j]).image, screenX, screenY, tileSize,tileSize, null);
+                    g.drawImage(tiless.get(map[i][j]).image, screenX, screenY, tileSize,tileSize, null);
                 }
             }
         }
@@ -72,8 +73,6 @@ public class TileManager {
     
     
     public void draw(Graphics g, boolean t) {
-        System.out.println("width" + mapImage.getWidth());
-        
         for(int[][] m : maps) {
             for(int i = 0 ; i < mapHeight ; i++) {
                 for(int j = 0 ; j < mapWidth ; j++) {
@@ -81,12 +80,12 @@ public class TileManager {
                     int worldY = (i * tileSize);
                     int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
                     int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
-                    if(m[i][j] != 0) {
-                        int px = ((m[i][j] - 1)) % (mapImage.getWidth()/16);
-                        int py = ((m[i][j] - 1 )) / (mapImage.getWidth()/16);
-                        px *= 16;
-                        py*=16;
-                        g.drawImage(mapImage.getSubimage(px, py, 16, 16), screenX, screenY,  null);
+                    // if statement to not draw tiles outside the screen
+                    if((worldX > camera.getPos().x - camera.getCenter().x - tileSize)
+                            && (worldX < camera.getPos().x + camera.getCenter().x + tileSize)
+                            && (worldY > camera.getPos().y - camera.getCenter().y - tileSize)
+                            && (worldY < camera.getPos().y + camera.getCenter().y + tileSize)) {
+                        g.drawImage(tiles.get(m[i][j]).image, screenX, screenY, null);
                     }
                 }
             }
@@ -101,7 +100,7 @@ public class TileManager {
             String s;
             while(!(s = br.readLine()).equals("--")) {
                 String[] tileInfo = s.split(" ");
-                tiles.add(new Tile(tileInfo[1], Boolean.parseBoolean(tileInfo[0])));
+                tiless.add(new Tile(tileInfo[1], Boolean.parseBoolean(tileInfo[0])));
             }
             s = br.readLine();
             for(int i = 0; i < mapDimension.height ; i++) {
@@ -121,9 +120,10 @@ public class TileManager {
     /**
      *
      * @param mapPath
-     * @param t
+     * @param mapImagePath
      */
-    public void loadMap(String mapPath, Boolean t) {
+    public void loadMap(String mapPath, String mapImagePath) {
+        mapImage = ImageUtil.getFrom(mapImagePath);
         String s = "";
         try {
             BufferedReader br = new BufferedReader(new FileReader(mapPath));
@@ -133,18 +133,15 @@ public class TileManager {
             int i1 = s.indexOf("width") + 7;
             int i2 = s.indexOf("\"", i1);
             mapWidth = Integer.parseInt(s.substring(i1, i2));
-            System.out.println("map width : " + mapWidth);
 
             i1 = s.indexOf("height=") + 8;
             i2 = s.indexOf("\"", i1);
             mapHeight = Integer.parseInt(s.substring(i1, i2));
-            System.out.println("map height : " + mapHeight);
             
             i1 = s.indexOf("tilewidth=") + 11;
             i2 = s.indexOf("\"", i1);
-            System.out.println("tilewidth : " + s.substring(i1,i2));
             
-//            tileSize = Integer.parseInt(s.substring(i1, i2));
+//            tileRes = Integer.parseInt(s.substring(i1, i2));
             tileSize = 64;
             
             while(!s.contains("encoding")) {
@@ -170,7 +167,33 @@ public class TileManager {
                 }
                 s = br.readLine();
             }
+            // We close the reader
             br.close();
+            
+            // We initialize the tiles hashmap
+            tiles = new HashMap<>();
+            int mapW = mapImage.getWidth()/16;
+            for(int[][] m : maps) { // we repeat for every layer of the map
+                for(int i = 0 ; i < m.length ; i++) {
+                    for(int j = 0 ; j < m[i].length ; j++) {
+                        if(m[i][j] != 0) {
+                            int px = (m[i][j] - 1) % mapW;
+                            int py = (m[i][j] - 1 ) / mapW;
+                            px *= 16;
+                            py *= 16;
+                            BufferedImage tempImage = mapImage.getSubimage(px, py, 16, 16);
+                            BufferedImage resizedImage = new BufferedImage(tileSize, tileSize, tempImage.getType());
+                            Graphics g = resizedImage.getGraphics();
+                            g.drawImage(tempImage, 0,0, tileSize, tileSize, null);
+                            g.dispose();
+                            Tile tempTile = new Tile(resizedImage, false); //TODO collisions
+                            tiles.put(m[i][j], tempTile);
+                        } else {
+                            tiles.put(m[i][j], new Tile());
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Couldn't load map at \"" + mapPath + "\"");
@@ -208,7 +231,7 @@ public class TileManager {
     }
     
     public boolean getCollidable(int row, int col) {
-        return tiles.get(map[row][col]).collision;
+        return tiless.get(map[row][col]).collision;
     }
     
     public Dimension getMapDimension() {

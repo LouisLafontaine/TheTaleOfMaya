@@ -55,7 +55,7 @@ public class Player extends Entity {
     public void draw(Graphics g, Camera c) {
         Graphics2D g2d = (Graphics2D) g;
         int tileSize = TileManager.get().getTileSize();
-        g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, tileSize, null);
+        g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, 80, 80, null);
     }
     
     public void dispose() {

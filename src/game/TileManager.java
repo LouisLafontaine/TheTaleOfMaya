@@ -14,11 +14,10 @@ public class TileManager {
     private boolean init = false;
     private HashMap<Integer, Tile> tiles;
     private ArrayList<int[][]> mapLayers;
-    private final double scale = 4;
-    private int tileRes;
-    private int tileSize;
-    private Dimension mapDimension;
+    private boolean[][] collisionMap;
     private Camera camera;
+    private final double SCALE = 4;
+    private int tileSize;
     private int mapWidth;
     private int mapHeight;
     
@@ -36,10 +35,8 @@ public class TileManager {
     public TileManager init(String mapPath, String mapImagePath, Camera camera) {
         if(!init) {
             init = true;
-            
             this.camera = camera;
-            mapLayers = new ArrayList<>();
-            loadMap("resources/maps/world.tmx", "resources/images/worldTiles/world.png");
+            loadMap(mapPath, mapImagePath);
         } else {
             System.err.println("The TileManager instance has already been initialized !");
         }
@@ -77,58 +74,88 @@ public class TileManager {
      */
     public void loadMap(String mapPath, String mapImagePath) {
         BufferedImage mapImage = ImageUtil.getFrom(mapImagePath);
-        String s = "";
+        String s;
         try {
             BufferedReader br = new BufferedReader(new FileReader(mapPath));
-            br.readLine();
+            br.readLine(); // skipping first line
+    
             s = br.readLine();
-            
-            int i1 = s.indexOf("width") + 7;
+    
+            // Reading map width
+            String w = "width=\"";
+            int i1 = s.indexOf(w) + w.length();
             int i2 = s.indexOf("\"", i1);
             mapWidth = Integer.parseInt(s.substring(i1, i2));
-
-            i1 = s.indexOf("height=") + 8;
+    
+            // Reading map height
+            String h = "height=\"";
+            i1 = s.indexOf(h) + h.length();
             i2 = s.indexOf("\"", i1);
             mapHeight = Integer.parseInt(s.substring(i1, i2));
-            
-            i1 = s.indexOf("tilewidth=") + 11;
+    
+            // Reading tile resolution
+            String tw = "tilewidth=\"";
+            i1 = s.indexOf(tw) + tw.length();
             i2 = s.indexOf("\"", i1);
+            int tileRes = Integer.parseInt(s.substring(i1, i2));
+    
+            // Setting tile size (effective size of a tile in px on the screen)
+            tileSize = (int) (tileRes * SCALE);
+    
+            // Going to the first beginning of the first map (which has to be the collision map)
+            while (!s.contains("encoding")) {
+                s = br.readLine();
+            }
+            s = br.readLine();
+    
+            // Initializing the collision map
+            collisionMap = new boolean[mapHeight][mapWidth];
+            for (int i = 0; i < mapHeight; i++) {
+                String[] numbers = s.split(",");
+                for (int j = 0; j < numbers.length; j++) {
+                    if (Integer.parseInt(numbers[j]) != 0) {
+                        collisionMap[i][j] = true;
+                    } else {
+                        collisionMap[i][j] = false;
+                    }
+                }
+                s = br.readLine();
+            }
             
-            mapDimension = new Dimension(mapWidth, mapHeight);
-            
-//            tileRes = Integer.parseInt(s.substring(i1, i2));
-            tileSize = 64;
-            
-            while(!s.contains("encoding")) {
+            // Going to the next map if there is one (if none then s is null)
+            while(s != null && !s.contains("encoding")) {
                 s = br.readLine();
             }
             s = br.readLine();
             
+            mapLayers = new ArrayList<>();
             
-            int mapCounter = 0;
-            while(s != null && !s.contains("</map>")){ // We read all the map data
-                mapLayers.add(new int[mapHeight][mapWidth]);
-                for(int i=0; i<mapHeight; i++) {
+            // Reading map data
+            while(s != null && !s.contains("</map>")){ // reading all the map data
+                // Initializing the map layers
+                int[][] layer = new int[mapHeight][mapWidth];
+                for(int i = 0 ; i < mapHeight ; i++) {
                     String[] numbers = s.split(",");
-                    for(int j=0; j<numbers.length; j++) {
-                        mapLayers.get(mapCounter)[i][j] = (Integer.parseInt(numbers[j]));
+                    for(int j = 0; j < numbers.length ; j++) {
+                        layer[i][j] = Integer.parseInt(numbers[j]);
                     }
                     s = br.readLine();
                 }
-                mapCounter++;
-                // We go the next map
+                mapLayers.add(layer);
+                
+                // Going to the next map if there is one (if none then s is null)
                 while(s != null && !s.contains("encoding")) {
                     s = br.readLine();
                 }
                 s = br.readLine();
             }
-            // We close the reader
             br.close();
             
-            // We initialize the tiles hashmap
+            // Initializing the tiles hashmap
             tiles = new HashMap<>();
             int mapW = mapImage.getWidth()/16;
-            for(int[][] m : mapLayers) { // we repeat for every layer of the map
+            Tile emptyTile = new Tile();
+            for(int[][] m : mapLayers) { // For every layer of the map
                 for(int i = 0 ; i < m.length ; i++) {
                     for(int j = 0 ; j < m[i].length ; j++) {
                         if(m[i][j] != 0) {
@@ -144,7 +171,7 @@ public class TileManager {
                             Tile tempTile = new Tile(resizedImage, false); //TODO collisions
                             tiles.put(m[i][j], tempTile);
                         } else {
-                            tiles.put(m[i][j], new Tile());
+                            tiles.put(m[i][j], emptyTile);
                         }
                     }
                 }

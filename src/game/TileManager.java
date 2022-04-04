@@ -12,9 +12,9 @@ import java.util.HashMap;
 public class TileManager {
     public static TileManager instance;
     private boolean init = false;
-    private HashMap<Integer, Tile> tiles;
+    private HashMap<Integer, BufferedImage> tiles;
     private ArrayList<int[][]> mapLayers;
-    private boolean[][] collisionMap;
+    boolean[][] collisionMap;
     private Camera camera;
     private final double SCALE = 4;
     private int tileSize;
@@ -60,7 +60,7 @@ public class TileManager {
                             && (worldX < camera.getPos().x + camera.getCenter().x + tileSize)
                             && (worldY > camera.getPos().y - camera.getCenter().y - tileSize)
                             && (worldY < camera.getPos().y + camera.getCenter().y + tileSize)) {
-                        g.drawImage(tiles.get(m[i][j]).image, screenX, screenY, null);
+                        g.drawImage(tiles.get(m[i][j]), screenX, screenY, null);
                     }
                 }
             }
@@ -154,7 +154,6 @@ public class TileManager {
             // Initializing the tiles hashmap
             tiles = new HashMap<>();
             int mapW = mapImage.getWidth()/16;
-            Tile emptyTile = new Tile();
             for(int[][] m : mapLayers) { // For every layer of the map
                 for(int i = 0 ; i < m.length ; i++) {
                     for(int j = 0 ; j < m[i].length ; j++) {
@@ -163,15 +162,14 @@ public class TileManager {
                             int py = (m[i][j] - 1 ) / mapW;
                             px *= 16;
                             py *= 16;
-                            BufferedImage tempImage = mapImage.getSubimage(px, py, 16, 16);
+                            BufferedImage tempImage = mapImage.getSubimage(px, py, tileRes, tileRes);
                             BufferedImage resizedImage = new BufferedImage(tileSize, tileSize, tempImage.getType());
                             Graphics g = resizedImage.getGraphics();
                             g.drawImage(tempImage, 0,0, tileSize, tileSize, null);
                             g.dispose();
-                            Tile tempTile = new Tile(resizedImage, false); //TODO collisions
-                            tiles.put(m[i][j], tempTile);
+                            tiles.put(m[i][j], resizedImage);
                         } else {
-                            tiles.put(m[i][j], emptyTile);
+                            tiles.put(m[i][j], null);
                         }
                     }
                 }
@@ -188,7 +186,7 @@ public class TileManager {
     }
     
     public boolean getCollidable(int row, int col) {
-        return false; //TODO fix this
+        return collisionMap[row][col];
     }
     
     public int getMapWidth() {

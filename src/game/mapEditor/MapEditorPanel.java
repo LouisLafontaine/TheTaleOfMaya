@@ -55,8 +55,7 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
             
             // Camera
             Dimension screenSize = MainWindow.getScreenDimension();
-            int tileSize = TileManager.get().getTileSize();
-            Vect center = new Vect(screenSize.width/2.0 - tileSize/2.0, screenSize.getHeight()/2.0 - tileSize/2.0);
+            Vect center = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
             camera = new Camera(center);
     
             // World
@@ -80,6 +79,7 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
     protected void dispose() {
         instance = null;
         tileManager.dispose();
+        timer.stop();
     }
     
     /**

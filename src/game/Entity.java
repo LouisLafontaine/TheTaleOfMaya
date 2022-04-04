@@ -33,7 +33,7 @@ public abstract class Entity {
         Rectangle r = getBounds();
         int screenX = (int) (r.x - c.getPos().x + c.getCenter().x);
         int screenY = (int) (r.y - c.getPos().y + c.getCenter().y);
-        g2d.setStroke(new java.awt.BasicStroke(3));
+        g2d.setStroke(new BasicStroke(2));
         g2d.setColor(co);
         g2d.drawRect(screenX , screenY, r.width, r.height);
         g2d.setStroke(old);

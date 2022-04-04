@@ -1,6 +1,5 @@
 package game;
 
-import menu.MenuWindow;
 import util.KeyHandler;
 import util.MainWindow;
 import util.ReturnToMenu;
@@ -12,9 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import static java.awt.event.KeyEvent.VK_ESCAPE;
-
-
 public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
@@ -25,7 +21,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private Camera camera;
     private ArrayList<Entity> entities;
     
-    // World settings
     
     /**
      * Creates a Game.GamePanel
@@ -83,7 +78,6 @@ public class GamePanel extends JPanel implements ActionListener {
             getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
             getActionMap().put("ReturnToMenu", new ReturnToMenu(GameWindow.get()));
             
-            
             timer = new Timer(33, this);
             timer.start();
         } else {
@@ -114,18 +108,18 @@ public class GamePanel extends JPanel implements ActionListener {
             
             // Checking collisions with map
             int tileSize = tileManager.getTileSize();
-//            outerloop:
-//            for(int row = 0; row < mapDimension.height; row++) {
-//                for(int col = 0; col < mapDimension.width; col ++) {
-//                    int x = col * tileSize;
-//                    int y = row * tileSize;
-//                    Rectangle r = new Rectangle(x, y, tileSize, tileSize);
-//                    if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
-//                        player.solveCollision(r);
-//                        break outerloop; // TODO
-//                    }
-//                }
-//            }
+            outerloop:
+            for(int row = 0; row < tileManager.getMapHeight(); row++) {
+                for(int col = 0; col < tileManager.getMapWidth(); col ++) {
+                    int x = col * tileSize;
+                    int y = row * tileSize;
+                    Rectangle r = new Rectangle(x, y, tileSize, tileSize);
+                    if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
+                        player.solveCollision(r);
+                        break outerloop; // TODO
+                    }
+                }
+            }
             // Checking collisions with entities
             for(Entity en : entities) {
                 if(player.isColliding(en)) {
@@ -152,5 +146,25 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         // Drawing the player
         player.draw(g, camera);
+        player.showBoundary(g, camera, Color.red);
+        
+        // show tile collision //TODO move this to TileManager
+        Graphics2D g2d = (Graphics2D) g;
+        Stroke old = g2d.getStroke();
+        g2d.setStroke(new BasicStroke(2));
+        for(int i = 0 ; i < tileManager.collisionMap.length; i++) {
+            for(int j = 0 ; j < tileManager.collisionMap[i].length ; j ++) {
+                int tileSize = tileManager.getTileSize();
+                int worldX = (j * tileSize);
+                int worldY = (i * tileSize);
+                int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
+                int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
+                if(tileManager.collisionMap[i][j]) {
+                    g.setColor(Color.red);
+                    g.drawRect(screenX, screenY, tileSize, tileSize);
+                }
+            }
+        }
+        g2d.setStroke(old);
     }
 }

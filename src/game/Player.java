@@ -15,7 +15,9 @@ public class Player extends Entity {
     public static Player instance;
     private boolean init = false;
     private final HashMap<String, Animation> directionImage = new HashMap<>();
-    
+    public int state = 0;
+
+
     private Player() {
         super(0, 0, "resources/images/playerImages/zelda.png");
     }

@@ -16,6 +16,7 @@ public class Player extends Entity {
     private boolean init = false;
     private final HashMap<String, Animation> directionImage = new HashMap<>();
     public int state = 0;
+    public int lastMovement;
 
 
     private Player() {
@@ -86,15 +87,19 @@ public class Player extends Entity {
         boolean left = KeyHandler.isPressed(VK_LEFT) || KeyHandler.isPressed(VK_A);
         
         if(up) {
+            lastMovement = 0;
             pos.add(0, -10);
             image = directionImage.get("up").getCurrentFrame();
         } else if(down) {
+            lastMovement = 1;
             pos.add(0,10);
             image = directionImage.get("down").getCurrentFrame();
         } else if(right) {
+            lastMovement = 2;
             pos.add(10,0);
             image = directionImage.get("right").getCurrentFrame();
         } else if(left) {
+            lastMovement = 3;
             pos.add(-10,0);
             image = directionImage.get("left").getCurrentFrame();
         }

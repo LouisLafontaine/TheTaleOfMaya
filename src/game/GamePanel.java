@@ -160,7 +160,10 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
     
     private void keyInput() { //TODO handle this
         if(player.state == talkingState) {
-            if(KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_LEFT) || KeyHandler.isPressed(VK_RIGHT)){
+            if(((KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 0)
+            || (KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 1
+            || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 2
+            || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_UP)) && player.lastMovement == 3){
                 if(talkingNPC.dialogueno < talkingNPC.dialogues.size()-1){
                     talkingNPC.dialogueno++;
                 }

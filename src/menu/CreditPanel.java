@@ -10,17 +10,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CreditPanel extends JPanel  {
-    
     public static CreditPanel instance;       // instance of the Menu.CreditPanel class
     private boolean init = false;           // true if the instance has been initialized, false otherwise
-    
     /**
      * Creates a Menu.CreditPanel
      */
     private CreditPanel() {
-    
     }
-    
     /**
      * This method ensures that only one instance of the Menu.CreditPanel class can be created
      *
@@ -32,14 +28,12 @@ public class CreditPanel extends JPanel  {
         }
         return instance;
     }
-    
     /**
      * Initializes the instance of the Menu.CreditPanel class
      */
     public CreditPanel init() {
         if(!init) {
             init = true;
-            
             getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
             getActionMap().put("ReturnToMenu", new ReturnToMenu(CreditWindow.get()));
             
@@ -64,7 +58,6 @@ public class CreditPanel extends JPanel  {
     protected void dispose() {
         instance = null;
     }
-    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.black);

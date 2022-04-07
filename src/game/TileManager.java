@@ -22,6 +22,7 @@ public class TileManager {
     private int mapHeight;
     
     private TileManager() {
+    
     }
     
     public static TileManager get() {
@@ -77,29 +78,36 @@ public class TileManager {
         try {
             BufferedReader br = new BufferedReader(new FileReader(mapPath));
             br.readLine(); // skipping first line
+            
             s = br.readLine();
+            
             // Reading map width
             String w = "width=\"";
             int i1 = s.indexOf(w) + w.length();
             int i2 = s.indexOf("\"", i1);
             mapWidth = Integer.parseInt(s.substring(i1, i2));
+            
             // Reading map height
             String h = "height=\"";
             i1 = s.indexOf(h) + h.length();
             i2 = s.indexOf("\"", i1);
             mapHeight = Integer.parseInt(s.substring(i1, i2));
+            
             // Reading tile resolution
             String tw = "tilewidth=\"";
             i1 = s.indexOf(tw) + tw.length();
             i2 = s.indexOf("\"", i1);
             int tileRes = Integer.parseInt(s.substring(i1, i2));
+            
             // Setting tile size (effective size of a tile in px on the screen)
             tileSize = (int) (tileRes * SCALE);
+            
             // Going to the first beginning of the first map (which has to be the collision map)
             while (!s.contains("encoding")) {
                 s = br.readLine();
             }
             s = br.readLine();
+            
             // Initializing the collision map
             collisionMap = new boolean[mapHeight][mapWidth];
             for (int i = 0; i < mapHeight; i++) {

@@ -13,7 +13,7 @@ public abstract class Entity {
     protected Vect pos;
     private final Rectangle bounds;
     protected BufferedImage image;
-    protected Sound collisionSound= new Sound("resources/sounds/ambientSound/Collision.mp3");
+    protected Sound collisionSound= new Sound("resources/sounds/ambientSound/Collision.mp3"); //TODO move this to player
 
     public Entity(double x, double y, String imagePath) { //TODO overload constructor make one without imagePath
         pos = new Vect(x  * TileManager.get().getTileSize(), y  * TileManager.get().getTileSize());
@@ -35,7 +35,7 @@ public abstract class Entity {
         Rectangle r = getBounds();
         int screenX = (int) (r.x - c.getPos().x + c.getCenter().x);
         int screenY = (int) (r.y - c.getPos().y + c.getCenter().y);
-        g2d.setStroke(new java.awt.BasicStroke(3));
+        g2d.setStroke(new java.awt.BasicStroke(2));
         g2d.setColor(co);
         g2d.drawRect(screenX , screenY, r.width, r.height);
         g2d.setStroke(old);
@@ -51,7 +51,7 @@ public abstract class Entity {
     
     
     public void solveCollision(Rectangle r) {
-        collisionSound.play();
+        collisionSound.play(); //TODO move this to player
         Rectangle i = getBounds().intersection(r);
         if(i.width < i.height) {
             if(pos.x < r.x) {

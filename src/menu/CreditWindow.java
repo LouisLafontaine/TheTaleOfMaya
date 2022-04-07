@@ -4,14 +4,12 @@
 
 package menu;
 
+import com.sun.tools.javac.Main;
 import util.MainWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 
@@ -26,7 +24,7 @@ public class CreditWindow extends JFrame {
     private CreditWindow() {
         super("Credit Window");
     }
-
+    
     /**
      * This method ensures that only one instance of the Menu.CreditWindow class can be created
      *
@@ -38,7 +36,7 @@ public class CreditWindow extends JFrame {
         }
         return instance;
     }
-
+    
     /**
      * Initializes the instance of the Menu.CreditWindow class
      */
@@ -48,9 +46,11 @@ public class CreditWindow extends JFrame {
             
             // Window settings -----------------------------------------------------------------------------------------
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    
+            
             // Main Panel ----------------------------------------------------------------------------------------------
-            add(CreditPanel.get().init());
+            CreditPanel creditPanel = CreditPanel.get();
+            add(creditPanel);
+            creditPanel.init();
         } else {
             System.err.println("The Menu.CreditWindow instance has already been initialized !");
         }

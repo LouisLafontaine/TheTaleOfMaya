@@ -4,28 +4,23 @@
 
 package menu;
 
-
-import util.MainWindow;
+import util.ReturnToMenu;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import static java.awt.event.KeyEvent.VK_ESCAPE;
-
-public class CreditPanel extends JPanel implements KeyListener {
-
+public class CreditPanel extends JPanel  {
+    
     public static CreditPanel instance;       // instance of the Menu.CreditPanel class
     private boolean init = false;           // true if the instance has been initialized, false otherwise
-
+    
     /**
      * Creates a Menu.CreditPanel
      */
     private CreditPanel() {
-
+    
     }
-
+    
     /**
      * This method ensures that only one instance of the Menu.CreditPanel class can be created
      *
@@ -37,7 +32,7 @@ public class CreditPanel extends JPanel implements KeyListener {
         }
         return instance;
     }
-
+    
     /**
      * Initializes the instance of the Menu.CreditPanel class
      */
@@ -45,9 +40,9 @@ public class CreditPanel extends JPanel implements KeyListener {
         if(!init) {
             init = true;
             
-            addKeyListener(this);
-            setFocusable(true);
-    
+            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
+            getActionMap().put("ReturnToMenu", new ReturnToMenu(CreditWindow.get()));
+            
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -69,49 +64,10 @@ public class CreditPanel extends JPanel implements KeyListener {
     protected void dispose() {
         instance = null;
     }
-
+    
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
-    }
-    
-    /**
-     * Invoked when a key has been typed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key typed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyTyped(KeyEvent e) {
-    
-    }
-    
-    /**
-     * Invoked when a key has been pressed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key pressed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == VK_ESCAPE) {
-            CreditWindow.get().dispose();
-            MainWindow.switchTo(MenuWindow.get().init());
-        }
-    }
-    
-    /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key released event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyReleased(KeyEvent e) {
-    
     }
 }

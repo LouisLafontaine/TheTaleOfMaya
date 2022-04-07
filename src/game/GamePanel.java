@@ -25,14 +25,12 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
     private Camera camera;
     private ArrayList<Entity> entities;
     private int tileSize;
-    private int playingState = 0;
+    private int playingState = 0; // State of the game, determines whether the player is talking to an NPC or not
     private int talkingState = 1;
-    public String speaking = "";
-    private NPC talkingNPC = null;
+    public String speaking = ""; // String of the speaking NPC
+    private NPC talkingNPC = null; // The NPC that is talking
 
-    MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3");
-
-    SoundEffect sound = new SoundEffect();
+    MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
     // World settings
     
@@ -118,7 +116,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
-            keyInput();
+            keyInput(); // listen for key input
 
             if(player.state == playingState) {
                 player.update();
@@ -143,8 +141,8 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
                     if (player.isColliding(en)) {
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
-                            speaking = talkingNPC.speak();
-                            player.state = talkingState;
+                            speaking = talkingNPC.speak(); // makes the NPC speak upon collision between the player and the player
+                            player.state = talkingState; // switching to talking state
                         }
                         player.solveCollision(en);
                     }
@@ -165,9 +163,9 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 2
             || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_UP)) && player.lastMovement == 3){
                 if(talkingNPC.dialogueno < talkingNPC.dialogues.size()-1){
-                    talkingNPC.dialogueno++;
+                    talkingNPC.dialogueno++; // going to the next dialogue
                 }
-                player.state = playingState;
+                player.state = playingState; // switching back to playing state when moving away from NPC, with the movement towards the NPC blocked
             }
         }
         if(KeyHandler.isPressed(VK_ESCAPE)) {
@@ -197,11 +195,11 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             int height = tileSize*3;
             Color c = new Color(64,108,228,175);
             g.setColor(c);
-            g.fillRoundRect(x,y,width,height,35,35);
+            g.fillRoundRect(x,y,width,height,35,35); // dialogue frame
 
             Color c2 = new Color(255,255,255);
             g.setColor(c2);
-            g.drawRoundRect(x,y,width,height,35,35);
+            g.drawRoundRect(x,y,width,height,35,35); // frame border
 
             x += tileSize;
             y += tileSize;
@@ -209,7 +207,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             // g.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf",30));
             g.setFont(g.getFont().deriveFont(Font.PLAIN,30));
             for(String line : speaking.split("\n")){
-                g.drawString(line,x,y);
+                g.drawString(line,x,y); // text on dialogue frame
                 y += 40;
             }
         }

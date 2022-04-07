@@ -8,8 +8,10 @@ import boid.BoidWindow;
 import util.Animation;
 import game.GameWindow;
 import game.mapEditor.MapEditorWindow;
+import jaco.mp3.player.MP3Player;
 import util.FontUtil;
 import util.MainWindow;
+import util.Sound;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +30,9 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
     private Timer timer;
     private HashMap<String, JButton> buttons;
     private Animation background;
-    
+
+    MP3Player MainMenuTheme = new Sound("resources/sounds/musics/Title Theme.mp3"); // background music
+
     /**
      * Creates a Menu.MenuPanel
      */
@@ -60,7 +64,10 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
             
             background = new Animation("images/menuImages/cherryBlossom.png", 576, 324, 128, 1, 12);
             timer = new Timer(1000 / 60, this);
-            
+
+
+            MainMenuTheme.play();
+
             // Setting Layout
             // https://docs.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
             
@@ -113,15 +120,19 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
             repaint();
         }
         if (source == buttons.get("Launch boid")) {
+            MainMenuTheme.stop();
             MenuWindow.get().dispose();
             MainWindow.switchTo(BoidWindow.get().init());
         } else if (source == buttons.get("Launch game")) {
+            MainMenuTheme.stop();
             MenuWindow.get().dispose();
             MainWindow.switchTo(GameWindow.get().init());
         } else if (source == buttons.get("Credits")) {
+            MainMenuTheme.stop();
             MenuWindow.get().dispose();
             MainWindow.switchTo(CreditWindow.get().init());
         } else if(source == buttons.get("Map editor")) {
+            MainMenuTheme.stop();
             MenuWindow.get().dispose();
             MainWindow.switchTo(MapEditorWindow.get().init());
         } else if (source == buttons.get("Exit menu")) {

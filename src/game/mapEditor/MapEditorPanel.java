@@ -15,6 +15,7 @@ import java.awt.event.KeyListener;
 
 import static java.awt.event.KeyEvent.*;
 
+
 public class MapEditorPanel extends JPanel implements ActionListener, KeyListener {
     
     public static MapEditorPanel instance;
@@ -52,14 +53,15 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
     public MapEditorPanel init() {
         if (!init) {
             init = true;
-    
+            
             // Camera
             Dimension screenSize = MainWindow.getScreenDimension();
-            Vect center = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
+            int tileSize = TileManager.get().getTileSize();
+            Vect center = new Vect(screenSize.width/2.0 - tileSize/2.0, screenSize.getHeight()/2.0 - tileSize/2.0);
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/world.tmx", "resources/images/worldTiles/world.png", camera);
+            tileManager = TileManager.get().init("maps/map.txt", camera);
             
             addKeyListener(this);
             setFocusable(true);
@@ -79,7 +81,6 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
     protected void dispose() {
         instance = null;
         tileManager.dispose();
-        timer.stop();
     }
     
     /**
@@ -120,18 +121,24 @@ public class MapEditorPanel extends JPanel implements ActionListener, KeyListene
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
+        
         if(key == VK_UP) {
             camera.move(0,-10);
+            System.out.println("I work just fine");
         } else if(key == VK_DOWN) {
             camera.move(0,10);
         } else if(key == VK_RIGHT) {
             camera.move(10,0);
         } else if(key == VK_LEFT) {
-            camera.move(-10, 0);
+            camera.move(-10,0);
+        } else if(key == VK_1) {
+            tileManager.zoom(0.3);
+        } else if (key == VK_2) {
+            tileManager.zoom(-0.3);
         }
         
         if(key == VK_ESCAPE) {
-            MapEditorWindow.get().dispose();
+            MapEditorPanel.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
         }
     }

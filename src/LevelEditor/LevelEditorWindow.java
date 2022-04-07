@@ -1,37 +1,35 @@
-package game;
-
-import util.MainWindow;
+package LevelEditor;
 
 import javax.swing.*;
 
-public class GameWindow extends JFrame {
+public class LevelEditorWindow extends JFrame{
     
-    public static GameWindow instance;
+    public static LevelEditorWindow instance;
     private boolean init = false;
     
     /**
-     * Creates a Game.GameWindow
+     * Creates a LevelEditorWindow
      */
-    private GameWindow() {
+    private LevelEditorWindow() {
         super();
     }
     
     /**
-     * This method ensures that only one instance of the Game.GameWindow class can be created
+     * This method ensures that only one instance of the LevelEditorWindow class can be created
      *
-     * @return the instance of the Game.GameWindow class
+     * @return the instance of the LevelEditorWindow class
      */
-    public static GameWindow get() {
+    public static LevelEditorWindow get() {
         if(instance == null) {
-            instance = new GameWindow();
+            instance = new LevelEditorWindow();
         }
         return instance;
     }
     
     /**
-     * Initializes the instance of the Game.GameWindow class
+     * Initializes the instance of the LevelEditorWindow class
      */
-    public GameWindow init() {
+    public LevelEditorWindow init() {
         if(!init) {
             init = true;
             
@@ -39,12 +37,12 @@ public class GameWindow extends JFrame {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             
             // Game panel --------------------------------------------------------------------------------------------------
-            add(GamePanel.get().init());
+            add(LevelEditorPanel.get().init());
             
         } else {
-            System.err.println("The GameWindow instance has already been initialized !");
+            System.err.println("The LevelEditorWindow instance has already been initialized !");
         }
-        return GameWindow.get();
+        return LevelEditorWindow.get();
     }
     
     /**
@@ -54,6 +52,6 @@ public class GameWindow extends JFrame {
     public void dispose() {
         super.dispose();
         instance = null;
-        GamePanel.get().dispose();
+        LevelEditorPanel.get().dispose();
     }
 }

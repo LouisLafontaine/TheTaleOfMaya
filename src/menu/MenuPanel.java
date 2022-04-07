@@ -5,7 +5,7 @@
 package menu;
 
 import boid.BoidWindow;
-import game.Animation;
+import util.Animation;
 import game.GameWindow;
 import game.mapEditor.MapEditorWindow;
 import jaco.mp3.player.MP3Player;
@@ -62,7 +62,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
             addKeyListener(this);
             setFocusable(true);
             
-            background = new Animation("resources/images/menuImages/cherryBlossom.png", 576, 324, 128, 1, 12);
+            background = new Animation("images/menuImages/cherryBlossom.png", 576, 324, 128, 1, 12);
             timer = new Timer(1000 / 60, this);
 
 
@@ -83,7 +83,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
             
             for (String s : buttonNames) {
                 JButton b = new JButton(s);
-                b.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf", 50));
+                b.setFont(FontUtil.getFrom("fonts/pixelFont.otf", 50));
                 b.setMargin(new Insets(5, 0, 7, 0));
                 b.setForeground(pink);
                 b.addActionListener(this);
@@ -92,7 +92,7 @@ public class MenuPanel extends JPanel implements ActionListener, KeyListener {
             }
             
             JLabel exitLabel = new JLabel("Press ESC to quit");
-            exitLabel.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf", 40));
+            exitLabel.setFont(FontUtil.getFrom("fonts/pixelFont.otf", 40));
             exitLabel.setForeground(pink);
             add(exitLabel, gbc);
             

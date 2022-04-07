@@ -50,9 +50,7 @@ public class CreditWindow extends JFrame {
             setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     
             // Main Panel ----------------------------------------------------------------------------------------------
-            CreditPanel creditPanel = CreditPanel.get();
-            add(creditPanel);
-            creditPanel.init();
+            add(CreditPanel.get().init());
         } else {
             System.err.println("The Menu.CreditWindow instance has already been initialized !");
         }

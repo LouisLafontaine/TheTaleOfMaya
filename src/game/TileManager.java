@@ -64,7 +64,7 @@ public class TileManager {
         try {
             mapDimension = mapSize(mapPath);
             map = new int[mapDimension.height][mapDimension.width];
-            BufferedReader br = new BufferedReader(new FileReader(mapPath));
+            BufferedReader br = new BufferedReader(new FileReader("resources/" + mapPath));
             String s;
             while(!(s = br.readLine()).equals("--")) {
                 String[] tileInfo = s.split(" ");
@@ -89,7 +89,7 @@ public class TileManager {
         int mapWidth = 0;
         int mapHeight = 0;
         try {
-            BufferedReader br = new BufferedReader(new FileReader(mapPath));
+            BufferedReader br = new BufferedReader(new FileReader("resources/" + mapPath));
             String s = br.readLine();
             while(!(s.equals("--"))) {
                 s = br.readLine();

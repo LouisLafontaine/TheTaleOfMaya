@@ -39,9 +39,7 @@ public class MenuWindow extends JFrame {
             init = true;
             
             // Main Panel ----------------------------------------------------------------------------------------------
-            MenuPanel menuPanel = MenuPanel.get();
-            add(menuPanel);
-            menuPanel.init();
+            add(MenuPanel.get().init());
         } else {
             System.err.println("The MenuWindow instance has already been initialized !");
         }

@@ -69,7 +69,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/map.txt", camera);
+            tileManager = TileManager.get().init("maps/map.txt", camera);
     
             // Entities
             Dimension mapDimension = tileManager.getMapDimension();
@@ -78,7 +78,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
-
+          
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/rock.png");
             entities.add(boulder);
 

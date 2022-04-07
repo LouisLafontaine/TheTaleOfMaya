@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class NPC extends Entity {
     ArrayList<String> dialogues = new ArrayList<>();
-    public int dialogueno = 0;
+    public int dialogueNum = 0;
     
     public NPC(double x, double y, String imagePath){
         super(x,y, imagePath);
@@ -14,7 +14,7 @@ public class NPC extends Entity {
     }
 
     public String speak(){
-        return dialogues.get(dialogueno);
+        return dialogues.get(dialogueNum);
     }
 
 }

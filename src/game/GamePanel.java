@@ -1,6 +1,5 @@
 package game;
 
-import jaco.mp3.a.g;
 import jaco.mp3.player.MP3Player;
 import menu.MenuWindow;
 import util.*;
@@ -106,6 +105,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
         instance = null;
         timer.stop();
         player.dispose();
+        tileManager.dispose();
     }
     
     /**
@@ -162,8 +162,8 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             || (KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 1
             || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 2
             || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_UP)) && player.lastMovement == 3){
-                if(talkingNPC.dialogueno < talkingNPC.dialogues.size()-1){
-                    talkingNPC.dialogueno++; // going to the next dialogue
+                if(talkingNPC.dialogueNum < talkingNPC.dialogues.size()-1){
+                    talkingNPC.dialogueNum++; // going to the next dialogue
                 }
                 player.state = playingState; // switching back to playing state when moving away from NPC, with the movement towards the NPC blocked
             }

@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements ActionListener {
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("resources/maps/world.tmx", "resources/images/worldTiles/world.png", camera);
+            tileManager = TileManager.get().init("resources/maps/myMap.tmx", "resources/images/worldTiles/world.png", camera);
     
             // Entities
             double mapCenterX = (tileManager.getMapWidth()/2.0);

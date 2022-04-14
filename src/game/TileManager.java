@@ -26,14 +26,14 @@ public class TileManager {
     }
     
     public static TileManager get() {
-        if(instance == null) {
+        if (instance == null) {
             instance = new TileManager();
         }
         return instance;
     }
     
     public TileManager init(String mapPath, String mapImagePath, Camera camera) {
-        if(!init) {
+        if (!init) {
             init = true;
             this.camera = camera;
             loadMap(mapPath, mapImagePath);
@@ -48,15 +48,15 @@ public class TileManager {
     }
     
     public void draw(Graphics g) {
-        for(int[][] m : mapLayers) {
-            for(int i = 0 ; i < mapHeight ; i++) {
-                for(int j = 0 ; j < mapWidth ; j++) {
+        for (int[][] m : mapLayers) {
+            for (int i = 0; i < mapHeight; i++) {
+                for (int j = 0; j < mapWidth; j++) {
                     int worldX = (j * tileSize);
                     int worldY = (i * tileSize);
                     int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
-                    int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
+                    int screenY = (int) (worldY - camera.getPos().y + camera.getCenter().y);
                     // if statement to not draw tiles outside the screen
-                    if((worldX > camera.getPos().x - camera.getCenter().x - tileSize)
+                    if ((worldX > camera.getPos().x - camera.getCenter().x - tileSize)
                             && (worldX < camera.getPos().x + camera.getCenter().x + tileSize)
                             && (worldY > camera.getPos().y - camera.getCenter().y - tileSize)
                             && (worldY < camera.getPos().y + camera.getCenter().y + tileSize)) {
@@ -68,7 +68,6 @@ public class TileManager {
     }
     
     /**
-     *
      * @param mapPath
      * @param mapImagePath
      */
@@ -105,7 +104,7 @@ public class TileManager {
             // Setting tile size (effective size of a tile in px on the screen)
             tileSize = (int) (tileRes * SCALE);
             
-           
+            
             s = br.readLine();
             
             // Initializing the collision map
@@ -123,7 +122,7 @@ public class TileManager {
             }
             
             // Going to the next map if there is one (if none then s is null)
-            while(s != null && !s.contains("encoding")) {
+            while (s != null && !s.contains("encoding")) {
                 s = br.readLine();
             }
             s = br.readLine();
@@ -131,12 +130,12 @@ public class TileManager {
             mapLayers = new ArrayList<>();
             
             // Reading map data
-            while(s != null && !s.contains("</map>")){ // reading all the map data
+            while (s != null && !s.contains("</map>")) { // reading all the map data
                 // Initializing the map layers
                 int[][] layer = new int[mapHeight][mapWidth];
-                for(int i = 0 ; i < mapHeight ; i++) {
+                for (int i = 0; i < mapHeight; i++) {
                     String[] numbers = s.split(",");
-                    for(int j = 0; j < numbers.length ; j++) {
+                    for (int j = 0; j < numbers.length; j++) {
                         layer[i][j] = Integer.parseInt(numbers[j]);
                     }
                     s = br.readLine();
@@ -144,7 +143,7 @@ public class TileManager {
                 mapLayers.add(layer);
                 
                 // Going to the next map if there is one (if none then s is null)
-                while(s != null && !s.contains("encoding")) {
+                while (s != null && !s.contains("encoding")) {
                     s = br.readLine();
                 }
                 s = br.readLine();
@@ -153,19 +152,19 @@ public class TileManager {
             
             // Initializing the tiles hashmap
             tiles = new HashMap<>();
-            int mapW = mapImage.getWidth()/16;
-            for(int[][] m : mapLayers) { // For every layer of the map
-                for(int i = 0 ; i < m.length ; i++) {
-                    for(int j = 0 ; j < m[i].length ; j++) {
-                        if(m[i][j] != 0) {
+            int mapW = mapImage.getWidth() / 16;
+            for (int[][] m : mapLayers) { // For every layer of the map
+                for (int i = 0; i < m.length; i++) {
+                    for (int j = 0; j < m[i].length; j++) {
+                        if (m[i][j] != 0) {
                             int px = (m[i][j] - 1) % mapW;
-                            int py = (m[i][j] - 1 ) / mapW;
+                            int py = (m[i][j] - 1) / mapW;
                             px *= 16;
                             py *= 16;
                             BufferedImage tempImage = mapImage.getSubimage(px, py, tileRes, tileRes);
                             BufferedImage resizedImage = new BufferedImage(tileSize, tileSize, tempImage.getType());
                             Graphics g = resizedImage.getGraphics();
-                            g.drawImage(tempImage, 0,0, tileSize, tileSize, null);
+                            g.drawImage(tempImage, 0, 0, tileSize, tileSize, null);
                             g.dispose();
                             tiles.put(m[i][j], resizedImage);
                         } else {

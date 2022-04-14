@@ -8,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 import static java.awt.event.KeyEvent.*;
@@ -64,17 +62,15 @@ public class GamePanel extends JPanel implements ActionListener {
 
             // Camera
             Dimension screenSize = MainWindow.getScreenDimension();
-            tileSize = TileManager.get().getTileSize();
-            Vect center = new Vect(screenSize.width/2.0 - tileSize/2.0, screenSize.getHeight()/2.0 - tileSize/2.0);
+            Vect center = new Vect(screenSize.width/2.0, screenSize.getHeight()/2.0);
             camera = new Camera(center);
     
             // World
-            tileManager = TileManager.get().init("maps/map.txt", camera);
+            tileManager = TileManager.get().init("resources/maps/world.tmx", "resources/images/worldTiles/world.png", camera);
     
             // Entities
-            Dimension mapDimension = tileManager.getMapDimension();
-            double mapCenterX = (mapDimension.height/2.0);
-            double mapCenterY = (mapDimension.width/2.0);
+            double mapCenterX = (tileManager.getMapWidth()/2.0);
+            double mapCenterY = (tileManager.getMapHeight()/2.0);
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
@@ -93,6 +89,7 @@ public class GamePanel extends JPanel implements ActionListener {
             getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
             getActionMap().put("ReturnToMenu", new ReturnToMenu(GameWindow.get()));
             
+            // Game loop timer
             timer = new Timer(33, this);
             timer.start();
         } else {
@@ -123,17 +120,16 @@ public class GamePanel extends JPanel implements ActionListener {
 
             if(player.state == playingState) {
                 player.update();
-
+    
                 // Checking collisions with map
-                Dimension mapDimension = tileManager.getMapDimension();
                 int tileSize = tileManager.getTileSize();
                 outerloop:
-                for (int row = 0; row < mapDimension.height; row++) {
-                    for (int col = 0; col < mapDimension.width; col++) {
+                for(int row = 0; row < tileManager.getMapHeight(); row++) {
+                    for(int col = 0; col < tileManager.getMapWidth(); col ++) {
                         int x = col * tileSize;
                         int y = row * tileSize;
                         Rectangle r = new Rectangle(x, y, tileSize, tileSize);
-                        if (player.isColliding(r) && tileManager.getCollidable(row, col)) {
+                        if(player.isColliding(r) && tileManager.getCollidable(row, col)) {
                             player.solveCollision(r);
                             break outerloop; // TODO
                         }
@@ -214,5 +210,24 @@ public class GamePanel extends JPanel implements ActionListener {
                 y += 40;
             }
         }
+    
+        // show tile collision //TODO move this to TileManager
+        Graphics2D g2d = (Graphics2D) g;
+        Stroke old = g2d.getStroke();
+        g2d.setStroke(new BasicStroke(2));
+        for(int i = 0 ; i < tileManager.collisionMap.length; i++) {
+            for(int j = 0 ; j < tileManager.collisionMap[i].length ; j ++) {
+                int tileSize = tileManager.getTileSize();
+                int worldX = (j * tileSize);
+                int worldY = (i * tileSize);
+                int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
+                int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
+                if(tileManager.collisionMap[i][j]) {
+                    g.setColor(Color.red);
+                    g.drawRect(screenX, screenY, tileSize, tileSize);
+                }
+            }
+        }
+        g2d.setStroke(old);
     }
 }

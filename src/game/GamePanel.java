@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static java.awt.event.KeyEvent.*;
 
-public class GamePanel<collisionSound> extends JPanel implements ActionListener, KeyListener {
+public class GamePanel extends JPanel implements ActionListener {
     
     public static GamePanel instance;
     private boolean init = false;
@@ -79,7 +79,7 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             
             entities = new ArrayList<>();
           
-            Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/rock.png");
+            Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
             entities.add(boulder);
 
             NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/npc.png");
@@ -214,47 +214,5 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
                 y += 40;
             }
         }
-    }
-
-    /**
-     * Invoked when a key has been typed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key typed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyTyped(KeyEvent e) {
-    
-    }
-    
-    /**
-     * Invoked when a key has been pressed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key pressed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == VK_ESCAPE) {
-            BgMusic.stop();
-            GameWindow.get().dispose();
-            MainWindow.switchTo(MenuWindow.get().init());
-        } else if(e.getKeyCode() == VK_ESCAPE && e.getKeyCode() == VK_SHIFT) {
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key released event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyReleased(KeyEvent e) {
-    
     }
 }

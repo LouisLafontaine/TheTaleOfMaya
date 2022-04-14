@@ -21,7 +21,7 @@ public class Player extends Entity {
 
 
     private Player() {
-        super(0, 0, "images/playerImages/zelda.png");
+        super(0, 0, "resources/images/playerImages/zelda.png");
     }
     
     
@@ -40,10 +40,10 @@ public class Player extends Entity {
             
             image = image.getSubimage(0,0,120,130);
     
-            Animation up = new Animation("images/playerImages/zelda.png", 120, 130, 10, 7, 12);
-            Animation down = new Animation("images/playerImages/zelda.png", 120, 130, 10, 5, 12);
-            Animation right = new Animation("images/playerImages/zelda.png", 120, 130, 10, 8, 12);
-            Animation left = new Animation("images/playerImages/zelda.png", 120, 130, 10, 6, 12);
+            Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
+            Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
+            Animation right = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 8, 12);
+            Animation left = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 6, 12);
     
             directionImage.put("up", up);
             directionImage.put("down", down);

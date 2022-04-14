@@ -31,7 +31,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     private HashMap<String, JButton> buttons;
     private Animation background;
 
-    MP3Player MainMenuTheme = new Sound("resources/sounds/musics/Title Theme.mp3"); // background music
+    MP3Player MainMenuTheme = new Sound("resources/sounds/musics/xDeviruchi/Title Theme.mp3"); // background music
 
     /**
      * Creates a Menu.MenuPanel
@@ -62,7 +62,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
             getActionMap().put("ReturnToMenu", new ExitGame());
             
-            background = new Animation("images/menuImages/cherryBlossom.png", 576, 324, 128, 1, 12);
+            background = new Animation("resources/images/menuImages/cherryBlossom.png", 576, 324, 128, 1, 12);
             timer = new Timer(1000 / 60, this);
 
 

@@ -12,7 +12,7 @@ public class Sound extends MP3Player {
     
     public Sound(String soundPath) {
         try {
-            File file = new File("resources/"+ soundPath);
+            File file = new File( soundPath);
             addToPlayList(file);
         } catch(Exception e) {
             System.err.print(e.getMessage());

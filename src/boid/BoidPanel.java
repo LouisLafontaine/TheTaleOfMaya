@@ -6,6 +6,7 @@ package boid;
 
 import menu.MenuWindow;
 import util.MainWindow;
+import util.ReturnToMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ import java.util.LinkedList;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 
-public class BoidPanel extends JPanel implements ActionListener, KeyListener {
+public class BoidPanel extends JPanel implements ActionListener {
     
     public static BoidPanel instance;
     
@@ -57,9 +58,9 @@ public class BoidPanel extends JPanel implements ActionListener, KeyListener {
     public BoidPanel init() {
         if(!init) {
             init = true;
-            
-            addKeyListener(this);
-            setFocusable(true);
+    
+            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
+            getActionMap().put("ReturnToMenu", new ReturnToMenu(BoidWindow.get()));
             
             Boid.setDefaultParameters();
             boids = new LinkedList<>();
@@ -170,44 +171,5 @@ public class BoidPanel extends JPanel implements ActionListener, KeyListener {
     
     public int getNumberOfBoids() {
         return boids.size();
-    }
-    
-    /**
-     * Invoked when a key has been typed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key typed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyTyped(KeyEvent e) {
-    
-    }
-    
-    /**
-     * Invoked when a key has been pressed.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key pressed event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == VK_ESCAPE) {
-            BoidWindow.get().dispose();
-            MainWindow.switchTo(MenuWindow.get().init());
-        }
-    }
-    
-    /**
-     * Invoked when a key has been released.
-     * See the class description for {@link KeyEvent} for a definition of
-     * a key released event.
-     *
-     * @param e the event to be processed
-     */
-    @Override
-    public void keyReleased(KeyEvent e) {
-    
     }
 }

@@ -89,6 +89,9 @@ public class GamePanel<collisionSound> extends JPanel implements ActionListener,
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
             setFocusable(true);
+    
+            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "ReturnToMenu");
+            getActionMap().put("ReturnToMenu", new ReturnToMenu(GameWindow.get()));
             
             timer = new Timer(33, this);
             timer.start();

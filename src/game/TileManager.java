@@ -78,8 +78,11 @@ public class TileManager {
         try {
             BufferedReader br = new BufferedReader(new FileReader(mapPath));
             br.readLine(); // skipping first line
-            
             s = br.readLine();
+            // Going to the first beginning of the first map (which has to be the collision map)
+            while (!s.contains("encoding")) {
+                s += br.readLine();
+            }
             
             // Reading map width
             String w = "width=\"";
@@ -102,10 +105,7 @@ public class TileManager {
             // Setting tile size (effective size of a tile in px on the screen)
             tileSize = (int) (tileRes * SCALE);
             
-            // Going to the first beginning of the first map (which has to be the collision map)
-            while (!s.contains("encoding")) {
-                s = br.readLine();
-            }
+           
             s = br.readLine();
             
             // Initializing the collision map

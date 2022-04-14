@@ -51,4 +51,12 @@ public class MainWindow extends JFrame {
     public static Dimension getScreenDimension() {
         return new Dimension(gd.getDisplayMode().getWidth(), gd.getDisplayMode().getHeight());
     }
+    
+    public static int getScreenWidth() {
+        return gd.getDisplayMode().getWidth();
+    }
+    
+    public static int getScreenHeight() {
+        return gd.getDisplayMode().getHeight();
+    }
 }

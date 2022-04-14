@@ -21,7 +21,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private Player player;
     private Camera camera;
     private ArrayList<Entity> entities;
-    private int tileSize;
     private int playingState = 0; // State of the game, determines whether the player is talking to an NPC or not
     private int talkingState = 1;
     public String speaking = ""; // String of the speaking NPC
@@ -188,6 +187,7 @@ public class GamePanel extends JPanel implements ActionListener {
         player.showBoundary(g, camera, Color.green);
 
         if(player.state == talkingState){
+            int tileSize = tileManager.getTileSize();
             int x = tileSize*2;
             int y = tileSize;
             int width = tileSize*18 ;

@@ -23,7 +23,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private ArrayList<Entity> entities;
     private int playingState = 0; // State of the game, determines whether the player is talking to an NPC or not
     private int talkingState = 1;
-    public String speaking = ""; // String of the speaking NPC
     private NPC talkingNPC = null; // The NPC that is talking
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
@@ -139,7 +138,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     if (player.isColliding(en)) {
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
-                            speaking = talkingNPC.speak(); // makes the NPC speak upon collision between the player and the player
+                            talkingNPC.speak(); // loads the NPC's dialogue upon collision between the player and the player
                             player.state = talkingState; // switching to talking state
                         }
                         player.solveCollision(en);
@@ -187,28 +186,7 @@ public class GamePanel extends JPanel implements ActionListener {
         player.showBoundary(g, camera, Color.green);
 
         if(player.state == talkingState){
-            int tileSize = tileManager.getTileSize();
-            int x = tileSize*2;
-            int y = tileSize;
-            int width = tileSize*18 ;
-            int height = tileSize*3;
-            Color c = new Color(64,108,228,175);
-            g.setColor(c);
-            g.fillRoundRect(x,y,width,height,35,35); // dialogue frame
-
-            Color c2 = new Color(255,255,255);
-            g.setColor(c2);
-            g.drawRoundRect(x,y,width,height,35,35); // frame border
-
-            x += tileSize;
-            y += tileSize;
-            FontUtil font;
-            // g.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf",30));
-            g.setFont(g.getFont().deriveFont(Font.PLAIN,30));
-            for(String line : speaking.split("\n")){
-                g.drawString(line,x,y); // text on dialogue frame
-                y += 40;
-            }
+            talkingNPC.drawDialogueBox(g, tileManager);
         }
     
         // show tile collision //TODO move this to TileManager

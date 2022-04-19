@@ -139,6 +139,12 @@ public class GamePanel extends JPanel implements ActionListener {
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
+                            if(player.hasTalked){
+                                System.out.println("test");
+                                talkingNPC.nextDialogue();
+                                player.hasTalked = false;
+                            }
+                            talkingNPC.loadDialogue();
                         }
                         player.solveCollision(en);
                     }
@@ -150,33 +156,18 @@ public class GamePanel extends JPanel implements ActionListener {
                 repaint();
             }
         else if(player.state == talkingState){
+                if(player.hasTalked){
+                    System.out.println("test");
+                    talkingNPC.nextDialogue();
+                    player.hasTalked = false;
+                }
+                player.updateDuringCollision();
                 repaint();
             }
         }
     }
     
     private void keyInput() { //TODO handle this
-        if(player.isCollidingWithNPC && KeyHandler.isPressed(VK_ENTER)) {
-            if (player.state == playingState && !player.isDoneTalking) {
-                player.dialogueClosed = false;
-                player.state = talkingState; // switching to talking state
-                talkingNPC.speak(); // loads the NPC's dialogue upon collision between the player and NPC
-            } else if (player.state == talkingState && player.isDoneTalking) {
-                if (talkingNPC.dialogueNum < talkingNPC.dialogues.size() - 1) {
-                    talkingNPC.dialogueNum++; // going to the next dialogue
-                }
-                player.state = playingState; // switching back to playing state when moving away from NPC, with the movement towards the NPC blocked
-                player.dialogueClosed = true;
-            }
-        }
-
-        if(player.isCollidingWithNPC && !KeyHandler.isPressed(VK_ENTER) && !player.dialogueClosed) {
-            player.isDoneTalking = true;
-        }
-
-        if(player.isCollidingWithNPC && !KeyHandler.isPressed(VK_ENTER) && player.dialogueClosed) {
-            player.isDoneTalking = false;
-        }
 
         if(KeyHandler.isPressed(VK_ESCAPE)) {
             BgMusic.stop();

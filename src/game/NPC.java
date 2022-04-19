@@ -11,6 +11,7 @@ public class NPC extends Entity {
     public int dialogueNum = 0; // index of the dialogue to load
 
     public String speaking = ""; // current loaded dialogue
+    public boolean isDoneSpeaking = false;
     
     public NPC(double x, double y, String imagePath){
         super(x,y, imagePath);
@@ -18,8 +19,16 @@ public class NPC extends Entity {
         dialogues.add("Maya! Te voilà enfin réveillée! Vite! il faut aller sauver ton petit frère.\nDes monstres l'ont capturé et se sont dirigés vers le nord! Tu peux utiliser\nton épée grâce au bouton ___");
     }
 
-    public void speak(){
+    public void loadDialogue(){
         this.speaking = dialogues.get(dialogueNum);
+        isDoneSpeaking = false;
+    }
+
+    public void nextDialogue(){
+        if (dialogueNum < dialogues.size() - 1) {
+            System.out.println("text2");
+            dialogueNum++; // going to the next dialogue
+        }
     }
 
     public void drawDialogueBox(Graphics g, TileManager t) {

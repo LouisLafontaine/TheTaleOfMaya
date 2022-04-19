@@ -38,8 +38,11 @@ public class NPC extends Entity {
 
         x += tileSize;
         y += tileSize;
-        FontUtil font;
+
+
+        // FontUtil font;
         // g.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf",30));
+
         g.setFont(g.getFont().deriveFont(Font.PLAIN,30));
         for(String line : this.speaking.split("\n")){
             g.drawString(line,x,y); // text on dialogue frame

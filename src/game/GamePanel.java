@@ -21,9 +21,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private Player player;
     private Camera camera;
     private ArrayList<Entity> entities;
-    private int playingState = 0; // State of the game, determines whether the player is talking to an NPC or not
-    private int talkingState = 1;
-    private NPC talkingNPC = null; // The NPC that is talking
+    private final int playingState = 0; // State of the game, determines whether the player is talking to an NPC or not
+    private final int talkingState = 1;
+    private NPC talkingNPC = null; // The NPC that is currently talking
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
@@ -138,10 +138,12 @@ public class GamePanel extends JPanel implements ActionListener {
                     if (player.isColliding(en)) {
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
-                            talkingNPC.speak(); // loads the NPC's dialogue upon collision between the player and the player
-                            player.state = talkingState; // switching to talking state
+                            player.isCollidingWithNPC = true;
                         }
                         player.solveCollision(en);
+                    }
+                    else {
+                        player.isCollidingWithNPC = false;
                     }
                 }
                 camera.follow(player);
@@ -154,17 +156,28 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     private void keyInput() { //TODO handle this
-        if(player.state == talkingState) {
-            if(((KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 0)
-            || (KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 1
-            || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_A) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_UP) || KeyHandler.isPressed(VK_LEFT)) && player.lastMovement == 2
-            || (KeyHandler.isPressed(VK_S) || KeyHandler.isPressed(VK_D) || KeyHandler.isPressed(VK_W) || KeyHandler.isPressed(VK_DOWN) || KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_UP)) && player.lastMovement == 3){
-                if(talkingNPC.dialogueNum < talkingNPC.dialogues.size()-1){
+        if(player.isCollidingWithNPC && KeyHandler.isPressed(VK_ENTER)) {
+            if (player.state == playingState && !player.isDoneTalking) {
+                player.dialogueClosed = false;
+                player.state = talkingState; // switching to talking state
+                talkingNPC.speak(); // loads the NPC's dialogue upon collision between the player and NPC
+            } else if (player.state == talkingState && player.isDoneTalking) {
+                if (talkingNPC.dialogueNum < talkingNPC.dialogues.size() - 1) {
                     talkingNPC.dialogueNum++; // going to the next dialogue
                 }
                 player.state = playingState; // switching back to playing state when moving away from NPC, with the movement towards the NPC blocked
+                player.dialogueClosed = true;
             }
         }
+
+        if(player.isCollidingWithNPC && !KeyHandler.isPressed(VK_ENTER) && !player.dialogueClosed) {
+            player.isDoneTalking = true;
+        }
+
+        if(player.isCollidingWithNPC && !KeyHandler.isPressed(VK_ENTER) && player.dialogueClosed) {
+            player.isDoneTalking = false;
+        }
+
         if(KeyHandler.isPressed(VK_ESCAPE)) {
             BgMusic.stop();
             GameWindow.get().dispose();

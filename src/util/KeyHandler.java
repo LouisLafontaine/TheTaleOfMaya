@@ -22,7 +22,7 @@ public class KeyHandler implements KeyListener {
     public static boolean isPressed(int key) {
         return keyPressed[key];
     }
-    
+
     
     /**
      * Invoked when a key has been typed.
@@ -61,4 +61,5 @@ public class KeyHandler implements KeyListener {
         int key = e.getKeyCode();
         keyPressed[key] = false;
     }
+
 }

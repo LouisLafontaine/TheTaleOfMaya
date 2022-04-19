@@ -18,6 +18,9 @@ public class Player extends Entity {
     private final HashMap<String, Animation> directionImage = new HashMap<>();
     public int state = 0;
     public int lastMovement;
+    public boolean isCollidingWithNPC = false;
+    public boolean isDoneTalking = true;
+    public boolean dialogueClosed = true;
 
 
     private Player() {

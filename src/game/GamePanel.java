@@ -140,7 +140,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
                             if(player.hasTalked){
-                                System.out.println("test");
                                 talkingNPC.nextDialogue();
                                 player.hasTalked = false;
                             }
@@ -156,11 +155,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 repaint();
             }
         else if(player.state == talkingState){
-                if(player.hasTalked){
-                    System.out.println("test");
-                    talkingNPC.nextDialogue();
-                    player.hasTalked = false;
-                }
                 player.updateDuringCollision();
                 repaint();
             }

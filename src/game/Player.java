@@ -19,10 +19,10 @@ public class Player extends Entity {
     public int state = 0;
     public int lastMovement;
     public boolean isCollidingWithNPC = false;
-    public boolean isDoneTalking = false;
-    public boolean dialogueClosed = true;
+    public boolean canCloseBox = false;
     public boolean readyToTalk = false;
     public boolean hasTalked = false;
+
 
 
     private Player() {
@@ -126,16 +126,14 @@ public class Player extends Entity {
             System.out.println("now ready to talk");
         }
 
-        if(readyToTalk && !KeyHandler.isPressed(VK_ENTER) && dialogueClosed) {
-            isDoneTalking = false;
-        }
+
     }
 
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 
-        if(!KeyHandler.isPressed(VK_ENTER) && !dialogueClosed) {
-            isDoneTalking = true;
+        if(!KeyHandler.isPressed(VK_ENTER)){
+            canCloseBox = true;
         }
 
         if(enter){
@@ -144,16 +142,17 @@ public class Player extends Entity {
     }
 
     public void interact(){
-        if(readyToTalk) {
-            if (state == 0 && !isDoneTalking){
-                dialogueClosed = false;
-                state = 1; // switching to talking state
-            } else if (state == 1 && isDoneTalking) {
-                state = 0; // switching back to playing state
-                hasTalked = true;
-                dialogueClosed = true;
-                System.out.println("has talked");
-            }
+
+        if (state == 0 && readyToTalk){
+            state = 1; // switching to talking state
+        }
+
+        else if (state == 1 && canCloseBox) {
+            state = 0; // switching back to playing state
+            hasTalked = true;
+            canCloseBox = false;
+            readyToTalk = false;
+            System.out.println("has talked");
         }
     }
 }

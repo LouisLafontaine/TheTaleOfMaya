@@ -26,7 +26,6 @@ public class NPC extends Entity {
 
     public void nextDialogue(){
         if (dialogueNum < dialogues.size() - 1) {
-            System.out.println("text2");
             dialogueNum++; // going to the next dialogue
         }
     }

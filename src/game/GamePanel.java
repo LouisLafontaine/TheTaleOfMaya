@@ -175,13 +175,17 @@ public class GamePanel extends JPanel implements ActionListener {
         // Drawing the map
         tileManager.draw(g);
 
-        // Drawing the entities
-        for (Entity e : entities) {
-            e.draw(g, camera);
-        }
         // Drawing the player
         player.draw(g, camera);
         player.showBoundary(g, camera, Color.green);
+
+        // Drawing the entities
+        for (Entity e : entities) {
+            e.draw(g, camera);
+            player.showRange(g, camera, Color.blue, e);
+        }
+
+
 
         if(player.state == talkingState){
             talkingNPC.drawDialogueBox(g, tileManager);

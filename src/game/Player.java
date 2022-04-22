@@ -1,10 +1,12 @@
 package game;
 
+import org.w3c.dom.css.Rect;
 import util.Animation;
 import util.KeyHandler;
 import util.Vect;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 
@@ -15,9 +17,12 @@ public class Player extends Entity {
     
     public static Player instance;
     private boolean init = false;
+    //private BufferedImage attackingImage;
     private final HashMap<String, Animation> directionImage = new HashMap<>();
     public int state = 0;
-    public int lastMovement;
+    public int lastMovement = 1;
+    public Rectangle rangeBounds;
+    public boolean isAttacking = false;
     public boolean isCollidingWithNPC = false;
     public boolean canCloseBox = false;
     public boolean readyToTalk = false;
@@ -42,14 +47,21 @@ public class Player extends Entity {
             init = true;
             
             pos = new Vect(x  * TileManager.get().getTileSize(), y  * TileManager.get().getTileSize());
+            rangeBounds = new Rectangle(TileManager.get().getTileSize(), TileManager.get().getTileSize());
             
             image = image.getSubimage(0,0,120,130);
+
+            //attackingImage = image.getSubimage(0,0,120,260);
+
+            //Animation attack = new Animation("resources/images/playerImages/attack.png",32,64,4,1,12);
     
             Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
             Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
             Animation right = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 8, 12);
             Animation left = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 6, 12);
-    
+
+           // directionImage.put("attack",attack);
+
             directionImage.put("up", up);
             directionImage.put("down", down);
             directionImage.put("right", right);
@@ -64,7 +76,12 @@ public class Player extends Entity {
     public void draw(Graphics g, Camera c) {
         Graphics2D g2d = (Graphics2D) g;
         int tileSize = TileManager.get().getTileSize();
-        g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, tileSize, null);
+        if(!isAttacking) {
+            g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, tileSize, null);
+        }
+//        else if(isAttacking){
+//            g2d.drawImage(attackingImage, (int) c.getCenter().x, (int) c.getCenter().y, 4*tileSize, 4*tileSize, null);
+//        }
     }
     
     public void dispose() {
@@ -92,43 +109,48 @@ public class Player extends Entity {
         boolean right = KeyHandler.isPressed(VK_RIGHT) || KeyHandler.isPressed(VK_D);
         boolean left = KeyHandler.isPressed(VK_LEFT) || KeyHandler.isPressed(VK_A);
         boolean enter = KeyHandler.isPressed(VK_ENTER);
+
+        //boolean attack = KeyHandler.isPressed(VK_SPACE);
         
         if(up) {
             lastMovement = 0;
             pos.add(0, -10);
             image = directionImage.get("up").getCurrentFrame();
             readyToTalk = false;
-            System.out.println("no talk");
+            isAttacking = false;
         } else if(down) {
             lastMovement = 1;
             pos.add(0,10);
             image = directionImage.get("down").getCurrentFrame();
             readyToTalk = false;
-            System.out.println("no talk");
+            isAttacking = false;
         } else if(right) {
             lastMovement = 2;
             pos.add(10,0);
             image = directionImage.get("right").getCurrentFrame();
             readyToTalk = false;
-            System.out.println("no talk");
+            isAttacking = false;
         } else if(left) {
             lastMovement = 3;
             pos.add(-10,0);
             image = directionImage.get("left").getCurrentFrame();
             readyToTalk = false;
-            System.out.println("no talk");
+            isAttacking = false;
         } else if(enter){
             interact();
         }
-
+//        else if(attack){
+//            attack();
+//        }
         if(isCollidingWithNPC){
             readyToTalk = true;
-            System.out.println("now ready to talk");
         }
-
-
     }
 
+//    public void attack() {
+//        isAttacking = true;
+//        attackingImage = directionImage.get("attack").getCurrentFrame();
+//    }
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 
@@ -152,7 +174,47 @@ public class Player extends Entity {
             hasTalked = true;
             canCloseBox = false;
             readyToTalk = false;
-            System.out.println("has talked");
         }
+    }
+    public Rectangle getRange(){
+        int tileSize = TileManager.get().getTileSize();
+        switch (lastMovement) {
+            case 0 -> {
+                rangeBounds.x = ((int) pos.x);
+                rangeBounds.y = ((int) pos.y) - tileSize;
+            }
+            case 1 -> {
+                rangeBounds.x = ((int) pos.x);
+                rangeBounds.y = ((int) pos.y) + tileSize;
+            }
+            case 2 -> {
+                rangeBounds.x = ((int) pos.x) + tileSize;
+                rangeBounds.y = (int) pos.y;
+            }
+            case 3 -> {
+                rangeBounds.x = ((int) pos.x) - tileSize;
+                rangeBounds.y = (int) pos.y;
+            }
+        }
+        return rangeBounds;
+    }
+
+    public void showRange(Graphics g, Camera c, Color co,Entity e) {
+        Graphics2D g2d = (Graphics2D) g;
+        Stroke old = g2d.getStroke();
+        Rectangle r = getRange();
+        int screenX = (int) (r.x - c.getPos().x + c.getCenter().x);
+        int screenY = (int) (r.y - c.getPos().y + c.getCenter().y);
+        g2d.setStroke(new java.awt.BasicStroke(3));
+        if(!isInRange(e)) {
+            g2d.setColor(co);
+        } else if (isInRange(e)) {
+            g2d.setColor(Color.red);
+        }
+        g2d.drawRect(screenX , screenY, r.width, r.height);
+        g2d.setStroke(old);
+    }
+    public boolean isInRange(Entity e){
+        return(getRange().intersects(e.getBounds()));
     }
 }

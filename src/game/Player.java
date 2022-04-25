@@ -22,6 +22,7 @@ public class Player extends Entity {
     public int state = 0;
     public int lastMovement = 1;
     public Rectangle rangeBounds;
+    public boolean readyToAttack = false;
     public boolean isAttacking = false;
     public boolean isCollidingWithNPC = false;
     public boolean canCloseBox = false;
@@ -110,7 +111,7 @@ public class Player extends Entity {
         boolean left = KeyHandler.isPressed(VK_LEFT) || KeyHandler.isPressed(VK_A);
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 
-        //boolean attack = KeyHandler.isPressed(VK_SPACE);
+        boolean attack = KeyHandler.isPressed(VK_SPACE);
         
         if(up) {
             lastMovement = 0;
@@ -139,18 +140,19 @@ public class Player extends Entity {
         } else if(enter){
             interact();
         }
-//        else if(attack){
-//            attack();
-//        }
+        else if(attack && readyToAttack){
+            isAttacking = true;
+        }
         if(isCollidingWithNPC){
             readyToTalk = true;
         }
     }
 
-//    public void attack() {
-//        isAttacking = true;
-//        attackingImage = directionImage.get("attack").getCurrentFrame();
-//    }
+    public void attack(Monster e) {
+        if (isInRange(e)){
+            e.health -= 1;
+        }
+    }
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 

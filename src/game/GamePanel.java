@@ -76,9 +76,12 @@ public class GamePanel extends JPanel implements ActionListener {
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
             entities.add(boulder);
 
-            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/npc.png");
+            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png");
             entities.add(npc);
-            
+
+            Monster slime = new Monster(mapCenterX -5,mapCenterY + 2,"resources/images/slime.png");
+            entities.add(slime);
+
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);
@@ -147,8 +150,17 @@ public class GamePanel extends JPanel implements ActionListener {
                         }
                         player.solveCollision(en);
                     }
+                    if(player.isInRange(en)){
+                        if(en instanceof Monster){
+                            player.readyToAttack = true;
+                            if(player.isAttacking){
+                                player.attack((Monster) en);
+                            }
+                        }
+                    }
                     else {
                         player.isCollidingWithNPC = false;
+                        player.readyToAttack = false;
                     }
                 }
                 camera.follow(player);

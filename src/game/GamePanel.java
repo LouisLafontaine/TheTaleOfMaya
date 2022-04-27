@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int playingState = 0; // State of the game, determines whether the player is talking to an NPC or not
     private final int talkingState = 1;
     private NPC talkingNPC = null; // The NPC that is currently talking
+    private MP3Player[] sounds = new MP3Player[5];
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
@@ -57,6 +58,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
             // Music
             BgMusic.play();
+
+            // Sounds
+            sounds[0] = new Sound("resources/sounds/ambientSound/collision.mp3");
 
             // Camera
             Dimension screenSize = MainWindow.getScreenDimension();
@@ -139,6 +143,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 // Checking collisions with entities
                 for (Entity en : entities) {
                     if (player.isColliding(en)) {
+                        sounds[0].play();
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
@@ -187,15 +192,18 @@ public class GamePanel extends JPanel implements ActionListener {
         // Drawing the map
         tileManager.draw(g);
 
-        // Drawing the player
-        player.draw(g, camera);
-        player.showBoundary(g, camera, Color.green);
-
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);
+            if(e instanceof Monster){
+                ((Monster) e).drawHP(g);
+            }
             player.showRange(g, camera, Color.blue, e);
         }
+
+        // Drawing the player
+        player.draw(g, camera);
+        player.showBoundary(g, camera, Color.green);
 
 
 

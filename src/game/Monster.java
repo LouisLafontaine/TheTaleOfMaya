@@ -1,12 +1,13 @@
 package game;
 
 import java.awt.*;
+import util.Vect;
 
-public class Monster extends Entity{
+public class Monster extends boid.Boid{
     public int health;
 
     public Monster(double x, double y, String imagePath) {
-        super(x, y, imagePath);
+        super(new Vect(x,y), new Vect(x,y), new Vect(x,y), imagePath);
         this.health = 3;
     }
 

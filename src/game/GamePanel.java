@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -93,9 +94,21 @@ public class GamePanel extends JPanel implements ActionListener {
             Boid.setDefaultParameters();
             boids = new LinkedList<>();
             
-            // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
+            int tileSize = TileManager.get().getTileSize();
+            BufferedImage tempImage = ImageUtil.getFrom("resources/images/slime.png");
+            BufferedImage resizedImage = new BufferedImage(tileSize, tileSize, tempImage.getType());
+            Graphics g = resizedImage.getGraphics();
+            g.drawImage(tempImage, 0, 0, tileSize, tileSize, null);
+            g.dispose();
+            
+            // Spawning area is a rectangle that is the size of the screen and centered around the player
+            Rectangle spawnArea = new Rectangle((int) player.pos.x - screenSize.width / 2, (int) player.pos.y - screenSize.height / 2, screenSize.width, screenSize.height);
+            
+            // Making 400 boids with random speeds and accelerations between -1 and 1
             for (int i = 0; i < 400; i++) {
-                boids.add(Boid.random(screenSize.width, screenSize.height));
+                Boid b = Boid.random(spawnArea);
+                b.image = resizedImage;
+                boids.add(b);
             }
 
             // Keyboard inputs
@@ -188,10 +201,10 @@ public class GamePanel extends JPanel implements ActionListener {
                 repaint();
             }
         }
+        
         for(Boid b : boids) {
             b.flock(boids);
             b.update();
-            b.loopEdges(getWidth(),getHeight());
         }
     }
     

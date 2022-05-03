@@ -9,6 +9,8 @@ import util.Vect;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.LinkedList;
 
 public class Boid extends game.Entity {
@@ -34,6 +36,14 @@ public class Boid extends game.Entity {
     private static final boolean DRAW_PERCEPTION_RADIUS = false;    // perception radius, true if drawn
     
     Color color;                                            // the boid's color
+    
+    public Boid() {
+        super(0, 0, null);
+        this.position = new Vect();
+        this.velocity = new Vect();
+        this.acceleration = new Vect();
+        color = Color.black;
+    }
     
     /**
      * Creates a boid with a random color
@@ -68,6 +78,13 @@ public class Boid extends game.Entity {
      */
     public static Boid random(int x, int y){
         Vect randomPosition = new Vect(Math.random() * x,Math.random() * y);
+        Vect randomVelocity = Vect.random(Boid.maxVelocity);
+        Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
+        return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
+    }
+    
+    public static Boid random(Rectangle spawnArea){
+        Vect randomPosition = new Vect((Math.random() * spawnArea.width) + spawnArea.x,(Math.random() * spawnArea.height) + spawnArea.y);
         Vect randomVelocity = Vect.random(Boid.maxVelocity);
         Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
         return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
@@ -111,7 +128,8 @@ public class Boid extends game.Entity {
         int screenX = (int) (position.x - camera.getPos().x + camera.getCenter().x);
         int screenY = (int) (position.y - camera.getPos().y + camera.getCenter().y);
     
-        g2d.translate(position.x,position.y);
+        System.out.println(position.x + " " + screenX);
+        g2d.translate(screenX, screenY);
         g2d.rotate(headingAngle);
     
         // Drawing the boid here

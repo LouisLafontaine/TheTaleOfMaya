@@ -5,6 +5,7 @@
 package boid;
 
 import game.Camera;
+import util.Animation;
 import util.Vect;
 
 import java.awt.*;
@@ -83,11 +84,10 @@ public class Boid extends game.Entity {
         return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
     }
     
-    public static Boid random(Rectangle spawnArea){
-        Vect randomPosition = new Vect((Math.random() * spawnArea.width) + spawnArea.x,(Math.random() * spawnArea.height) + spawnArea.y);
-        Vect randomVelocity = Vect.random(Boid.maxVelocity);
-        Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
-        return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
+    public void randomizePosition(Rectangle spawnArea){
+        position = new Vect((Math.random() * spawnArea.width) + spawnArea.x,(Math.random() * spawnArea.height) + spawnArea.y);
+        velocity = Vect.random(Boid.maxVelocity);
+        acceleration = Vect.random(Boid.maxAcceleration);
     }
     
     /**

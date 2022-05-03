@@ -9,13 +9,17 @@ import java.awt.image.BufferedImage;
 
 
 public class Animation implements ActionListener {
-    BufferedImage spriteSheet;
+    public BufferedImage spriteSheet;
     Timer timer;
     int frameRate;
     int spriteWidth;
     int spriteHeight;
     int nOfFrames;
     int pointer;
+    
+    public Animation() {
+    
+    }
     
     public Animation(String filename, int spriteWidth, int spriteHeight, int nOfFrames, int row, int frameRate) {
         BufferedImage temp = ImageUtil.getFrom(filename);

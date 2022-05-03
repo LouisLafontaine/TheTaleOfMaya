@@ -29,7 +29,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private NPC talkingNPC = null; // The NPC that is currently talking
     private MP3Player[] sounds = new MP3Player[5];
     private LinkedList<Boid> boids;
-
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
     // World settings
@@ -93,6 +92,8 @@ public class GamePanel extends JPanel implements ActionListener {
             // Boids
             Boid.setDefaultParameters();
             boids = new LinkedList<>();
+    
+            System.out.println(1);
             
             int tileSize = TileManager.get().getTileSize();
             BufferedImage tempImage = ImageUtil.getFrom("resources/images/slime.png");
@@ -100,17 +101,20 @@ public class GamePanel extends JPanel implements ActionListener {
             Graphics g = resizedImage.getGraphics();
             g.drawImage(tempImage, 0, 0, tileSize, tileSize, null);
             g.dispose();
+    
+            System.out.println(2);
             
             // Spawning area is a rectangle that is the size of the screen and centered around the player
             Rectangle spawnArea = new Rectangle((int) player.pos.x - screenSize.width / 2, (int) player.pos.y - screenSize.height / 2, screenSize.width, screenSize.height);
-            
             // Making 400 boids with random speeds and accelerations between -1 and 1
             for (int i = 0; i < 400; i++) {
-                Boid b = Boid.random(spawnArea);
+                Boid b = new Boid();
+                b.randomizePosition(spawnArea);
                 b.image = resizedImage;
                 boids.add(b);
+                System.out.println(i);
             }
-
+            
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
             addKeyListener(keyboard);

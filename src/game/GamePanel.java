@@ -136,6 +136,7 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.stop();
         player.dispose();
         tileManager.dispose();
+        BgMusic.stop();
     }
     
     /**

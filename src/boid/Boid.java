@@ -128,13 +128,11 @@ public class Boid extends game.Entity {
         int screenX = (int) (position.x - camera.getPos().x + camera.getCenter().x);
         int screenY = (int) (position.y - camera.getPos().y + camera.getCenter().y);
     
-        System.out.println(position.x + " " + screenX);
         g2d.translate(screenX, screenY);
         g2d.rotate(headingAngle);
     
         // Drawing the boid here
-        g2d.setColor(color);
-        g2d.fillPolygon(new int[]{-4,4,-4}, new int[]{-3,0,3}, 3);
+        g2d.drawImage(image, 0,0, null);
     
         g2d.setTransform(initial);
     

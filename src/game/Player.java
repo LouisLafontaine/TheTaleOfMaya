@@ -148,11 +148,11 @@ public class Player extends Entity {
         }
     }
 
-    public void attack(Monster e) {
-        if (isInRange(e)){
-            e.health -= 1;
-        }
-    }
+//    public void attack(Monster e) {
+//        if (isInRange(e)){
+//            e.health -= 1;
+//        }
+//    }
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 
@@ -181,21 +181,25 @@ public class Player extends Entity {
     public Rectangle getRange(){
         int tileSize = TileManager.get().getTileSize();
         switch (lastMovement) {
-            case 0 -> {
+            case 0 : {
                 rangeBounds.x = ((int) pos.x);
                 rangeBounds.y = ((int) pos.y) - tileSize;
+                break;
             }
-            case 1 -> {
+            case 1 : {
                 rangeBounds.x = ((int) pos.x);
                 rangeBounds.y = ((int) pos.y) + tileSize;
+                break;
             }
-            case 2 -> {
+            case 2 : {
                 rangeBounds.x = ((int) pos.x) + tileSize;
                 rangeBounds.y = (int) pos.y;
+                break;
             }
-            case 3 -> {
+            case 3 :{
                 rangeBounds.x = ((int) pos.x) - tileSize;
                 rangeBounds.y = (int) pos.y;
+                break;
             }
         }
         return rangeBounds;

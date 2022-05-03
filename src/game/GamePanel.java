@@ -83,8 +83,6 @@ public class GamePanel extends JPanel implements ActionListener {
             NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png");
             entities.add(npc);
 
-            Monster slime = new Monster(mapCenterX -5,mapCenterY + 2,"resources/images/slime.png");
-            entities.add(slime);
 
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -155,14 +153,14 @@ public class GamePanel extends JPanel implements ActionListener {
                         }
                         player.solveCollision(en);
                     }
-                    if(player.isInRange(en)){
-                        if(en instanceof Monster){
-                            player.readyToAttack = true;
-                            if(player.isAttacking){
-                                player.attack((Monster) en);
-                            }
-                        }
-                    }
+//                    if(player.isInRange(en)){
+//                        if(en instanceof Monster){
+//                            player.readyToAttack = true;
+//                            if(player.isAttacking){
+//                                player.attack((Monster) en);
+//                            }
+//                        }
+//                    }
                     else {
                         player.isCollidingWithNPC = false;
                         player.readyToAttack = false;
@@ -195,9 +193,9 @@ public class GamePanel extends JPanel implements ActionListener {
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);
-            if(e instanceof Monster){
-                ((Monster) e).drawHP(g);
-            }
+//            if(e instanceof Monster){
+//                ((Monster) e).drawHP(g);
+//            }
             player.showRange(g, camera, Color.blue, e);
         }
 

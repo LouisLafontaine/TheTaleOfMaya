@@ -25,6 +25,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int talkingState = 1;
     private NPC talkingNPC = null; // The NPC that is currently talking
     private MP3Player[] sounds = new MP3Player[5];
+    private gui gui;
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
@@ -55,6 +56,9 @@ public class GamePanel extends JPanel implements ActionListener {
     public GamePanel init() {
         if (!init) {
             init = true;
+
+            // GUI
+            gui = new gui();
 
             // Music
             BgMusic.play();
@@ -177,7 +181,9 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     private void keyInput() { //TODO handle this
-
+        if(KeyHandler.isPressed(VK_E)){
+            gui.display = false;
+        }
         if(KeyHandler.isPressed(VK_ESCAPE)) {
             BgMusic.stop();
             GameWindow.get().dispose();
@@ -187,9 +193,12 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         // Drawing the map
         tileManager.draw(g);
-
+        if(gui.display) {
+            gui.draw(g, tileManager);
+        }
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);

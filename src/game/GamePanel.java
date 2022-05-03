@@ -95,10 +95,10 @@ public class GamePanel extends JPanel implements ActionListener {
             boids = new LinkedList<>();
             
             int tileSize = TileManager.get().getTileSize();
-            BufferedImage tempImage = ImageUtil.getFrom("resources/images/slime.png");
-            BufferedImage resizedImage = new BufferedImage(tileSize, tileSize, tempImage.getType());
+            BufferedImage tempImage = ImageUtil.getFrom("resources/images/ghost.png");
+            BufferedImage resizedImage = new BufferedImage(tileSize/2, tileSize/2, tempImage.getType());
             Graphics g = resizedImage.getGraphics();
-            g.drawImage(tempImage, 0, 0, tileSize, tileSize, null);
+            g.drawImage(tempImage, 0, 0, tileSize/2, tileSize/2, null);
             g.dispose();
             
             // Spawning area is a rectangle that is the size of the screen and centered around the player
@@ -107,7 +107,7 @@ public class GamePanel extends JPanel implements ActionListener {
             // Making 400 boids with random speeds and accelerations between -1 and 1
             for (int i = 0; i < 400; i++) {
                 Boid b = Boid.random(spawnArea);
-                b.image = resizedImage;
+                b.setImage(resizedImage);
                 boids.add(b);
             }
 

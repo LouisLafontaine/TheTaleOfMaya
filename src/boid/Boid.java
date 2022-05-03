@@ -132,11 +132,11 @@ public class Boid extends game.Entity {
         g2d.rotate(headingAngle);
     
         // Drawing the boid here
-        g2d.drawImage(image, 0,0, null);
+        g2d.drawImage(image, - image.getWidth()/2, - image.getHeight()/2, null);
     
         g2d.setTransform(initial);
     
-        if(drawPerceptionRadius) {
+        if(true) {
             g2d.setColor(Color.green);
             g2d.drawOval(
                     (int)(screenX-perceptionRadius/2),
@@ -208,5 +208,9 @@ public class Boid extends game.Entity {
             if(position.y < 0) position.y = height + position.y % width;
             else if(position.y > height) position.y %= height;
         }
+    }
+    
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 }

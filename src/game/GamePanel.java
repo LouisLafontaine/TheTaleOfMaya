@@ -1,5 +1,6 @@
 package game;
 
+import boid.Boid;
 import jaco.mp3.player.MP3Player;
 import menu.MenuWindow;
 import util.*;
@@ -9,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -25,6 +27,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int talkingState = 1;
     private NPC talkingNPC = null; // The NPC that is currently talking
     private MP3Player[] sounds = new MP3Player[5];
+    private LinkedList<Boid> boids;
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
@@ -85,6 +88,15 @@ public class GamePanel extends JPanel implements ActionListener {
 
             Monster slime = new Monster(mapCenterX -5,mapCenterY + 2,"resources/images/slime.png");
             entities.add(slime);
+    
+            // Boids
+            Boid.setDefaultParameters();
+            boids = new LinkedList<>();
+            
+            // Making numberOfBoids boids with random speeds and accelerations between -1 and 1
+            for (int i = 0; i < 400; i++) {
+                boids.add(Boid.random(screenSize.width, screenSize.height));
+            }
 
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -176,6 +188,11 @@ public class GamePanel extends JPanel implements ActionListener {
                 repaint();
             }
         }
+        for(Boid b : boids) {
+            b.flock(boids);
+            b.update();
+            b.loopEdges(getWidth(),getHeight());
+        }
     }
     
     private void keyInput() { //TODO handle this
@@ -200,12 +217,16 @@ public class GamePanel extends JPanel implements ActionListener {
             }
             player.showRange(g, camera, Color.blue, e);
         }
+        
 
         // Drawing the player
         player.draw(g, camera);
         player.showBoundary(g, camera, Color.green);
 
-
+        // Drawing the boids
+        for(Boid b : boids) {
+            b.draw(g, camera);
+        }
 
         if(player.state == talkingState){
             talkingNPC.drawDialogueBox(g, tileManager);

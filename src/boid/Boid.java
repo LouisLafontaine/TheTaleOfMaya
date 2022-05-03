@@ -4,6 +4,7 @@
 
 package boid;
 
+import game.Camera;
 import util.Vect;
 
 import java.awt.*;
@@ -48,7 +49,8 @@ public class Boid extends game.Entity {
         color = new Color((int)(Math.random()*100 +155),(int)(Math.random()*100 +155),(int)(Math.random()*100 +155));
     }
     
-    protected static void setDefaultParameters() {
+    
+    public static void setDefaultParameters() {
         maxVelocity = MAX_VELOCITY;
         maxAcceleration = MAX_ACCELERATION;
         perceptionRadius = PERCEPTION_RADIUS;
@@ -75,7 +77,7 @@ public class Boid extends game.Entity {
      * Draws the boid on the screen and its perception radius if perceptionRadius is true
      * @param g  a Graphics object to draw on the screen
      */
-    protected void draw(Graphics g) {
+    public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform initial = g2d.getTransform();
     
@@ -100,10 +102,38 @@ public class Boid extends game.Entity {
         }
     }
     
+    public void draw(Graphics g, Camera camera) {
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform initial = g2d.getTransform();
+    
+        double headingAngle = Math.atan2(velocity.y, velocity.x);  // direction in which the boid is currently heading
+    
+        int screenX = (int) (position.x - camera.getPos().x + camera.getCenter().x);
+        int screenY = (int) (position.y - camera.getPos().y + camera.getCenter().y);
+    
+        g2d.translate(position.x,position.y);
+        g2d.rotate(headingAngle);
+    
+        // Drawing the boid here
+        g2d.setColor(color);
+        g2d.fillPolygon(new int[]{-4,4,-4}, new int[]{-3,0,3}, 3);
+    
+        g2d.setTransform(initial);
+    
+        if(drawPerceptionRadius) {
+            g2d.setColor(Color.green);
+            g2d.drawOval(
+                    (int)(screenX-perceptionRadius/2),
+                    (int)(screenY-perceptionRadius/2),
+                    (int)perceptionRadius,
+                    (int)perceptionRadius);
+        }
+    }
+    
     /**
      * Updates the pos and velocity of the boid
      */
-    protected void update() {
+    public void update() {
         velocity.limit(maxVelocity);
         position.add(velocity);
         velocity.add(acceleration);
@@ -113,7 +143,7 @@ public class Boid extends game.Entity {
      * Flocks the boid by applying 3 rules : cohesion, alignment, separation
      * @param boids  list of all the boids
      */
-    protected void flock(LinkedList<Boid> boids) {
+    public void flock(LinkedList<Boid> boids) {
         int perceivedNeighbors = 0;
         Vect cohesion = new Vect();
         Vect alignment = new Vect();
@@ -155,7 +185,7 @@ public class Boid extends game.Entity {
      * @param width  width of the screen space
      * @param height  height of the screen space
      */
-    protected void loopEdges(int width, int height){
+    public void loopEdges(int width, int height){
         if(!(width == 0 && height == 0)) {  // necessary because at the first timer event JPanel getWidth / getHeight returns 0,0...
             if(position.x < 0) position.x = width + position.x % width;
             else if(position.x > width) position.x %= width;

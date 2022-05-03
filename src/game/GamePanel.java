@@ -95,7 +95,7 @@ public class GamePanel extends JPanel implements ActionListener {
             boids = new LinkedList<>();
             
             int tileSize = TileManager.get().getTileSize();
-            BufferedImage tempImage = ImageUtil.getFrom("resources/images/ghost.png");
+            BufferedImage tempImage = ImageUtil.getFrom("resources/images/slime.png");
             BufferedImage resizedImage = new BufferedImage(tileSize/2, tileSize/2, tempImage.getType());
             Graphics g = resizedImage.getGraphics();
             g.drawImage(tempImage, 0, 0, tileSize/2, tileSize/2, null);
@@ -169,7 +169,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 // Checking collisions with entities
                 for (Entity en : entities) {
                     if (player.isColliding(en)) {
-                        sounds[0].play();
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
@@ -209,10 +208,8 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
     
-    private void keyInput() { //TODO handle this
-
+    private void keyInput() {
         if(KeyHandler.isPressed(VK_ESCAPE)) {
-            BgMusic.stop();
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
         }
@@ -245,24 +242,7 @@ public class GamePanel extends JPanel implements ActionListener {
         if(player.state == talkingState){
             talkingNPC.drawDialogueBox(g, tileManager);
         }
-    
-        // show tile collision //TODO move this to TileManager
-        Graphics2D g2d = (Graphics2D) g;
-        Stroke old = g2d.getStroke();
-        g2d.setStroke(new BasicStroke(2));
-        for(int i = 0 ; i < tileManager.collisionMap.length; i++) {
-            for(int j = 0 ; j < tileManager.collisionMap[i].length ; j ++) {
-                int tileSize = tileManager.getTileSize();
-                int worldX = (j * tileSize);
-                int worldY = (i * tileSize);
-                int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
-                int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
-                if(tileManager.collisionMap[i][j]) {
-                    g.setColor(Color.red);
-                    g.drawRect(screenX, screenY, tileSize, tileSize);
-                }
-            }
-        }
-        g2d.setStroke(old);
+        
+        tileManager.drawCollision(g);
     }
 }

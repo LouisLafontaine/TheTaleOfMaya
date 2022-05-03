@@ -5,7 +5,7 @@ public class gui {
     public static String ins = "";
     public boolean display = true;
     public gui(){
-        ins = "Utilisez les touches ZQSD ou les touches \ndirectionnelles pour vous déplacer \n\nAppuyez sur ENTREE étant en collision \navec un PNJ pour lui parler \n\nAppuyez sur ESPACE pour attaquer\n\nAppuyez sur E fermer cette fenêtre";
+        ins = "Utilisez les touches WASD ou les touches \ndirectionnelles pour vous déplacer \n\nAppuyez sur ENTREE étant en collision \navec un PNJ pour lui parler \n\nAppuyez sur ESPACE pour attaquer\n\nAppuyez sur E fermer cette fenêtre";
     }
 
     public static void draw(Graphics g, TileManager t){

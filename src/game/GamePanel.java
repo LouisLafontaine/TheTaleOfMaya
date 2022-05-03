@@ -84,8 +84,13 @@ public class GamePanel extends JPanel implements ActionListener {
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
             entities.add(boulder);
 
-            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png");
-            entities.add(npc);
+            NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
+            entities.add(Darunia);
+            Darunia.dialogues.add("Oh Maya, te voilà enfin ! Ton frère Isaac s'est fait enlever par l'horrible Barrish \npendant la nuit. Il détient ton frère dans son antre secrète, et prévoit de lui \nvoler tout son élixir de jouvence. Tu dois aller le sauver !");
+            Darunia.dialogues.add("Maya, prépare-toi à combattre les sbires de Barrish. Ce sont des entités \nredoutables qui se déplacent en groupe, comme des oiseaux migrateurs.\nUtilise la touche ESPACE pour les attaquer !");
+            Darunia.dialogues.add("Moi? Une pierre qui parle dis-tu? Je vais t'épargner toute mon histoire. \nDans tous les cas, tu n'auras pas le temps de m'écouter.");
+            Darunia.dialogues.add("Je n'ai plus rien à t'apprendre. Va! Ton frère t'attend!");
+
 
 
             // Keyboard inputs

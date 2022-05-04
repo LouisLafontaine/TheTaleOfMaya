@@ -147,12 +147,7 @@ public class Player extends Entity {
             readyToTalk = true;
         }
     }
-
-    public void attack(Monster e) {
-        if (isInRange(e)){
-            e.health -= 1;
-        }
-    }
+    
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 

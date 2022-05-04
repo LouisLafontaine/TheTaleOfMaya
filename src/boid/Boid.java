@@ -51,8 +51,8 @@ public class Boid extends game.Entity {
      * @param velocity  the boid's velocity
      * @param acceleration  the boids's acceleration
      */
-    public Boid(Vect position, Vect velocity, Vect acceleration, String imagePath) {
-        super(position.x, position.y, imagePath);
+    public Boid(Vect position, Vect velocity, Vect acceleration) {
+        super(position.x, position.y, null);
         this.position = new Vect(position);
         this.velocity = new Vect(velocity);
         this.acceleration = new Vect(acceleration);
@@ -80,14 +80,14 @@ public class Boid extends game.Entity {
         Vect randomPosition = new Vect(Math.random() * x,Math.random() * y);
         Vect randomVelocity = Vect.random(Boid.maxVelocity);
         Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
-        return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
+        return new Boid(randomPosition,randomVelocity,randomAcceleration);
     }
     
     public static Boid random(Rectangle spawnArea){
         Vect randomPosition = new Vect((Math.random() * spawnArea.width) + spawnArea.x,(Math.random() * spawnArea.height) + spawnArea.y);
         Vect randomVelocity = Vect.random(Boid.maxVelocity);
         Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
-        return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
+        return new Boid(randomPosition,randomVelocity,randomAcceleration);
     }
     
     /**

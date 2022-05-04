@@ -82,9 +82,6 @@ public class GamePanel extends JPanel implements ActionListener {
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
-          
-            Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
-            entities.add(boulder);
 
             NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
             entities.add(Darunia);

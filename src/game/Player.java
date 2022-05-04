@@ -9,6 +9,7 @@ import util.Vect;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 
 import static java.awt.event.KeyEvent.*;
@@ -189,12 +190,6 @@ public class Player extends Entity {
             }
         }
 
-    }
-
-    public void attack(Boid b) {
-        if (isInRange(b) && isAttacking){
-            b = null;
-        }
     }
 
     public void updateDuringCollision(){

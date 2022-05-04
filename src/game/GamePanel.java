@@ -177,6 +177,16 @@ public class GamePanel extends JPanel implements ActionListener {
                         }
                     }
                 }
+    
+                LinkedList<Entity> boidsToRemove = new LinkedList<>();
+                for(Boid b : boids) {
+                    if (b instanceof Boid) {
+                        if (player.isInRange(b) && player.isAttacking){
+                            boidsToRemove.add(b);
+                        }
+                    }
+                }
+                
                 // Checking collisions with entities
                 for (Entity en : entities) {
                     if (player.isColliding(en)) {
@@ -189,11 +199,11 @@ public class GamePanel extends JPanel implements ActionListener {
                             }
                             talkingNPC.loadDialogue();
                         }
-                        if (en instanceof Boid) {
-                            player.attack((Boid) en);
-                        }
                         player.solveCollision(en);
                     }
+                }
+                for(Entity  en : boidsToRemove) {
+                    boids.remove(en);
                 }
                 camera.follow(player);
                 repaint();
@@ -238,7 +248,7 @@ public class GamePanel extends JPanel implements ActionListener {
             for (Boid b : boids) {
                 b.draw(g, camera);
                 b.showBoundary(g, camera, Color.blue);
-                if(player.isInRange(b)) {
+                if(player.isInRange(b) && player.isAttacking) {
                     inRange = true;
                 }
             }

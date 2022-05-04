@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
 public abstract class Entity {
     
     protected Vect pos;
-    private final Rectangle bounds;
+    protected Rectangle bounds;
     protected BufferedImage image;
 
     public Entity(double x, double y, String imagePath) { //TODO overload constructor make one without imagePath

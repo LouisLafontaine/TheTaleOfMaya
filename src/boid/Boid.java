@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.nio.Buffer;
 import java.util.LinkedList;
 
+
 public class Boid extends game.Entity {
     Vect position;                                      // the boid's pos
     Vect velocity;                                      // the boid's velocity vector
@@ -89,7 +90,8 @@ public class Boid extends game.Entity {
         Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
         return new Boid(randomPosition,randomVelocity,randomAcceleration);
     }
-    
+
+
     /**
      * Draws the boid on the screen and its perception radius if perceptionRadius is true
      * @param g  a Graphics object to draw on the screen
@@ -209,7 +211,13 @@ public class Boid extends game.Entity {
             else if(position.y > height) position.y %= height;
         }
     }
-    
+    public Rectangle getBounds() {
+        bounds.x = (int) (position.x - 35);
+        bounds.y = (int) (position.y - 35);
+        return bounds;
+    }
+
+
     public void setImage(BufferedImage image) {
         this.image = image;
     }

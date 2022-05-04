@@ -1,5 +1,6 @@
 package game;
 
+import boid.Boid;
 import org.w3c.dom.css.Rect;
 import util.Animation;
 import util.KeyHandler;
@@ -190,11 +191,11 @@ public class Player extends Entity {
 
     }
 
-//    public void attack(Monster e) {
-//        if (isInRange(e)){
-//            e.health -= 1;
-//        }
-//    }
+    public void attack(Boid b) {
+        if (isInRange(b) && isAttacking){
+            b = null;
+        }
+    }
 
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
@@ -249,16 +250,16 @@ public class Player extends Entity {
         return rangeBounds;
     }
 
-    public void showRange(Graphics g, Camera c, Color co,Entity e) {
+    public void showRange(Graphics g, Camera c, Boid b) {
         Graphics2D g2d = (Graphics2D) g;
         Stroke old = g2d.getStroke();
         Rectangle r = getRange();
         int screenX = (int) (r.x - c.getPos().x + c.getCenter().x);
         int screenY = (int) (r.y - c.getPos().y + c.getCenter().y);
         g2d.setStroke(new java.awt.BasicStroke(3));
-        if(!isInRange(e)) {
-            g2d.setColor(co);
-        } else if (isInRange(e)) {
+        if(!isInRange(b)) {
+            g2d.setColor(Color.blue);
+        } else if (isInRange(b)) {
             g2d.setColor(Color.red);
         }
         g2d.drawRect(screenX , screenY, r.width, r.height);

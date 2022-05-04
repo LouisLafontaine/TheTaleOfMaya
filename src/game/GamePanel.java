@@ -183,12 +183,14 @@ public class GamePanel extends JPanel implements ActionListener {
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
-                            System.out.println(player.isCollidingWithNPC);
                             if(player.hasTalked){
                                 talkingNPC.nextDialogue();
                                 player.hasTalked = false;
                             }
                             talkingNPC.loadDialogue();
+                        }
+                        if (en instanceof Boid) {
+                            player.attack((Boid) en);
                         }
                         player.solveCollision(en);
                     }
@@ -224,7 +226,6 @@ public class GamePanel extends JPanel implements ActionListener {
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);
-            player.showRange(g, camera, Color.blue, e);
         }
 
 
@@ -235,6 +236,8 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!gui.display){
             for (Boid b : boids) {
                 b.draw(g, camera);
+                b.showBoundary(g, camera, Color.blue);
+                player.showRange(g, camera, b);
             }
         }
 

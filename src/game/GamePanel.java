@@ -62,9 +62,6 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!init) {
             init = true;
 
-            // GUI
-            gui = new gui();
-
             // Music
             BgMusic.play();
 
@@ -89,10 +86,12 @@ public class GamePanel extends JPanel implements ActionListener {
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
             entities.add(boulder);
 
-
-            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png");
-            entities.add(npc);
-            
+            NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
+            entities.add(Darunia);
+            Darunia.dialogues.add("Oh Maya, te voilà enfin ! Ton frère Isaac s'est fait enlever par l'horrible Barrish \npendant la nuit. Il détient ton frère dans son antre secrète, et prévoit de lui \nvoler tout son élixir de jouvence. Tu dois aller le sauver !");
+            Darunia.dialogues.add("Maya, prépare-toi à combattre les sbires de Barrish. Ce sont des entités \nredoutables qui se déplacent en groupe, comme des oiseaux migrateurs.\nUtilise la touche ESPACE pour les attaquer !");
+            Darunia.dialogues.add("Moi? Une pierre qui parle dis-tu? Je vais t'épargner toute mon histoire. \nDans tous les cas, tu n'auras pas le temps de m'écouter.");
+            Darunia.dialogues.add("Je n'ai plus rien à t'apprendre. Va! Ton frère t'attend!");
     
             // Boids
             Boid.setDefaultParameters();
@@ -114,13 +113,10 @@ public class GamePanel extends JPanel implements ActionListener {
                 b.setImage(resizedImage);
                 boids.add(b);
             }
-          
-            NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
-            entities.add(Darunia);
-            Darunia.dialogues.add("Oh Maya, te voilà enfin ! Ton frère Isaac s'est fait enlever par l'horrible Barrish \npendant la nuit. Il détient ton frère dans son antre secrète, et prévoit de lui \nvoler tout son élixir de jouvence. Tu dois aller le sauver !");
-            Darunia.dialogues.add("Maya, prépare-toi à combattre les sbires de Barrish. Ce sont des entités \nredoutables qui se déplacent en groupe, comme des oiseaux migrateurs.\nUtilise la touche ESPACE pour les attaquer !");
-            Darunia.dialogues.add("Moi? Une pierre qui parle dis-tu? Je vais t'épargner toute mon histoire. \nDans tous les cas, tu n'auras pas le temps de m'écouter.");
-            Darunia.dialogues.add("Je n'ai plus rien à t'apprendre. Va! Ton frère t'attend!");
+
+            // GUI
+            gui = new gui();
+
 
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -162,6 +158,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
             if(player.state == playingState) {
                 player.update();
+
+                if(player.hasTalked){
+                    gui.display = false;
+                }
     
                 // Checking collisions with map
                 int tileSize = tileManager.getTileSize();
@@ -183,6 +183,7 @@ public class GamePanel extends JPanel implements ActionListener {
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
+                            System.out.println(player.isCollidingWithNPC);
                             if(player.hasTalked){
                                 talkingNPC.nextDialogue();
                                 player.hasTalked = false;
@@ -190,7 +191,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             talkingNPC.loadDialogue();
                         }
                         player.solveCollision(en);
-                        player.isCollidingWithNPC = false;
                     }
                 }
                 camera.follow(player);
@@ -209,9 +209,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     
     private void keyInput() { //TODO handle this
-        if(KeyHandler.isPressed(VK_E)){
-            gui.display = false;
-        }
         if(KeyHandler.isPressed(VK_ESCAPE)) {
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
@@ -223,28 +220,26 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // Drawing the map
         tileManager.draw(g);
-        if(gui.display) {
-            gui.draw(g, tileManager);
-        }
+
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);
-//            player.showRange(g, camera, Color.blue, e);
-
-//            if(e instanceof Monster){
-//                ((Monster) e).drawHP(g);
-//            }
             player.showRange(g, camera, Color.blue, e);
         }
-        
+
 
         // Drawing the player
         player.draw(g, camera);
-//        player.showBoundary(g, camera, Color.green);
 
         // Drawing the boids
-        for(Boid b : boids) {
-            b.draw(g, camera);
+        if (!gui.display){
+            for (Boid b : boids) {
+                b.draw(g, camera);
+            }
+        }
+
+        if(gui.display) {
+            gui.draw(g, tileManager);
         }
 
         if(player.state == talkingState){

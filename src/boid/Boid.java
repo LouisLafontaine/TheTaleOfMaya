@@ -4,10 +4,13 @@
 
 package boid;
 
+import game.Camera;
 import util.Vect;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.LinkedList;
 
 public class Boid extends game.Entity {
@@ -34,21 +37,30 @@ public class Boid extends game.Entity {
     
     Color color;                                            // the boid's color
     
+    public Boid() {
+        super(0, 0, null);
+        this.position = new Vect();
+        this.velocity = new Vect();
+        this.acceleration = new Vect();
+        color = Color.black;
+    }
+    
     /**
      * Creates a boid with a random color
      * @param position  the boid's pos
      * @param velocity  the boid's velocity
      * @param acceleration  the boids's acceleration
      */
-    public Boid(Vect position, Vect velocity, Vect acceleration, String imagePath) {
-        super(position.x, position.y, imagePath);
+    public Boid(Vect position, Vect velocity, Vect acceleration) {
+        super(position.x, position.y, null);
         this.position = new Vect(position);
         this.velocity = new Vect(velocity);
         this.acceleration = new Vect(acceleration);
         color = new Color((int)(Math.random()*100 +155),(int)(Math.random()*100 +155),(int)(Math.random()*100 +155));
     }
     
-    protected static void setDefaultParameters() {
+    
+    public static void setDefaultParameters() {
         maxVelocity = MAX_VELOCITY;
         maxAcceleration = MAX_ACCELERATION;
         perceptionRadius = PERCEPTION_RADIUS;
@@ -68,14 +80,21 @@ public class Boid extends game.Entity {
         Vect randomPosition = new Vect(Math.random() * x,Math.random() * y);
         Vect randomVelocity = Vect.random(Boid.maxVelocity);
         Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
-        return new Boid(randomPosition,randomVelocity,randomAcceleration,"resources/images/slime.png");
+        return new Boid(randomPosition,randomVelocity,randomAcceleration);
+    }
+    
+    public static Boid random(Rectangle spawnArea){
+        Vect randomPosition = new Vect((Math.random() * spawnArea.width) + spawnArea.x,(Math.random() * spawnArea.height) + spawnArea.y);
+        Vect randomVelocity = Vect.random(Boid.maxVelocity);
+        Vect randomAcceleration = Vect.random(Boid.maxAcceleration);
+        return new Boid(randomPosition,randomVelocity,randomAcceleration);
     }
     
     /**
      * Draws the boid on the screen and its perception radius if perceptionRadius is true
      * @param g  a Graphics object to draw on the screen
      */
-    protected void draw(Graphics g) {
+    public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform initial = g2d.getTransform();
     
@@ -100,10 +119,37 @@ public class Boid extends game.Entity {
         }
     }
     
+    public void draw(Graphics g, Camera camera) {
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform initial = g2d.getTransform();
+    
+        double headingAngle = Math.atan2(velocity.y, velocity.x);  // direction in which the boid is currently heading
+    
+        int screenX = (int) (position.x - camera.getPos().x + camera.getCenter().x);
+        int screenY = (int) (position.y - camera.getPos().y + camera.getCenter().y);
+    
+        g2d.translate(screenX, screenY);
+        g2d.rotate(headingAngle);
+    
+        // Drawing the boid here
+        g2d.drawImage(image, - image.getWidth()/2, - image.getHeight()/2, null);
+    
+        g2d.setTransform(initial);
+    
+        if(true) {
+            g2d.setColor(Color.green);
+            g2d.drawOval(
+                    (int)(screenX-perceptionRadius/2),
+                    (int)(screenY-perceptionRadius/2),
+                    (int)perceptionRadius,
+                    (int)perceptionRadius);
+        }
+    }
+    
     /**
      * Updates the pos and velocity of the boid
      */
-    protected void update() {
+    public void update() {
         velocity.limit(maxVelocity);
         position.add(velocity);
         velocity.add(acceleration);
@@ -113,7 +159,7 @@ public class Boid extends game.Entity {
      * Flocks the boid by applying 3 rules : cohesion, alignment, separation
      * @param boids  list of all the boids
      */
-    protected void flock(LinkedList<Boid> boids) {
+    public void flock(LinkedList<Boid> boids) {
         int perceivedNeighbors = 0;
         Vect cohesion = new Vect();
         Vect alignment = new Vect();
@@ -155,12 +201,16 @@ public class Boid extends game.Entity {
      * @param width  width of the screen space
      * @param height  height of the screen space
      */
-    protected void loopEdges(int width, int height){
+    public void loopEdges(int width, int height){
         if(!(width == 0 && height == 0)) {  // necessary because at the first timer event JPanel getWidth / getHeight returns 0,0...
             if(position.x < 0) position.x = width + position.x % width;
             else if(position.x > width) position.x %= width;
             if(position.y < 0) position.y = height + position.y % width;
             else if(position.y > height) position.y %= height;
         }
+    }
+    
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 }

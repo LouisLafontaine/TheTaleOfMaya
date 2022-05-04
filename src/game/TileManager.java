@@ -195,4 +195,24 @@ public class TileManager {
     public int getMapHeight() {
         return mapHeight;
     }
+    
+    public void drawCollision(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        Stroke old = g2d.getStroke();
+        g2d.setStroke(new BasicStroke(2));
+        for(int i = 0 ; i < collisionMap.length; i++) {
+            for(int j = 0 ; j < collisionMap[i].length ; j ++) {
+                int tileSize = getTileSize();
+                int worldX = (j * tileSize);
+                int worldY = (i * tileSize);
+                int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
+                int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
+                if(collisionMap[i][j]) {
+                    g.setColor(Color.red);
+                    g.drawRect(screenX, screenY, tileSize, tileSize);
+                }
+            }
+        }
+        g2d.setStroke(old);
+    }
 }

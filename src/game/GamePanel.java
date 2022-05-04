@@ -1,5 +1,6 @@
 package game;
 
+import boid.Boid;
 import jaco.mp3.player.MP3Player;
 import menu.MenuWindow;
 import util.*;
@@ -8,7 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -25,7 +28,9 @@ public class GamePanel extends JPanel implements ActionListener {
     private final int talkingState = 1;
     private NPC talkingNPC = null; // The NPC that is currently talking
     private MP3Player[] sounds = new MP3Player[5];
+    private LinkedList<Boid> boids;
     private gui gui;
+
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
@@ -84,14 +89,38 @@ public class GamePanel extends JPanel implements ActionListener {
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
             entities.add(boulder);
 
+
+            NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png");
+            entities.add(npc);
+            
+    
+            // Boids
+            Boid.setDefaultParameters();
+            boids = new LinkedList<>();
+            
+            int tileSize = TileManager.get().getTileSize();
+            BufferedImage tempImage = ImageUtil.getFrom("resources/images/slime.png");
+            BufferedImage resizedImage = new BufferedImage(tileSize/2, tileSize/2, tempImage.getType());
+            Graphics g = resizedImage.getGraphics();
+            g.drawImage(tempImage, 0, 0, tileSize/2, tileSize/2, null);
+            g.dispose();
+            
+            // Spawning area is a rectangle that is the size of the screen and centered around the player
+            Rectangle spawnArea = new Rectangle((int) player.pos.x - screenSize.width / 2, (int) player.pos.y - screenSize.height / 2, screenSize.width, screenSize.height);
+            
+            // Making 400 boids with random speeds and accelerations between -1 and 1
+            for (int i = 0; i < 400; i++) {
+                Boid b = Boid.random(spawnArea);
+                b.setImage(resizedImage);
+                boids.add(b);
+            }
+          
             NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
             entities.add(Darunia);
             Darunia.dialogues.add("Oh Maya, te voilà enfin ! Ton frère Isaac s'est fait enlever par l'horrible Barrish \npendant la nuit. Il détient ton frère dans son antre secrète, et prévoit de lui \nvoler tout son élixir de jouvence. Tu dois aller le sauver !");
             Darunia.dialogues.add("Maya, prépare-toi à combattre les sbires de Barrish. Ce sont des entités \nredoutables qui se déplacent en groupe, comme des oiseaux migrateurs.\nUtilise la touche ESPACE pour les attaquer !");
             Darunia.dialogues.add("Moi? Une pierre qui parle dis-tu? Je vais t'épargner toute mon histoire. \nDans tous les cas, tu n'auras pas le temps de m'écouter.");
             Darunia.dialogues.add("Je n'ai plus rien à t'apprendre. Va! Ton frère t'attend!");
-
-
 
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -118,6 +147,7 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.stop();
         player.dispose();
         tileManager.dispose();
+        BgMusic.stop();
     }
     
     /**
@@ -150,7 +180,6 @@ public class GamePanel extends JPanel implements ActionListener {
                 // Checking collisions with entities
                 for (Entity en : entities) {
                     if (player.isColliding(en)) {
-                        sounds[0].play();
                         if (en instanceof NPC) {
                             talkingNPC = (NPC) en;
                             player.isCollidingWithNPC = true;
@@ -161,16 +190,6 @@ public class GamePanel extends JPanel implements ActionListener {
                             talkingNPC.loadDialogue();
                         }
                         player.solveCollision(en);
-                    }
-//                    if(player.isInRange(en)){
-//                        if(en instanceof Monster){
-//                            player.readyToAttack = true;
-//                            if(player.isAttacking){
-//                                player.attack((Monster) en);
-//                            }
-//                        }
-//                    }
-                    else {
                         player.isCollidingWithNPC = false;
                     }
                 }
@@ -182,6 +201,11 @@ public class GamePanel extends JPanel implements ActionListener {
                 repaint();
             }
         }
+        
+        for(Boid b : boids) {
+            b.flock(boids);
+            b.update();
+        }
     }
     
     private void keyInput() { //TODO handle this
@@ -189,7 +213,6 @@ public class GamePanel extends JPanel implements ActionListener {
             gui.display = false;
         }
         if(KeyHandler.isPressed(VK_ESCAPE)) {
-            BgMusic.stop();
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
         }
@@ -206,39 +229,28 @@ public class GamePanel extends JPanel implements ActionListener {
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);
+//            player.showRange(g, camera, Color.blue, e);
+
 //            if(e instanceof Monster){
 //                ((Monster) e).drawHP(g);
 //            }
             player.showRange(g, camera, Color.blue, e);
         }
+        
 
         // Drawing the player
         player.draw(g, camera);
-        player.showBoundary(g, camera, Color.green);
+//        player.showBoundary(g, camera, Color.green);
 
-
+        // Drawing the boids
+        for(Boid b : boids) {
+            b.draw(g, camera);
+        }
 
         if(player.state == talkingState){
             talkingNPC.drawDialogueBox(g, tileManager);
         }
-    
-        // show tile collision //TODO move this to TileManager
-        Graphics2D g2d = (Graphics2D) g;
-        Stroke old = g2d.getStroke();
-        g2d.setStroke(new BasicStroke(2));
-        for(int i = 0 ; i < tileManager.collisionMap.length; i++) {
-            for(int j = 0 ; j < tileManager.collisionMap[i].length ; j ++) {
-                int tileSize = tileManager.getTileSize();
-                int worldX = (j * tileSize);
-                int worldY = (i * tileSize);
-                int screenX = (int) (worldX - camera.getPos().x + camera.getCenter().x);
-                int screenY = (int) (worldY -  camera.getPos().y + camera.getCenter().y);
-                if(tileManager.collisionMap[i][j]) {
-                    g.setColor(Color.red);
-                    g.drawRect(screenX, screenY, tileSize, tileSize);
-                }
-            }
-        }
-        g2d.setStroke(old);
+        
+        tileManager.drawCollision(g);
     }
 }

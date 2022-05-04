@@ -28,10 +28,8 @@ public class Player extends Entity {
     public boolean readyToTalk = false;
     public boolean hasTalked = false;
 
-
-
     private Player() {
-        super(0, 0, "resources/images/playerImages/zelda.png");
+        super(0, 0, "resources/images/playerImages/maya.png");
     }
     
     
@@ -52,14 +50,14 @@ public class Player extends Entity {
             image = image.getSubimage(0,0,120,130);
 
             Animation frontattack = new Animation("resources/images/playerImages/frontattack.png",32,64,4,1,12);
-            Animation rightattack = new Animation("resources/images/playerImages/rightattack.png",32,64,4,1,12);
-            Animation leftattack = new Animation("resources/images/playerImages/leftattack.png",32,64,4,1,12);
-            Animation upattack = new Animation("resources/images/playerImages/upattack.png",32,64,4,1,12);
+            Animation rightattack = new Animation("resources/images/playerImages/rightattack.png",64,32,4,1,12);
+            Animation leftattack = new Animation("resources/images/playerImages/leftattack.png",64,32,4,1,12);
+            Animation upattack = new Animation("resources/images/playerImages/backattack.png",32,64,4,1,12);
     
-            Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
-            Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
-            Animation right = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 8, 12);
-            Animation left = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 6, 12);
+            Animation up = new Animation("resources/images/playerImages/maya.png", 120, 130, 10, 7, 12);
+            Animation down = new Animation("resources/images/playerImages/maya.png", 120, 130, 10, 5, 12);
+            Animation right = new Animation("resources/images/playerImages/maya.png", 120, 130, 10, 8, 12);
+            Animation left = new Animation("resources/images/playerImages/maya.png", 120, 130, 10, 6, 12);
 
             directionImage.put("frontattack",frontattack);
             directionImage.put("rightattack",rightattack);
@@ -84,7 +82,24 @@ public class Player extends Entity {
             g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, tileSize, null);
         }
         else if(isAttacking){
-            g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, 2*tileSize, null);
+            switch (lastMovement) {
+                case 0 : {
+                    g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y - tileSize, tileSize, 2*tileSize, null);
+                    break;
+                }
+                case 1 : {
+                    g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, 2*tileSize, null);
+                    break;
+                }
+                case 2 : {
+                    g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, 2*tileSize, tileSize, null);
+                    break;
+                }
+                case 3 :{
+                    g2d.drawImage(image, (int) c.getCenter().x - tileSize, (int) c.getCenter().y, 2*tileSize, tileSize, null);
+                    break;
+                }
+            }
         }
     }
     

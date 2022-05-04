@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private NPC talkingNPC = null; // The NPC that is currently talking
     private MP3Player[] sounds = new MP3Player[5];
     private LinkedList<Boid> boids;
-    private gui gui;
+    private Tuto tuto;
 
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
@@ -115,7 +115,7 @@ public class GamePanel extends JPanel implements ActionListener {
             }
 
             // GUI
-            gui = new gui();
+            tuto = new Tuto();
 
 
             // Keyboard inputs
@@ -160,7 +160,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 player.update();
 
                 if(player.hasTalked){
-                    gui.display = false;
+                    tuto.display = false;
                 }
     
                 // Checking collisions with map
@@ -233,16 +233,20 @@ public class GamePanel extends JPanel implements ActionListener {
         player.draw(g, camera);
 
         // Drawing the boids
-        if (!gui.display){
+        if (!tuto.display){
+            boolean inRange = false;
             for (Boid b : boids) {
                 b.draw(g, camera);
                 b.showBoundary(g, camera, Color.blue);
-                player.showRange(g, camera, b);
+                if(player.isInRange(b)) {
+                    inRange = true;
+                }
             }
+            player.showRange(g, camera, inRange);
         }
 
-        if(gui.display) {
-            gui.draw(g, tileManager);
+        if(tuto.display) {
+            tuto.draw(g, tileManager);
         }
 
         if(player.state == talkingState){

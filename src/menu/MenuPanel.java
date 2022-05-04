@@ -31,7 +31,7 @@ public class MenuPanel extends JPanel implements ActionListener {
     private HashMap<String, JButton> buttons;
     private Animation background;
 
-    MP3Player MainMenuTheme = new Sound("resources/sounds/musics/xDeviruchi/Title Theme.mp3"); // background music
+    MP3Player MainMenuTheme = new Sound("resources/sounds/musics/xDeviruchi/And The Journey Begins.mp3"); // background music
 
     /**
      * Creates a Menu.MenuPanel

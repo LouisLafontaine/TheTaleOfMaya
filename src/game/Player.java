@@ -250,20 +250,16 @@ public class Player extends Entity {
         return rangeBounds;
     }
 
-    public void showRange(Graphics g, Camera c, Boid b) {
-        Graphics2D g2d = (Graphics2D) g;
-        Stroke old = g2d.getStroke();
+    public void showRange(Graphics g, Camera c, boolean inRange) {
         Rectangle r = getRange();
         int screenX = (int) (r.x - c.getPos().x + c.getCenter().x);
         int screenY = (int) (r.y - c.getPos().y + c.getCenter().y);
-        g2d.setStroke(new java.awt.BasicStroke(3));
-        if(!isInRange(b)) {
-            g2d.setColor(Color.blue);
-        } else if (isInRange(b)) {
-            g2d.setColor(Color.red);
+        if(inRange) {
+            g.setColor(Color.red);
+        } else {
+            g.setColor(Color.blue);
         }
-        g2d.drawRect(screenX , screenY, r.width, r.height);
-        g2d.setStroke(old);
+        g.drawRect(screenX , screenY, r.width, r.height);
     }
     public boolean isInRange(Entity e){
         return(getRange().intersects(e.getBounds()));

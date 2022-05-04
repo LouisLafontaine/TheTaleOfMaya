@@ -172,7 +172,6 @@ public class GamePanel extends JPanel implements ActionListener {
 //                    }
                     else {
                         player.isCollidingWithNPC = false;
-                        player.readyToAttack = false;
                     }
                 }
                 camera.follow(player);

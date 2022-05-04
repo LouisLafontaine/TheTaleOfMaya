@@ -54,7 +54,18 @@ public class CreditPanel extends JPanel {
             gbc.gridwidth = GridBagConstraints.REMAINDER;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             
-            JLabel label1 = new JLabel("Made with love");
+            JLabel label1 = new JLabel("Crédits\n" +
+                    "\n" +
+                    "Ce jeu a été programmé avec amour et tendresse par Louis LAFONTAINE, Mélanie PHE, Hugo SAYSANA.\n" +
+                    "\n" +
+                    "Musiques et bruitages provenant de YouTube : ...\n" +
+                    "Spritesheet provenant de Google : ...\n" +
+                    "Carte du jeu réalisée par nos soins.\n" +
+                    "Animations des attaques réalisées par nos soins.\n" +
+                    "\n" +
+                    "Dans le cas où votre inquiétude pour Maya et Isaac vous empêcherait de dormir paisiblement, sachez qu'ils sont désormais très heureux et en sécurité sur leur planète d'origine, à l'abri des boids.\n" +
+                    "\n" +
+                    "Aucun villageois n'a été blessé pendant la réalisation du jeu. \n");
             JLabel label2 = new JLabel("press ESC to return to the menu");
             label1.setForeground(Color.white);
             label2.setForeground(Color.white);

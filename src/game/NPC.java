@@ -9,14 +9,13 @@ import java.util.ArrayList;
 public class NPC extends Entity {
     ArrayList<String> dialogues = new ArrayList<>(); // array containing every dialogue for an NPC
     public int dialogueNum = 0; // index of the dialogue to load
-
+    public String name;
     public String speaking = ""; // current loaded dialogue
     public boolean isDoneSpeaking = false;
     
-    public NPC(double x, double y, String imagePath){
+    public NPC(double x, double y, String imagePath, String name){
         super(x,y, imagePath);
-        dialogues.add("Hello");
-        dialogues.add("Maya! Te voilà enfin réveillée! Vite! il faut aller sauver ton petit frère.\nDes monstres l'ont capturé et se sont dirigés vers le nord! Tu peux utiliser\nton épée grâce au bouton ___");
+        this.name = name;
     }
 
     public void loadDialogue(){
@@ -47,7 +46,8 @@ public class NPC extends Entity {
         x += tileSize;
         y += tileSize;
 
-
+        g.setFont(g.getFont().deriveFont(Font.PLAIN,20));
+        g.drawString(name,x,y-35);
         // FontUtil font;
         // g.setFont(FontUtil.getFrom("resources/fonts/pixelFont.otf",30));
 

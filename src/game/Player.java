@@ -17,12 +17,11 @@ public class Player extends Entity {
     
     public static Player instance;
     private boolean init = false;
-    //private BufferedImage attackingImage;
+    private BufferedImage attackingImage;
     private final HashMap<String, Animation> directionImage = new HashMap<>();
     public int state = 0;
     public int lastMovement = 1;
     public Rectangle rangeBounds;
-    public boolean readyToAttack = false;
     public boolean isAttacking = false;
     public boolean isCollidingWithNPC = false;
     public boolean canCloseBox = false;
@@ -52,16 +51,14 @@ public class Player extends Entity {
             
             image = image.getSubimage(0,0,120,130);
 
-            //attackingImage = image.getSubimage(0,0,120,260);
-
-            //Animation attack = new Animation("resources/images/playerImages/attack.png",32,64,4,1,12);
+            Animation attack = new Animation("resources/images/playerImages/frontattack.png",32,64,4,1,12);
     
             Animation up = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 7, 12);
             Animation down = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 5, 12);
             Animation right = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 8, 12);
             Animation left = new Animation("resources/images/playerImages/zelda.png", 120, 130, 10, 6, 12);
 
-           // directionImage.put("attack",attack);
+            directionImage.put("attack",attack);
 
             directionImage.put("up", up);
             directionImage.put("down", down);
@@ -80,9 +77,9 @@ public class Player extends Entity {
         if(!isAttacking) {
             g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, tileSize, null);
         }
-//        else if(isAttacking){
-//            g2d.drawImage(attackingImage, (int) c.getCenter().x, (int) c.getCenter().y, 4*tileSize, 4*tileSize, null);
-//        }
+        else if(isAttacking){
+            g2d.drawImage(image, (int) c.getCenter().x, (int) c.getCenter().y, tileSize, 2*tileSize, null);
+        }
     }
     
     public void dispose() {
@@ -140,14 +137,21 @@ public class Player extends Entity {
         } else if(enter){
             interact();
         }
-        else if(attack && readyToAttack){
+        else if(attack){
+            image = directionImage.get("attack").getCurrentFrame();
             isAttacking = true;
         }
         if(isCollidingWithNPC){
             readyToTalk = true;
         }
     }
-    
+
+//    public void attack(Monster e) {
+//        if (isInRange(e)){
+//            e.health -= 1;
+//        }
+//    }
+
     public void updateDuringCollision(){
         boolean enter = KeyHandler.isPressed(VK_ENTER);
 
@@ -176,21 +180,25 @@ public class Player extends Entity {
     public Rectangle getRange(){
         int tileSize = TileManager.get().getTileSize();
         switch (lastMovement) {
-            case 0 -> {
+            case 0 : {
                 rangeBounds.x = ((int) pos.x);
                 rangeBounds.y = ((int) pos.y) - tileSize;
+                break;
             }
-            case 1 -> {
+            case 1 : {
                 rangeBounds.x = ((int) pos.x);
                 rangeBounds.y = ((int) pos.y) + tileSize;
+                break;
             }
-            case 2 -> {
+            case 2 : {
                 rangeBounds.x = ((int) pos.x) + tileSize;
                 rangeBounds.y = (int) pos.y;
+                break;
             }
-            case 3 -> {
+            case 3 :{
                 rangeBounds.x = ((int) pos.x) - tileSize;
                 rangeBounds.y = (int) pos.y;
+                break;
             }
         }
         return rangeBounds;

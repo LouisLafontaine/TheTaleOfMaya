@@ -29,6 +29,8 @@ public class GamePanel extends JPanel implements ActionListener {
     private NPC talkingNPC = null; // The NPC that is currently talking
     private MP3Player[] sounds = new MP3Player[5];
     private LinkedList<Boid> boids;
+    private gui gui;
+
 
     MP3Player BgMusic = new Sound("resources/sounds/musics/ritovillage.mp3"); // Background music
 
@@ -60,6 +62,9 @@ public class GamePanel extends JPanel implements ActionListener {
         if (!init) {
             init = true;
 
+            // GUI
+            gui = new gui();
+
             // Music
             BgMusic.play();
 
@@ -83,6 +88,7 @@ public class GamePanel extends JPanel implements ActionListener {
           
             Obstacle boulder = new Obstacle(mapCenterX - 2, mapCenterY,"resources/images/rock.png");
             entities.add(boulder);
+
 
             NPC npc = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png");
             entities.add(npc);
@@ -108,6 +114,13 @@ public class GamePanel extends JPanel implements ActionListener {
                 b.setImage(resizedImage);
                 boids.add(b);
             }
+          
+            NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
+            entities.add(Darunia);
+            Darunia.dialogues.add("Oh Maya, te voilà enfin ! Ton frère Isaac s'est fait enlever par l'horrible Barrish \npendant la nuit. Il détient ton frère dans son antre secrète, et prévoit de lui \nvoler tout son élixir de jouvence. Tu dois aller le sauver !");
+            Darunia.dialogues.add("Maya, prépare-toi à combattre les sbires de Barrish. Ce sont des entités \nredoutables qui se déplacent en groupe, comme des oiseaux migrateurs.\nUtilise la touche ESPACE pour les attaquer !");
+            Darunia.dialogues.add("Moi? Une pierre qui parle dis-tu? Je vais t'épargner toute mon histoire. \nDans tous les cas, tu n'auras pas le temps de m'écouter.");
+            Darunia.dialogues.add("Je n'ai plus rien à t'apprendre. Va! Ton frère t'attend!");
 
             // Keyboard inputs
             KeyHandler keyboard = KeyHandler.get();
@@ -177,9 +190,7 @@ public class GamePanel extends JPanel implements ActionListener {
                             talkingNPC.loadDialogue();
                         }
                         player.solveCollision(en);
-                    } else {
                         player.isCollidingWithNPC = false;
-                        player.readyToAttack = false;
                     }
                 }
                 camera.follow(player);
@@ -197,7 +208,10 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
     
-    private void keyInput() {
+    private void keyInput() { //TODO handle this
+        if(KeyHandler.isPressed(VK_E)){
+            gui.display = false;
+        }
         if(KeyHandler.isPressed(VK_ESCAPE)) {
             GameWindow.get().dispose();
             MainWindow.switchTo(MenuWindow.get().init());
@@ -206,13 +220,21 @@ public class GamePanel extends JPanel implements ActionListener {
     
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
         // Drawing the map
         tileManager.draw(g);
-
+        if(gui.display) {
+            gui.draw(g, tileManager);
+        }
         // Drawing the entities
         for (Entity e : entities) {
             e.draw(g, camera);
 //            player.showRange(g, camera, Color.blue, e);
+
+//            if(e instanceof Monster){
+//                ((Monster) e).drawHP(g);
+//            }
+            player.showRange(g, camera, Color.blue, e);
         }
         
 

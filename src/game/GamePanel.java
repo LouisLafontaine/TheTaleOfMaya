@@ -82,7 +82,7 @@ public class GamePanel extends JPanel implements ActionListener {
             player = Player.get().init(mapCenterX, mapCenterY);
             
             entities = new ArrayList<>();
-
+    
             NPC Darunia = new NPC(mapCenterX - 3, mapCenterY, "resources/images/npc.png", "Darunia Reyfiel");
             entities.add(Darunia);
             Darunia.dialogues.add("Oh Maya, te voilà enfin ! Ton frère Isaac s'est fait enlever par l'horrible Barrish \npendant la nuit. Il détient ton frère dans son antre secrète, et prévoit de lui \nvoler tout son élixir de jouvence. Tu dois aller le sauver !");
@@ -244,12 +244,14 @@ public class GamePanel extends JPanel implements ActionListener {
             boolean inRange = false;
             for (Boid b : boids) {
                 b.draw(g, camera);
-                b.showBoundary(g, camera, Color.blue);
+                // to show the hitbox of the boids
+//                b.showBoundary(g, camera, Color.blue);
                 if(player.isInRange(b) && player.isAttacking) {
                     inRange = true;
                 }
             }
-            player.showRange(g, camera, inRange);
+            // to show the attack range
+//            player.showRange(g, camera, inRange);
         }
 
         if(tuto.display) {

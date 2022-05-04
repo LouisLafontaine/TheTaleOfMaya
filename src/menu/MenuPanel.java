@@ -7,7 +7,6 @@ package menu;
 import boid.BoidWindow;
 import util.Animation;
 import game.GameWindow;
-import game.mapEditor.MapEditorWindow;
 import jaco.mp3.player.MP3Player;
 import util.FontUtil;
 import util.MainWindow;
@@ -77,7 +76,7 @@ public class MenuPanel extends JPanel implements ActionListener {
             gbc.fill = GridBagConstraints.HORIZONTAL;
     
             buttons = new HashMap<>();
-            String[] buttonNames = new String[]{"Launch game", "Launch boid", "Map editor", "Credits", "Exit menu"};
+            String[] buttonNames = new String[]{"Launch game", "Launch boid", "Credits", "Exit menu"};
     
             Color pink = new Color(240, 98, 146);
             
@@ -131,10 +130,6 @@ public class MenuPanel extends JPanel implements ActionListener {
             MainMenuTheme.stop();
             MenuWindow.get().dispose();
             MainWindow.switchTo(CreditWindow.get().init());
-        } else if(source == buttons.get("Map editor")) {
-            MainMenuTheme.stop();
-            MenuWindow.get().dispose();
-            MainWindow.switchTo(MapEditorWindow.get().init());
         } else if (source == buttons.get("Exit menu")) {
             System.exit(0);
         }

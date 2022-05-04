@@ -262,6 +262,7 @@ public class GamePanel extends JPanel implements ActionListener {
             talkingNPC.drawDialogueBox(g, tileManager);
         }
         
-        tileManager.drawCollision(g);
+        // to show the tiles of the terrain that have collision
+//        tileManager.drawCollision(g);
     }
 }

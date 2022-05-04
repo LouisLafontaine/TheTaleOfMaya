@@ -54,24 +54,23 @@ public class CreditPanel extends JPanel {
             gbc.gridwidth = GridBagConstraints.REMAINDER;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             
-            JLabel label1 = new JLabel("Crédits\n" +
-                    "\n" +
-                    "Ce jeu a été programmé avec amour et tendresse par Louis LAFONTAINE, Mélanie PHE, Hugo SAYSANA.\n" +
-                    "\n" +
-                    "Musiques et bruitages provenant de YouTube : ...\n" +
-                    "Spritesheet provenant de Google : ...\n" +
-                    "Carte du jeu réalisée par nos soins.\n" +
-                    "Animations des attaques réalisées par nos soins.\n" +
-                    "\n" +
-                    "Dans le cas où votre inquiétude pour Maya et Isaac vous empêcherait de dormir paisiblement, sachez qu'ils sont désormais très heureux et en sécurité sur leur planète d'origine, à l'abri des boids.\n" +
-                    "\n" +
-                    "Aucun villageois n'a été blessé pendant la réalisation du jeu. \n");
-            JLabel label2 = new JLabel("press ESC to return to the menu");
-            label1.setForeground(Color.white);
-            label2.setForeground(Color.white);
-            add(label1, gbc);
-            add(label2, gbc);
+            JLabel[] labels = new JLabel[10];
             
+            labels[0] = new JLabel("Crédits :");
+            labels[1] = new JLabel("Ce jeu a été programmé avec amour et tendresse par Louis LAFONTAINE, Mélanie PHE, Hugo SAYSANA.");
+            labels[2] = new JLabel("Musiques et bruitages provenant de YouTube : ...");
+            labels[3] = new JLabel("Carte du jeu réalisée par nos soins.");
+            labels[4] = new JLabel( "Animations des attaques réalisées par nos soins.");
+            labels[5] = new JLabel("Dans le cas où votre inquiétude pour Maya et Isaac vous empêcherait de dormir paisiblement,");
+            labels[6] = new JLabel("sachez qu'ils sont désormais très heureux et en sécurité sur leur planète d'origine, à l'abri des boids.");
+            labels[7] = new JLabel("Spritesheet provenant de Google : ...");
+            labels[8] = new JLabel("Aucun villageois n'a été blessé pendant la réalisation du jeu.");
+            labels[9] = new JLabel("press ESC to return to the menu");
+            System.out.println(labels[0]);
+            for(int i = 0; i < labels.length ; i++) {
+                labels[i].setForeground(Color.white);
+                add(labels[i], gbc);
+            }
         } else {
             System.err.println("The Menu.CreditPanel instance has already been initialized !");
         }
